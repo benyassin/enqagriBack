@@ -1,0 +1,67 @@
+var User = require('../models/user');
+
+
+exports.getUser = function (req, res) {
+    User.findOne({_id : req.user._id}, function (err, user){
+        if(err){
+            res.sen(err);
+        }
+        res.json(user)
+    })
+};
+
+exports.deleteUser = function (req, res) {
+
+    User.remove({_id :req.params.user_id}, function (err, user) {
+            res.json(user)
+        });
+
+};
+
+exports.createUser = function (req, res) {
+        var nom = req.body.nom;
+        var prenom = req.body.prenom;
+        var email = req.body.email;
+        var password = req.body.password;
+        var role = req.body.role;
+        var telephone = req.body.telephone;
+        var createdBy = req.user._id;
+
+    if(!email){
+        return res.status(422).send({error: 'You must enter an email address'});
+    }
+
+    if(!password){
+        return res.status(422).send({error: 'You must enter a password'});
+    }
+    User.findOne({email: email}, function(err, existingUser) {
+        if(err){
+            return next(err);
+        }
+
+        if(existingUser){
+            return res.status(422).send({error: 'That email address is already in use'});
+        }
+
+        var user = new User({
+            nom: nom,
+            prenom: prenom,
+            email: email,
+            password: password,
+            role: role,
+            telephone: telephone,
+            createdBy: createdBy
+        });
+        user.save(function(err, user){
+
+            if(err){
+                return next(err);
+            }
+
+            res.status(201).json({
+                user: user
+            })
+
+        });
+});
+}
