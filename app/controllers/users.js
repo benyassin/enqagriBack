@@ -1,8 +1,20 @@
 var User = require('../models/user');
 
 
+
+exports.getUsers = function(req, res ) {
+   User.find()
+   .select('-password')
+   .exec(function (err, users){
+       if(err){
+           res.send(err);
+       }
+       res.json(users)
+   })
+}
+
 exports.getUser = function (req, res) {
-    User.findOne({_id : req.user._id}, function (err, user){
+    User.findOne({_id : req.params.user_id}, function (err, user){
         if(err){
             res.sen(err);
         }

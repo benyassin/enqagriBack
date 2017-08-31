@@ -24,6 +24,9 @@ var BlocSchema = new mongoose.Schema({
         },
         province: {
             type : Number
+        },
+        commune:{
+            type: Number 
         }
     },
     id_createur : {

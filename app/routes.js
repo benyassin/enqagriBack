@@ -1,5 +1,4 @@
 var AuthenticationController = require('./controllers/authentication'),
-    TodoController = require('./controllers/todos'),
     UserController = require('./controllers/users'),
     BlocController = require('./controllers/bloc'),
     FormController = require('./controllers/form'),
@@ -31,8 +30,9 @@ module.exports = function(app){
     // User routes
     apiRoutes.use('/users', userRoutes);
 
-    userRoutes.get('/', requireAuth, UserController.getUser);
-    userRoutes.post('/create',requireAuth,UserController.createUser);
+    userRoutes.get('/', requireAuth, UserController.getUsers);
+    userRoutes.get('/:user_id',UserController.getUser)
+    userRoutes.post('/',requireAuth,UserController.createUser);
     userRoutes.delete('/:user_id',requireAuth,UserController.deleteUser);
 
 
@@ -41,8 +41,8 @@ module.exports = function(app){
 
     blocRoutes.post('/', requireAuth, BlocController.createBloc);
     blocRoutes.get('/', requireAuth, BlocController.getBlocs);
-    blocRoutes.post('/delete/:bloc_id', requireAuth, BlocController.updateBloc);
-    blocRoutes.get('/theme', requireAuth, BlocController.getBlocsByTheme);
+    blocRoutes.delete('/:bloc_id', requireAuth, BlocController.updateBloc);
+  //  blocRoutes.get('/theme', requireAuth, BlocController.getBlocsByTheme);
 
     //Form routes
 

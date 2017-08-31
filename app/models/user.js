@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     nom : String,
     prenom : String,
@@ -24,13 +24,13 @@ var UserSchema = new mongoose.Schema({
     },
     perimetre : {
         region : {
-            type: String
+            type: Number
         },
         province : {
-            type : String
+            type : Number
         },
         commune : {
-            type : String
+            type : Number
         }
     }
 }, {
