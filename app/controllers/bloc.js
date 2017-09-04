@@ -18,34 +18,28 @@ exports.getBlocs = function(req, res){
     "perimetre.province": perimetre.province,
     "perimetre.commune": perimetre.commune};
 
-    Bloc.find(query).exec(function(err, blocs){
+    Bloc.find(query,function(err, blocs){
         if(err) {
-            res.send(err);
+         return res.send(err);
         }
         res.json(blocs)
     })
 
 }
 exports.createBloc = function(req, res ,next){
-    Bloc = new Bloc({
+   let bloc = new Bloc ({
             name : req.body.name,
             theme : req.body.theme,
             fields : req.body.fields,
             id_createur : req.user._id,
-            perimetre:{
-                region:'1',
-                province:'2',
-                commune:'3'
-            }
+            perimetre: req.user.perimetre
         })
 
-    Bloc.save(function (err, bloc) {
+    bloc.save(function (err, bloc) {
         if(err){
-            res.send(err)
+        return  res.send(err)
         }
-        res.status(201).json({
-            bloc: bloc
-        })
+        res.status(201).json({bloc: bloc})
     })
 };
 
@@ -62,7 +56,7 @@ exports.updateBloc = function (req, res) {
 
         bloc.save(function (err, updatedBloc) {
             if(err) {
-                res.send(err)
+                return res.send(err)
             }
 
             res.send(updatedBloc)
@@ -75,7 +69,7 @@ exports.updateBloc = function (req, res) {
 exports.getBlocsByTheme = function(req, res) {
     Bloc.find({'theme':req.body.theme}, function(err, blocs){
         if(err){
-            res.send(err)
+          return  res.send(err)
         }
         res.json(blocs)
     })

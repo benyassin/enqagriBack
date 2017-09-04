@@ -12,7 +12,11 @@ function setUserInfo(request){
     return {
         _id: request._id,
         email: request.email,
-        role: request.role
+        role: request.role,
+        nom : request.nom,
+        prenom: request.prenom,
+        telephone: request.telephone,
+        perimetre: request.perimetre,
     };
 }
 

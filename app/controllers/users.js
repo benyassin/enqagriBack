@@ -2,21 +2,21 @@ var User = require('../models/user');
 
 
 
-exports.getUsers = function(req, res ) {
+exports.getUsers = function(req, res,next ) {
    User.find()
    .select('-password')
    .exec(function (err, users){
        if(err){
-           res.send(err);
+        return  res.send(err);
        }
        res.json(users)
    })
 }
 
-exports.getUser = function (req, res) {
+exports.getUser = function (req, res, next) {
     User.findOne({_id : req.params.user_id}, function (err, user){
         if(err){
-            res.sen(err);
+         return res.sen(err);
         }
         res.json(user)
     })
@@ -30,7 +30,7 @@ exports.deleteUser = function (req, res) {
 
 };
 
-exports.createUser = function (req, res) {
+exports.createUser = function (req, res,next) {
         var nom = req.body.nom;
         var prenom = req.body.prenom;
         var email = req.body.email;
@@ -38,6 +38,7 @@ exports.createUser = function (req, res) {
         var role = req.body.role;
         var telephone = req.body.telephone;
         var createdBy = req.user._id;
+        var perimetre = {region : req.body.region,province: req.body.province,commune: req.body.commune}
 
     if(!email){
         return res.status(422).send({error: 'You must enter an email address'});
@@ -62,7 +63,8 @@ exports.createUser = function (req, res) {
             password: password,
             role: role,
             telephone: telephone,
-            createdBy: createdBy
+            createdBy: createdBy,
+            perimetre : perimetre
         });
         user.save(function(err, user){
 

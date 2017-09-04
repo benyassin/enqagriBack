@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-
-var BlocSchema = new mongoose.Schema({
+var BlocSchema = new Schema({
     name : {
         type: String,
         lowercase: true,
@@ -13,7 +13,7 @@ var BlocSchema = new mongoose.Schema({
     },
     theme: {
         type: String,
-        enum : ['rna','annuelle,','modulaire']
+        enum : ['rna','annuelle','modulaire']
     },
     id_modifieur: {
         type: String
@@ -30,9 +30,13 @@ var BlocSchema = new mongoose.Schema({
         }
     },
     id_createur : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    form : {
+        type: Schema.Types.ObjectId,
+        ref: 'Form'
+    },
 
 },{
     timestamps: true

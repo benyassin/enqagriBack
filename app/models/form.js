@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
+var Schema =  mongoose.Schema
 
-
-var FormSchema = new mongoose.Schema({
+var FormSchema = new Schema({
 
     name: {
         type: String,
@@ -9,20 +9,21 @@ var FormSchema = new mongoose.Schema({
         required: true
     },
     geometry: {
+        lowercase: true,
         type: String,
         enum : ['polygone','polyline','point','nogeometry']
     },
     theme: {
         type: String,
-        enum : ['rna','annuelle,','modulaire']
+        enum : ['rna','annuelle','modulaire']
     },
     statut: {
         type: Boolean,
-        default: false
+        default: true
     },
     id_createur: {
-        type: String,
-        required: true
+        type : Schema.Types.ObjectId,
+        ref: 'User'
     },
     id_modifieur: {
         type: String
@@ -33,6 +34,9 @@ var FormSchema = new mongoose.Schema({
         },
         province: {
             type : Number
+        },
+        commune:{
+            type:Number
         }
     },
     date_debut: {
@@ -43,10 +47,10 @@ var FormSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    blocs : {
-        type : mongoose.Schema.Types.ObjectId,
+    blocs : [{
+        type : Schema.Types.ObjectId,
         ref: 'Bloc'
-    }
+    }]
 
 }, {
     timestamps: true
