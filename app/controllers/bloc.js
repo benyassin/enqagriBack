@@ -13,10 +13,14 @@ var query = {};
 exports.getBlocs = function(req, res){
     var perimetre = req.user.perimetre
     //mongoose ignore les attribute null
-    query = {"theme": req.query.theme,
+    query = {
     "perimetre.region": perimetre.region,
     "perimetre.province": perimetre.province,
     "perimetre.commune": perimetre.commune};
+
+    if (req.query.theme !== 'all'){
+        query.theme = req.query.theme
+    }
 
     Bloc.find(query,function(err, blocs){
         if(err) {
@@ -66,11 +70,11 @@ exports.updateBloc = function (req, res) {
     })
 };
 
-exports.getBlocsByTheme = function(req, res) {
-    Bloc.find({'theme':req.body.theme}, function(err, blocs){
+exports.deleteBloc = function (req, res, next) {
+    Bloc.remove({_id :req.params.bloc_id}, function (err, bloc) {
         if(err){
-          return  res.send(err)
+            return res.json(err)
         }
-        res.json(blocs)
-    })
+        res.json(bloc)
+    });
 }

@@ -23,21 +23,28 @@ exports.createForm = function(req, res , next){
 };
 
 exports.getForms = function(req,res) {
+    let query;
     var perimetre = req.user.perimetre
     //mongoose ignore les attribute null
     query = {
-    "perimetre.region": perimetre.region,
-    "perimetre.province": perimetre.province,
-    "perimetre.commune": perimetre.commune};
+        "perimetre.region": perimetre.region,
+        "perimetre.province": perimetre.province,
+        "perimetre.commune": perimetre.commune};
 
-    Form.find(query).populate('blocs','fields').exec(function(err,forms){
-     
+    Form.find({}, function (err,forms) {
         if(err){
-         return res.send(err)
+         return res.json(err)
         }
-        res.status(201).json({
-            forms: forms
-        })
+        res.json(forms)
     })
 
+}
+
+exports.deleteForm = function (req, res, next) {
+    Form.remove({_id :req.params.form_id}, function (err, form) {
+        if(err){
+            return res.json(err)
+        }
+        res.json(form)
+    });
 }

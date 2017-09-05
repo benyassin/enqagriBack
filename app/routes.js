@@ -42,7 +42,8 @@ module.exports = function(app){
     //AuthenticationController.roleAuthorization(['editor'])
     blocRoutes.post('/', requireAuth, BlocController.createBloc);
     blocRoutes.get('/', requireAuth, BlocController.getBlocs);
-    blocRoutes.delete('/:bloc_id', requireAuth, BlocController.updateBloc);
+    blocRoutes.delete('/:bloc_id',requireAuth,BlocController.deleteBloc);
+    blocRoutes.put('/:bloc_id', requireAuth, BlocController.updateBloc);
   //  blocRoutes.get('/theme', requireAuth, BlocController.getBlocsByTheme);
 
     //Form routes
@@ -51,6 +52,7 @@ module.exports = function(app){
 
     formRoutes.post('/', requireAuth, FormController.createForm);
     formRoutes.get('/',requireAuth, FormController.getForms)
+    formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm)
 
     // Set up routes
     app.use('/api', apiRoutes);
