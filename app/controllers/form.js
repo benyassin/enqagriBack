@@ -1,8 +1,7 @@
 var Form = require('../models/form');
 
-
 exports.createForm = function(req, res , next){
-    Form = new Form({
+    form = new Form ({
         name : req.body.name,
         theme: req.body.theme,
         date_debut : req.body.date_debut,
@@ -12,13 +11,11 @@ exports.createForm = function(req, res , next){
         id_createur : req.user._id,
         perimetre : req.user.perimetre
     });
-    Form.save(function (err, form){
-        if(err){
-          return  res.send(err)
+    form.save(function (err, form){
+        if(err) {
+          return res.send(err)
         }
-        res.status(201).json({
-            form: form
-        })
+        res.status(201).json(form)
     })
 };
 

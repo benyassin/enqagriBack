@@ -13,7 +13,7 @@ var BlocSchema = new Schema({
     },
     theme: {
         type: String,
-        enum : ['rna','annuelle','modulaire']
+        enum : ['annuelle','modulaire','complementaire','none']
     },
     id_modifieur: {
         type: String
