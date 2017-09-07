@@ -48,25 +48,12 @@ exports.createBloc = function(req, res ,next){
 };
 
 exports.updateBloc = function (req, res) {
-
-    Bloc.findById({_id : req.params.bloc_id},function(err, bloc){
+    data = req.body
+    User.findOneAndUpdate({_id : req.params.bloc_id},data,function(err, user){
         if(err) {
             res.send(err)
         }
-
-        bloc.name = req.body.name;
-        bloc.theme = req.body.theme;
-        bloc.fields = req.body.fields;
-
-        bloc.save(function (err, updatedBloc) {
-            if(err) {
-                return res.send(err)
-            }
-
-            res.send(updatedBloc)
-
-        })
-
+        return res.send(user);
     })
 };
 

@@ -34,7 +34,7 @@ module.exports = function(app){
     userRoutes.get('/:user_id',UserController.getUser)
     userRoutes.post('/',requireAuth,UserController.createUser);
     userRoutes.delete('/:user_id',requireAuth,UserController.deleteUser);
-
+    userRoutes.put('/:user_id',requireAuth,UserController.updateUser)
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
@@ -53,6 +53,7 @@ module.exports = function(app){
     formRoutes.post('/', requireAuth, FormController.createForm);
     formRoutes.get('/',requireAuth, FormController.getForms)
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm)
+    formRoutes.put('/:form_id',requireAuth,FormController.updateForm)
 
     // Set up routes
     app.use('/api', apiRoutes);

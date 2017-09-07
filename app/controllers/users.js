@@ -79,3 +79,13 @@ exports.createUser = function (req, res,next) {
         });
 });
 }
+
+exports.updateUser = function (req, res) {
+        data = req.body
+        User.findOneAndUpdate({_id : req.params.user_id},data,{new:true,upsert:true},function(err, user){
+            if(err) {
+                res.send(err)
+            }
+        return res.send(user);
+        })
+    };

@@ -45,3 +45,15 @@ exports.deleteForm = function (req, res, next) {
         res.json(form)
     });
 }
+
+
+exports.updateForm = function (req, res) {
+    
+    data = req.body
+    User.findOneAndUpdate({_id : req.params.form_id},data,function(err, user){
+        if(err) {
+            res.send(err)
+        }
+        return res.send(user);
+    })
+    };
