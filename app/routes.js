@@ -51,9 +51,8 @@ module.exports = function(app){
     apiRoutes.use('/forms', formRoutes);
 
     formRoutes.post('/', requireAuth, FormController.createForm);
-    formRoutes.get('/',requireAuth, FormController.getForms)
-    formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm)
-    formRoutes.put('/:form_id',requireAuth,FormController.updateForm)
+    formRoutes.get('/',requireAuth, FormController.getForms);
+    formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
 
     // Set up routes
     app.use('/api', apiRoutes);

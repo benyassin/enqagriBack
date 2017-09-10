@@ -8,6 +8,7 @@ Todo : refactor queries // rajouter des regle
 
 var Bloc = require('../models/bloc');
 var query = {};
+var mongoose = require('mongoose');
 
 //return les bloc par perimetre et theme
 exports.getBlocs = function(req, res){
@@ -30,21 +31,40 @@ exports.getBlocs = function(req, res){
     })
 
 }
-exports.createBloc = function(req, res ,next){
-   let bloc = new Bloc ({
-            name : req.body.name,
-            theme : req.body.theme,
-            fields : req.body.fields,
-            id_createur : req.user._id,
-            perimetre: req.user.perimetre
-        })
+// exports.createBloc = function(req, res ,next){
+//    let bloc = new Bloc ({
+//             name : req.body.name,
+//             theme : req.body.theme,
+//             fields : req.body.fields,
+//             id_createur : req.user._id,
+//             perimetre: req.user.perimetre
+//         })
+//
+//     bloc.save(function (err, bloc) {
+//         if(err){
+//         return  res.send(err)
+//         }
+//         res.status(201).json({bloc: bloc})
+//     })
+// };
 
-    bloc.save(function (err, bloc) {
-        if(err){
-        return  res.send(err)
+exports.createBloc = function(req, res ,next){
+    data = req.body;
+    if(!data._id){
+        data._id = new mongoose.mongo.ObjectID()
+    }
+    query = {_id : data._id};
+    data.id_createur = req.user._id;
+    data.perimetre = req.user.perimetre;
+
+
+    Bloc.update(query, data,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
+        if (err) {
+            res.send(err)
         }
-        res.status(201).json({bloc: bloc})
+        res.status(201).json(bloc);
     })
+
 };
 
 exports.updateBloc = function (req, res) {
