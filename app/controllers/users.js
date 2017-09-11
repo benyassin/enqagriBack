@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var mongoose = require('mongoose');
+var _ = require('lodash');
 
 
 exports.getUsers = function(req, res,next ) {
@@ -82,20 +83,31 @@ exports.deleteUser = function (req, res) {
 
 exports.createUser = function(req, res ,next){
     data = req.body;
-    if(!data._id){
-        data._id = new mongoose.mongo.ObjectID()
-    }
-    query = {_id : data._id};
     data.id_createur = req.user._id;
     data.perimetre = {region : req.body.region,province: req.body.province,commune: req.body.commune};
+    query = {_id : data._id};
 
-
-    User.update(query, data,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, user) {
-        if (err) {
-            res.send(err)
-        }
-        res.status(201).json(user);
+    User.findOne(query, function(err,user){
+        if(err) return res.status(500).send(err)
+            if(!user){
+                console.log("user not found creating new one")
+                var newUser = new User(data);
+                newUser.save(function(err){
+                    if(err) return res.status(500).send(err)
+                        console.log("user created with _id = " + newUser._id );
+                     res.status(200).send(newUser)
+                })
+        }else{
+            console.log("user Found !")
+            _.merge(user,data)
+            user.save( function(err){
+                console.log("trying to save " + user)
+                if(err) return res.status(500).send(err)
+                    return res.status(200).send(user)
+                })
+            }
     })
+
 
 };
 

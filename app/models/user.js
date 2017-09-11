@@ -38,7 +38,7 @@ var UserSchema = new Schema({
 }, {
     timestamps: true
 });
-
+//pre save 
 UserSchema.pre('save', function(next){
 
     var user = this;
@@ -70,16 +70,16 @@ UserSchema.pre('save', function(next){
 });
 
 UserSchema.methods.comparePassword = function(passwordAttempt, cb){
-
-    bcrypt.compare(passwordAttempt, this.password, function(err, isMatch){
-
-        if(err){
-            return cb(err);
-        } else {
-            cb(null, isMatch);
+        
+            bcrypt.compare(passwordAttempt, this.password, function(err, isMatch){
+        
+                if(err){
+                    return cb(err);
+                } else {
+                    cb(null, isMatch);
+                }
+            });
+        
         }
-    });
-
-}
-
+            
 module.exports = mongoose.model('User', UserSchema);

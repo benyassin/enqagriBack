@@ -57,9 +57,9 @@ exports.createForm = function (req, res, next) {
     data.perimetre = req.user.perimetre;
 
 
-    Form.update(query, data,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, form) {
+    Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
             if (err) {
-                res.send(err)
+            return  res.send(err)
             }
             res.status(201).json(form);
         })

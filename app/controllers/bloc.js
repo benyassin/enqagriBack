@@ -60,9 +60,9 @@ exports.createBloc = function(req, res ,next){
 
     Bloc.update(query, data,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
         if (err) {
-            res.send(err)
+          return res.send(err)
         }
-        res.status(201).json(bloc);
+        res.status(201).send(bloc);
     })
 
 };
