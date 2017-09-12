@@ -28,7 +28,7 @@ exports.getForms = function(req,res) {
         "perimetre.province": perimetre.province,
         "perimetre.commune": perimetre.commune};
 
-    Form.find({}).populate('blocs','name').exec(function (err,forms) {
+    Form.find({}).populate('blocs',['name','fields']).exec(function (err,forms) {
         if(err){
          return res.json(err)
         }
