@@ -28,7 +28,7 @@ var UserSchema = new Schema({
 
     role: {
         type: String,
-        enum: ['admin', 'superviseurC', 'superviseurR','agent'],
+        enum: ['admin', 'superviseurP', 'superviseurR','agent'],
         default: 'admin'
     },
     perimetre : {
