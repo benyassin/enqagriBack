@@ -3,6 +3,7 @@ var AuthenticationController = require('./controllers/authentication'),
     BlocController = require('./controllers/bloc'),
     FormController = require('./controllers/form'),
     FieldsController = require('./controllers/fields'),
+    PerimetreController = require('./controllers/perimetre'),
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
@@ -19,6 +20,7 @@ module.exports = function(app){
         userRoutes = express.Router();
         blocRoutes = express.Router();
         formRoutes = express.Router();
+        perimetreRoutes = express.Router();
 
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
@@ -59,6 +61,11 @@ module.exports = function(app){
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
     formRoutes.post('/fields/:form_id',FieldsController.createFields);
     formRoutes.get('/:form_id/fields',FieldsController.getFields)
+
+    apiRoutes.use('/perimetre',perimetreRoutes);
+
+    perimetreRoutes.get('/region', PerimetreController.getRegion)
+    perimetreRoutes.get('/province/:id_region',PerimetreController.getProvinces)
 
     // Set up routes
     app.use('/api', apiRoutes);
