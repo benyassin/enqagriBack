@@ -50,6 +50,10 @@ var FormSchema = new Schema({
     blocs : [{
         type : Schema.Types.ObjectId,
         ref: 'Bloc'
+    }],
+    fields :[{
+        type: Schema.Types.ObjectId,
+        ref: 'Fields'
     }]
 
 }, {

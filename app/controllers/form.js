@@ -36,6 +36,35 @@ exports.getForms = function(req,res) {
         })
 
 }
+
+/*exports.getForm = function(req,res){
+
+    query = {"_id": req.params.form_id}
+    Form.find(query).populate('fields',['json']).exec(function(err,form){
+        if(err){
+            return res.status(400).json(err)
+        }
+        res.status(200).json(form)
+    })    
+}*/
+
+exports.getFormswithFields = function(req,res) {
+    var perimetre = req.user.perimetre
+    //mongoose ignore les attribute null
+    query = {
+        "perimetre.region": perimetre.region,
+        "perimetre.province": perimetre.province,
+        "perimetre.commune": perimetre.commune};
+
+    Form.find({}).populate('fields',['json']).exec(function (err,forms) {
+        if(err){
+         return res.json(err)
+        }
+        res.json(forms)
+        })
+
+}
+
 exports.deleteForm = function (req, res, next) {
     Form.remove({_id :req.params.form_id}, function (err, form) {
         if(err){

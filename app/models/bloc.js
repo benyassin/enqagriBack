@@ -8,7 +8,7 @@ var BlocSchema = new Schema({
         required: true
     },
     fields : {
-        type: JSON,
+        type: Object,
         required: true
     },
     theme: {

@@ -2,6 +2,7 @@ var AuthenticationController = require('./controllers/authentication'),
     UserController = require('./controllers/users'),
     BlocController = require('./controllers/bloc'),
     FormController = require('./controllers/form'),
+    FieldsController = require('./controllers/fields'),
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
@@ -54,7 +55,10 @@ module.exports = function(app){
 
     formRoutes.post('/', requireAuth, FormController.createForm);
     formRoutes.get('/',requireAuth, FormController.getForms);
+    formRoutes.get('/:form_id',FieldsController.getForm);
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
+    formRoutes.post('/fields/:form_id',FieldsController.createFields);
+    formRoutes.get('/:form_id/fields',FieldsController.getFields)
 
     // Set up routes
     app.use('/api', apiRoutes);
