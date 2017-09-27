@@ -17,7 +17,7 @@ exports.getUsers = function(req, res,next ) {
 exports.getUser = function (req, res, next) {
     User.findOne({_id : req.params.user_id}, function (err, user){
         if(err){
-         return res.sen(err);
+         return res.send(err);
         }
         res.json(user)
     })
@@ -85,13 +85,13 @@ exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
     data.perimetre = {region : req.body.region,province: req.body.province,commune: req.body.commune};
-    query = {_id : data._id};
+   let query = {_id : data._id};
 
     User.findOne(query, function(err,user){
         if(err) return res.status(500).send(err)
             if(!user){
                 console.log("user not found creating new one")
-                var newUser = new User(data);
+                let newUser = new User(data);
                 newUser.save(function(err){
                     if(err) return res.status(500).send(err)
                         console.log("user created with _id = " + newUser._id );
@@ -120,3 +120,21 @@ exports.updateUser = function (req, res) {
         return res.send(user);
         })
     };
+
+exports.getAgentByProvince = function(req,res, next) {
+    perimetre = req.user.perimetre;
+
+    query = {
+        "perimetre.region": perimetre.region,
+        "perimetre.province": perimetre.province,
+        "role" : "agent"
+    };
+
+    User.find(query, function (err, users) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        res.status(200).json(users)
+    })
+
+};

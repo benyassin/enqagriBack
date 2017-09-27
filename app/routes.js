@@ -36,10 +36,11 @@ module.exports = function(app){
     apiRoutes.use('/users', userRoutes);
 
     userRoutes.get('/', requireAuth, UserController.getUsers);
-    userRoutes.get('/:user_id',UserController.getUser)
+   // userRoutes.get('/:user_id',UserController.getUser)
     userRoutes.post('/',requireAuth,UserController.createUser);
     userRoutes.delete('/:user_id',requireAuth,UserController.deleteUser);
-    userRoutes.put('/:user_id',requireAuth,UserController.updateUser)
+    userRoutes.put('/:user_id',requireAuth,UserController.updateUser);
+    userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
@@ -65,7 +66,8 @@ module.exports = function(app){
     apiRoutes.use('/perimetre',perimetreRoutes);
 
     perimetreRoutes.get('/region', PerimetreController.getRegion)
-    perimetreRoutes.get('/province/:id_region',PerimetreController.getProvinces)
+    perimetreRoutes.get('/province/:id_region',PerimetreController.getProvinces);
+    perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommune);
 
     // Set up routes
     app.use('/api', apiRoutes);

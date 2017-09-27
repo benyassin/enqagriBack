@@ -1,6 +1,7 @@
-var Region = require('../models/region');
-var Province = require('../models/province')
-var mongoose = require('mongoose')
+let Region = require('../models/region');
+let Province = require('../models/province');
+let Commune = require('../models/commune');
+
 
 
 exports.getProvinces = function(req, res ,next){
@@ -11,7 +12,7 @@ exports.getProvinces = function(req, res ,next){
      }
      res.status(200).json(provinces)
  })
-}
+};
 
 exports.getRegion = function(req, res ,next){
  Region.find({},'id_region name').exec(function(err,regions){
@@ -20,13 +21,15 @@ exports.getRegion = function(req, res ,next){
      }
      res.status(200).json(regions)
  })
-}
+};
 
-exports.createRegion = function(req, res, next){
-    Region.create({name : 'testregion'},function(err, region){
-     if(err){
-         return res.status(400).json(err);
-     }  
-     res.status(200).json(region)
+exports.getCommune = function(req, res, next ){
+    let query = {"id_province": req.user.perimetre.province};
+
+    Commune.find(query,'id_commune name').exec(function(err,communes){
+        if(err){
+            return res.status(400).json(err);
+        }
+        res.status(200).json(communes)
     })
-}
+};
