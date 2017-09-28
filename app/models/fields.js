@@ -5,10 +5,7 @@ var Schema =  mongoose.Schema
 var FieldsSchema = new Schema({
     json : Object,
     type : String,
-    form : {
-        type: Schema.Types.ObjectId,
-        ref: 'Form'
-    },
+    form : String,
 })
 
 

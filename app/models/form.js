@@ -54,6 +54,9 @@ var FormSchema = new Schema({
     fields :[{
         type: Schema.Types.ObjectId,
         ref: 'Fields'
+    }],
+    id_fields :[{
+        type:String
     }]
 
 }, {
