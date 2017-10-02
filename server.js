@@ -3,6 +3,7 @@ var app      = express();
 var mongoose = require('mongoose');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var compression = require('compression')
 var cors = require('cors');
 
 var databaseConfig = require('./config/database');
@@ -21,5 +22,5 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false })); // Parses url
 app.use(bodyParser.json({limit: '50mb'})); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 app.use(cors());
-
+app.use(compression());
 router(app);

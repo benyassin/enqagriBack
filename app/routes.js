@@ -57,8 +57,7 @@ module.exports = function(app){
     apiRoutes.use('/forms', formRoutes);
 
     formRoutes.post('/', requireAuth, FormController.createForm);
-    formRoutes.get('/',requireAuth, FormController.getForms);
-    formRoutes.get('/:form_id',FieldsController.getForm);
+    formRoutes.get('/:theme?',FormController.getForms);
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
     formRoutes.post('/fields/:form_id',FieldsController.createFields);
     formRoutes.get('/:form_id/fields',FieldsController.getFields)

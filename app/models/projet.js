@@ -1,17 +1,12 @@
 var mongoose = require('mongoose');
 var Schema =  mongoose.Schema
 
-var FormSchema = new Schema({
+var ProjetSchema = new Schema({
 
     name: {
         type: String,
         lowercase: true,
         required: true
-    },
-    geometry: {
-        lowercase: true,
-        type: String,
-        enum : ['polygone','polyline','point']
     },
     theme: {
         type: String,
@@ -20,10 +15,6 @@ var FormSchema = new Schema({
     statut: {
         type: Boolean,
         default: true
-    },
-    id_createur: {
-        type : Schema.Types.ObjectId,
-        ref: 'User'
     },
     perimetre: {
         region:{
@@ -36,13 +27,14 @@ var FormSchema = new Schema({
             type:Number
         }
     },
-    id_fields :{
-        type:String
-    }
+    forms : [{
+        type : Schema.Types.ObjectId,
+        ref: 'Form'
+    }],
 
 }, {
     timestamps: true,
     versionKey: false
 });
 
-module.exports = mongoose.model('Form',FormSchema);
+module.exports = mongoose.model('Projet',ProjetSchema);

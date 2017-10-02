@@ -20,15 +20,14 @@ var mongoose = require('mongoose')
 //     })
 // };
 
-exports.getForms = function(req,res) {
-    var perimetre = req.user.perimetre
+exports.getForms = function(req, res, next) {
+    let query = {}
+    if(req.params.theme){
+        query = {"theme": req.params.theme}
+    }
     //mongoose ignore les attribute null
-    query = {
-        "perimetre.region": perimetre.region,
-        "perimetre.province": perimetre.province,
-        "perimetre.commune": perimetre.commune};
 
-    Form.find({}).populate('blocs',['name','fields']).exec(function (err,forms) {
+    Form.find(query).exec(function (err,forms) {
         if(err){
          return res.json(err)
         }
@@ -45,7 +44,7 @@ exports.getForms = function(req,res) {
             return res.status(400).json(err)
         }
         res.status(200).json(form)
-    })    
+    })
 }*/
 
 exports.getFormswithFields = function(req,res) {
