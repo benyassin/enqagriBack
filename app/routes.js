@@ -66,7 +66,8 @@ module.exports = function(app){
 
     perimetreRoutes.get('/region', PerimetreController.getRegion)
     perimetreRoutes.get('/province/:id_region',PerimetreController.getProvinces);
-    perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommune);
+    perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune)
+    perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
 
     // Set up routes
     app.use('/api', apiRoutes);
