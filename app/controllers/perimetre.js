@@ -37,7 +37,7 @@ exports.getCommunebyUser = function(req, res, next ){
 exports.getCommune = function(req, res, next ){
     let query = {"id_province": req.params.id_province};
 
-    Commune.find(query,'id_commune name').exec(function(err,communes){
+    Commune.find(query,'id_commune name').select('-id').exec(function(err,communes){
         if(err){
             return res.status(400).json(err);
         }
