@@ -41,8 +41,15 @@ var FormSchema = new Schema({
     }
 
 }, {
+    toJSON: { virtuals: true },
     timestamps: true,
     versionKey: false
 });
 
+FormSchema.virtual('fields',{
+    ref:'Fields',
+    localField: 'id_fields',
+    foreignField: 'form',
+    justOne: false    
+})
 module.exports = mongoose.model('Form',FormSchema);

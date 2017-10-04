@@ -23,7 +23,8 @@ module.exports = function(app){
         formRoutes = express.Router();
         perimetreRoutes = express.Router();
         projetRoutes = express.Router();
-
+    var mobileRoutes = express.Router();
+        projetmobileRoutes = express.Router();
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
 
@@ -76,7 +77,13 @@ module.exports = function(app){
 
     projetRoutes.post('/',ProjetController.createProjet)
     projetRoutes.get('/:projet_id?',ProjetController.getProjets)
+
+    mobileRoutes.use('/projets',projetmobileRoutes)
+    projetmobileRoutes.get('/',ProjetController.getProjetsMobile)
     // Set up routes
     app.use('/api', apiRoutes);
+
+    app.use('/mobile',mobileRoutes);
+
 
 }

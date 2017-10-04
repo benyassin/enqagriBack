@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var Schema =  mongoose.Schema
 
 var FieldsSchema = new Schema({
-    json : Object,
-    type : String,
+    components : Object,
+    display : String,
     form : String,
 })
 

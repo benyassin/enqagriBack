@@ -27,7 +27,7 @@ exports.getForms = function(req, res, next) {
     }
     //mongoose ignore les attribute null
 
-    Form.find(query).exec(function (err,forms) {
+    Form.find(query).populate('fieldss').exec(function (err,forms) {
         if(err){
          return res.json(err)
         }
