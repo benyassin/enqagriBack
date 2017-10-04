@@ -65,7 +65,8 @@ exports.getProjetsMobile = function(req,res,next){
     }
     Projet.find(query)
           .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
-          .populate({path:'perimetre.region',select:'name id_region',populate:{path:'provinces'} })
+          .populate({path:'perimetre.region',select:'name id_region'})
+          .populate({path:'perimetre.province',select:'name id_province id_region'})
           .exec(function(err,projets){
         if(err){
             return res.status(400).send(err)
