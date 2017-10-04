@@ -5,7 +5,10 @@ let Commune = require('../models/commune');
 
 
 exports.getProvinces = function(req, res ,next){
-    let query = {"id_region" : req.params.id_region}
+    let query = {}
+    if(req.params.id_region){
+        query = {"id_region" : req.params.id_region}
+    }
  Province.find(query,'id_province name id_region').exec(function(err,provinces){
      if(err){
          return res.status(400).json(err);
@@ -24,6 +27,7 @@ exports.getRegion = function(req, res ,next){
 };
 
 exports.getCommunebyUser = function(req, res, next ){
+    
     let query = {"id_province": req.user.perimetre.province};
 
     Commune.find(query,'id_commune name id_region').exec(function(err,communes){
