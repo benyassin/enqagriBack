@@ -6,7 +6,7 @@ let Commune = require('../models/commune');
 
 exports.getProvinces = function(req, res ,next){
     let query = {"id_region" : req.params.id_region}
- Province.find(query,'id_province name').exec(function(err,provinces){
+ Province.find(query,'id_province name id_region').exec(function(err,provinces){
      if(err){
          return res.status(400).json(err);
      }
