@@ -27,8 +27,7 @@ exports.getProjets = function(req,res,next){
     }
     Projet.find(query)
           .populate('forms','name geometry theme')
-          .populate('perimetre.region','name id_region' )
-          .populate('perimetre.province','name id_province')
+          .populate('perimetre.province','name id_province  id_region')
           .exec(function(err,projets){
         if(err){
             return res.status(400).send(err)
