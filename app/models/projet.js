@@ -17,15 +17,14 @@ var ProjetSchema = new Schema({
         default: true
     },
     perimetre: {
-        region:{
-            type:Number
-        },
-        province: {
-            type : Number
-        },
-        commune:{
-            type:Number
-        }
+        region:[{
+            type:Schema.Types.ObjectId,
+            ref: 'Region'
+        }],
+        province: [{
+            type:Schema.Types.ObjectId,
+            ref: 'Province'
+        }],
     },
     forms : [{
         type : Schema.Types.ObjectId,
