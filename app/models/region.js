@@ -13,6 +13,12 @@ var RegionSchema = new Schema({
     collection: 'region'
 });
 
+RegionSchema.virtual('provinces',{
+    ref:'Province',
+    localField: 'id_region',
+    foreignField: 'id_region',
+    justOne: false
+})
 
 
 

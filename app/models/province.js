@@ -9,7 +9,7 @@ var ProvinceSchema = new Schema({
     geometry: { type: { 
         type: String }, 
         coordinates: [Number] }
-},{ toJSON: { virtuals: true },
+},{
     collection: 'province'
 })
 
