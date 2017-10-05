@@ -75,3 +75,12 @@ exports.getProjetsMobile = function(req,res,next){
     })
 }
 
+
+exports.deleteProjet = function (req, res, next) {
+    Projet.remove({_id :req.params.projet_id}, function (err, projet) {
+        if(err){
+            return res.json(err)
+        }
+        res.json(projet)
+    });
+}

@@ -77,6 +77,7 @@ module.exports = function(app){
 
     projetRoutes.post('/',ProjetController.createProjet)
     projetRoutes.get('/:projet_id?',ProjetController.getProjets)
+    projetRoutes.delete('/:projet_id',ProjetController.deleteProjet)
 
     mobileRoutes.use('/projets',projetmobileRoutes)
     projetmobileRoutes.get('/',ProjetController.getProjetsMobile)

@@ -7,9 +7,9 @@ exports.createFields = function(req, res ,next){
     data = req.body;
     query = {form : req.params.form_id};
     let toinsert = {}
-    toinsert.json = req.body.fields
+    toinsert.components = req.body.components
     toinsert.form = req.params.form_id
-    toinsert.type = req.body.type
+    toinsert.display = req.body.display
 
     Fields.update(query, toinsert,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
         if (err) {
