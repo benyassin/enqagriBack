@@ -71,6 +71,7 @@ module.exports = function(app){
     perimetreRoutes.get('/province/:id_region?',PerimetreController.getProvinces);
     perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune)
     perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
+    perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice)
 
 
     apiRoutes.use('/projets',projetRoutes);

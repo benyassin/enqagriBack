@@ -11,7 +11,7 @@ var FormSchema = new Schema({
     geometry: {
         lowercase: true,
         type: String,
-        enum : ['polygone','polyline','point']
+        enum : ['polygone','polyline','point','none']
     },
     theme: {
         type: String,
