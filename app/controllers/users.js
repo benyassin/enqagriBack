@@ -84,7 +84,13 @@ exports.deleteUser = function (req, res) {
 exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
-    data.perimetre = {region : req.body.region,province: req.body.province,commune: req.body.commune};
+    data.perimetre = {
+        region : req.body.region,
+        province: req.body.province,
+        commune: req.body.commune,
+        dpa: req.body.dpa,
+        office: req.body.office
+    };
    let query = {_id : data._id};
 
     User.findOne(query, function(err,user){

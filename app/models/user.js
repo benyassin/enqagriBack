@@ -33,16 +33,13 @@ var UserSchema = new Schema({
     },
     perimetre : {
         region : {
-            type:Schema.Types.ObjectId,
-            ref: 'Region'
+            type:Number,
         },
         province : {
-            type:Schema.Types.ObjectId,
-            ref: 'Province'
+            type:Number
         },
         commune : {
-            type:Schema.Types.ObjectId,
-            ref: 'Commune'
+            type:Number
         },
         dpa : {
             type:Schema.Types.ObjectId,
