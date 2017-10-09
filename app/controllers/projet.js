@@ -1,5 +1,5 @@
-var Projet = require('../models/projet')
-var mongoose = require('mongoose')
+var Projet = require('../models/projet');
+var mongoose = require('mongoose');
 
 exports.createProjet = function (req, res, next) {
 

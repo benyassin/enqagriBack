@@ -83,33 +83,42 @@ exports.createForm = function (req, res, next) {
     query = {_id : data._id};
     data.id_createur = req.user._id;
     data.perimetre = req.user.perimetre;
-
+    let newfield = {};
     if(data.duplicate){
-        let that = this
         Fields.findOne({'form': data.id_fields},function(err,field){
             if(err){
-                return res.status(401).send(err)
+                return res.status(400).send(err)
             }
-            data.id_fields = '_' + Math.random().toString(36).substr(2, 9)
-            field.form = data.id_fields
-            delete field._id
-            delete field.id
-            console.log(field)
-            // Fields.create(field,function(err,fields){
-            //     if(err){
-            //         return res.status(401).send(err)
-            //     }
-            //     console.log(fields)
-            // })
+            data.id_fields = '_' + Math.random().toString(36).substr(2, 9);
+            newfield.display = field.display;
+            newfield.components  = field.components;
+            newfield.form = data.id_fields;
+            Fields.create(newfield,function(err,test){
+                if(err){
+                    return res.status(401).send(err)
+                }
+            });
+            done(data)
+        })
+    }else{
+        Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
+            if (err) {
+                return  res.send(err)
+            }
+            res.status(201).json(form);
+        })
+    }
+    let done = function(data){
+        console.log(data);
+        Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
+            if (err) {
+                return  res.send(err)
+            }
+            res.status(201).json(form);
         })
     }
         // console.log(data)
-        // Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
-        //     if (err) {
-        //     return  res.send(err)
-        //     }
-        //     res.status(201).json(form);
-        // })
+
     };
 
 
