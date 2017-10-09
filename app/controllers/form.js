@@ -1,4 +1,5 @@
 var Form = require('../models/form');
+var Fields = require('../models/fields');
 var mongoose = require('mongoose')
 
 // exports.createForm = function(req, res , next){
@@ -75,7 +76,6 @@ exports.deleteForm = function (req, res, next) {
 
 
 exports.createForm = function (req, res, next) {
-
     data = req.body;
     if(!data._id){
         data._id = new mongoose.mongo.ObjectID()
@@ -84,13 +84,32 @@ exports.createForm = function (req, res, next) {
     data.id_createur = req.user._id;
     data.perimetre = req.user.perimetre;
 
-
-    Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
-            if (err) {
-            return  res.send(err)
+    if(data.duplicate){
+        let that = this
+        Fields.findOne({'form': data.id_fields},function(err,field){
+            if(err){
+                return res.status(401).send(err)
             }
-            res.status(201).json(form);
+            data.id_fields = '_' + Math.random().toString(36).substr(2, 9)
+            field.form = data.id_fields
+            delete field._id
+            delete field.id
+            console.log(field)
+            // Fields.create(field,function(err,fields){
+            //     if(err){
+            //         return res.status(401).send(err)
+            //     }
+            //     console.log(fields)
+            // })
         })
+    }
+        // console.log(data)
+        // Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
+        //     if (err) {
+        //     return  res.send(err)
+        //     }
+        //     res.status(201).json(form);
+        // })
+    };
 
 
-};
