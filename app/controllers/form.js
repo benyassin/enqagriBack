@@ -101,14 +101,14 @@ exports.createForm = function (req, res, next) {
             });
             done(data)
         }else{
-            return res.status(500).json({error:'FormBuilder',message:'Impossible de dupliquer se questionnaire le form builder est vide'});
+            return res.status(500).json({error:'FormBuilder',message:'Impossible de dupliquer ce questionnaire... Le form builder est vide'});
         }})
     }else{
         Form.update(query, data,{runValidators: true,upsert: true,'new': true}, function(err, form) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate name
-                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisée'});
+                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisé'});
                   }
             }
             res.status(200).json(form);
@@ -120,7 +120,7 @@ exports.createForm = function (req, res, next) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate name
-                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisée'});
+                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisé'});
                   }
             }
             res.status(200).json(form);

@@ -88,8 +88,9 @@ exports.createUser = function(req, res ,next){
         region : req.body.region,
         province: req.body.province,
         commune: req.body.commune,
-        dpa: req.body.dpa,
         office: req.body.office
+
+
     };
    let query = {_id : data._id};
 
@@ -99,7 +100,7 @@ exports.createUser = function(req, res ,next){
                 console.log("user not found creating new one")
                 let newUser = new User(data);
                 newUser.save(function(err){
-                    if(err) return res.status(500).send(err)
+                    if(err) return res.status(500).send({error:'name',message: 'Ce login est déjà utilisé'});
                         console.log("user created with _id = " + newUser._id );
                      res.status(200).send(newUser)
                 })
@@ -108,7 +109,7 @@ exports.createUser = function(req, res ,next){
             _.merge(user,data)
             user.save( function(err){
                 console.log("trying to save " + user)
-                if(err) return res.status(500).send(err)
+                if(err) return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
                     return res.status(200).send(user)
                 })
             }

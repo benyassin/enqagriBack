@@ -14,7 +14,7 @@ exports.createProjet = function (req, res, next) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate name
-                    return res.status(500).send({error:'name', message: 'Ce nom est déjà utilisée'});
+                    return res.status(500).send({error:'name', message: 'Ce nom est déjà utilisé'});
                   }
             }
             res.status(200).json(projet);
