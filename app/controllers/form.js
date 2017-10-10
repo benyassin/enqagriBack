@@ -87,34 +87,43 @@ exports.createForm = function (req, res, next) {
     if(data.duplicate){
         Fields.findOne({'form': data.id_fields},function(err,field){
             if(err){
-                return res.status(400).send(err)
+                return res.status(500).send(err)
             }
+            if(field){
             data.id_fields = '_' + Math.random().toString(36).substr(2, 9);
             newfield.display = field.display;
             newfield.components  = field.components;
             newfield.form = data.id_fields;
             Fields.create(newfield,function(err,test){
                 if(err){
-                    return res.status(401).send(err)
+                    return res.status(500).send(err)
                 }
             });
             done(data)
-        })
+        }else{
+            return res.status(500).json({error:'FormBuilder',message:'Impossible de dupliquer se questionnaire le form builder est vide'});
+        }})
     }else{
-        Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
+        Form.update(query, data,{runValidators: true,upsert: true,'new': true}, function(err, form) {
             if (err) {
-                return  res.send(err)
+                if (err.name === 'MongoError' && err.code === 11000) {
+                    // Duplicate name
+                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisée'});
+                  }
             }
-            res.status(201).json(form);
+            res.status(200).json(form);
         })
     }
     let done = function(data){
         console.log(data);
-        Form.update(query, data,{upsert: true,'new': true}, function(err, form) {
+        Form.update(query, data,{runValidators: true,upsert: true}, function(err, form) {
             if (err) {
-                return  res.send(err)
+                if (err.name === 'MongoError' && err.code === 11000) {
+                    // Duplicate name
+                    return res.status(500).send({error:'name',message: 'Ce nom est déjà utilisée'});
+                  }
             }
-            res.status(201).json(form);
+            res.status(200).json(form);
         })
     }
         // console.log(data)

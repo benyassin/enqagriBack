@@ -6,7 +6,8 @@ var FormSchema = new Schema({
     name: {
         type: String,
         lowercase: true,
-        required: true
+        required: true,
+        unique: true
     },
     geometry: {
         lowercase: true,
@@ -52,4 +53,14 @@ FormSchema.virtual('fields',{
     foreignField: 'form',
     justOne: false    
 })
+
+FormSchema.pre('findOneAndUpdate', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
+FormSchema.pre('update', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
 module.exports = mongoose.model('Form',FormSchema);

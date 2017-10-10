@@ -48,7 +48,7 @@ var UserSchema = new Schema({
         office: {
             type:Schema.Types.ObjectId,
             ref: 'Office'
-        }
+        },
     },
 }, {
     timestamps: true

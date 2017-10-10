@@ -5,8 +5,9 @@ var ProjetSchema = new Schema({
 
     name: {
         type: String,
+        unique:true,
         lowercase: true,
-        required: true
+        required: true,
     },
     theme: {
         type: String,
@@ -36,4 +37,13 @@ var ProjetSchema = new Schema({
     versionKey: false
 });
 
+ProjetSchema.pre('findOneAndUpdate', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
+ProjetSchema.pre('update', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
 module.exports = mongoose.model('Projet',ProjetSchema);

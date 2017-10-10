@@ -10,11 +10,14 @@ exports.createProjet = function (req, res, next) {
     query = {_id : data._id};
     data.perimetre= {'region': data.region,'province': data.province}
 
-    Projet.update(query, data,{upsert: true}, function(err, form) {
+    Projet.update(query, data,{runValidators: true, upsert: true}, function(err, projet) {
             if (err) {
-            return  res.status(400).send(err)
+                if (err.name === 'MongoError' && err.code === 11000) {
+                    // Duplicate name
+                    return res.status(500).send({error:'name', message: 'Ce nom est déjà utilisée'});
+                  }
             }
-            res.status(200).json(form);
+            res.status(200).json(projet);
         })
 
 };
