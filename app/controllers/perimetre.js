@@ -58,6 +58,7 @@ exports.getDpa = function(req,res,next){
         res.status(200).json(dpas)
     })
 }
+
 exports.DpaOffice = function(req,res, next){
     json = {}
     Perimetre.Dpa.find({},function(err,dpas){

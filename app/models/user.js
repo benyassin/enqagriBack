@@ -42,12 +42,10 @@ var UserSchema = new Schema({
             type:Number
         },
         dpa : {
-            type:Schema.Types.ObjectId,
-            ref: 'Dpa'
+            type:String
         },
         office: {
-            type:Schema.Types.ObjectId,
-            ref: 'Office'
+            type:String
         },
     },
 }, {

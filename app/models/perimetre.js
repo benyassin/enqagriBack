@@ -44,11 +44,11 @@ let CommuneSchema = new Schema({
 })
 
 let DpaSchema = new Schema({
-    name: String
+    name: String,
 })
 
 let OfficeSchema = new Schema({
-    name: String
+    name: String,
 })
 
 let Region = mongoose.model('Region',RegionSchema);
