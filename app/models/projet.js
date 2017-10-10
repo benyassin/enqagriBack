@@ -5,9 +5,9 @@ var ProjetSchema = new Schema({
 
     name: {
         type: String,
-        unique:true,
         lowercase: true,
         required: true,
+        unique: true
     },
     theme: {
         type: String,
