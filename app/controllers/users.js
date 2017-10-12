@@ -88,7 +88,8 @@ exports.createUser = function(req, res ,next){
         region : req.body.region,
         province: req.body.province,
         commune: req.body.commune,
-        office: req.body.office
+        office: req.body.office,
+        dpa: req.body.dpa
 
 
     };
