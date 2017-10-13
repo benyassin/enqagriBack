@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Fields = require('./fields')
 var Schema =  mongoose.Schema
 
 var FormSchema = new Schema({
@@ -53,7 +54,10 @@ FormSchema.virtual('fields',{
     foreignField: 'form',
     justOne: false    
 })
-
+FormSchema.post('remove',function(form){
+    Fields.remove({form: form.id_fields}).exec();
+    next();
+})
 FormSchema.pre('findOneAndUpdate', function(next) {
     this.options.runValidators = true;
     next();

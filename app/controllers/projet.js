@@ -29,34 +29,55 @@ exports.getProjets = function(req,res,next){
         query = {'_id': req.params.projet_id}
     }
     Projet.find(query)
-          .populate('forms','name geomtry theme')
+          .populate('forms','name geometry theme id_fields')
           .populate('perimetre.region','name id_region' )
           .populate('perimetre.province','name id_province id_region')
           .exec(function(err,projets){
         if(err){
-            return res.status(400).send(err)
+            return res.status(500).send(err)
         }
         res.status(200).json(projets)
     })
 }
-
-
-exports.getProjets = function(req,res,next){
-    let query = [];
-
-    if(req.params.projet_id){
-        query = {'_id': req.params.projet_id}
+exports.getProjetsByPerimetre = function (req, res, next){
+    perimetre = req.user.perimetre;
+    if(req.user.role === 'admin'){
+        Projet.find({}).exec(function(err,projets){
+            if(err){
+                return res.status(500).send(err)
+            }
+            res.status(200).json(projets)
+        })
+    }else{
+    Projet.find()
+          .populate({
+              path:'perimetre.region',
+              match: {
+                  id_region: perimetre.region
+              }  
+          }).populate({
+            path:'perimetre.province',
+            match: {
+                id_province:perimetre.province
+            }
+            }).exec(function(err, projets){
+              if(err) {
+                  return res.status(500).send(err)
+              }
+              if(req.user.perimetre.province){
+                projets = projets.filter(function(projet){
+                    return projet.perimetre.province.length > 0
+                    
+                })
+                res.status(200).json(projets)
+              }else{
+                projets = projets.filter(function(projet){
+                return projet.perimetre.region.length > 0
+                })
+                res.status(200).json(projets)
+            }
+        })
     }
-    Projet.find(query)
-          .populate('forms','name geometry theme')
-          .populate('perimetre.region','name id_region' )
-          .populate('perimetre.province','name id_province id_region')
-          .exec(function(err,projets){
-        if(err){
-            return res.status(400).send(err)
-        }
-        res.status(200).json(projets)
-    })
 }
 
 
@@ -87,3 +108,5 @@ exports.deleteProjet = function (req, res, next) {
         res.json(projet)
     });
 }
+
+
