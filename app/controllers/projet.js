@@ -102,14 +102,6 @@ exports.getProjetsMobile = function(req,res,next){
 
 exports.getProjetsByRoleMobile = function (req, res, next){
     perimetre = req.user.perimetre;
-    if(req.user.role === 'admin'){
-        Projet.find({}).exec(function(err,projets){
-            if(err){
-                return res.status(500).send(err)
-            }
-            res.status(200).json(projets)
-        })
-    }else{
     Projet.find()
           .populate({
               path:'perimetre.region',
@@ -126,20 +118,12 @@ exports.getProjetsByRoleMobile = function (req, res, next){
               if(err) {
                   return res.status(500).send(err)
               }
-              if(req.user.perimetre.province){
                 projets = projets.filter(function(projet){
                     return projet.perimetre.province.length > 0
-                    
                 })
                 res.status(200).json(projets)
-              }else{
-                projets = projets.filter(function(projet){
-                return projet.perimetre.region.length > 0
-                })
-                res.status(200).json(projets)
-            }
         })
-    }
+    
 }
 
 
