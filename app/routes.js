@@ -82,7 +82,7 @@ module.exports = function(app){
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre)
 
     mobileRoutes.use('/projets',projetmobileRoutes)
-    projetmobileRoutes.get('/',ProjetController.getProjetsMobile)
+    projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile)
     // Set up routes
     app.use('/api', apiRoutes);
 
