@@ -20,7 +20,7 @@ var localLogin = new LocalStrategy(localOptions, function(login, password, done)
         }
 
         if(!user){
-            return done(null, false, {error: 'Login failed. Please try again.'});
+            return done(null,{error : true, message: "Utilisateur " + login + " n'existe pas dans la base" } );
         }
 
         user.comparePassword(password, function(err, isMatch){
@@ -30,7 +30,7 @@ var localLogin = new LocalStrategy(localOptions, function(login, password, done)
             }
 
             if(!isMatch){
-                return done(null, false, {error: 'Login failed. Please try again.'});
+                return done(null,{error : true,message: "Le mot de passe pour l'utilisateur " + login + " est incorrect"});
             }
 
             return done(null, user);

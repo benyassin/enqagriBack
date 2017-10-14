@@ -23,6 +23,8 @@ exports.getUser = function (req, res, next) {
     })
 };
 
+
+
 exports.deleteUser = function (req, res) {
 
     User.remove({_id :req.params.user_id}, function (err, user) {
