@@ -4,7 +4,6 @@ var config = require('./auth');
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var LocalStrategy = require('passport-local').Strategy;
-
 var localOptions = {
     usernameField: 'login'
 };
@@ -12,7 +11,8 @@ var localOptions = {
 var localLogin = new LocalStrategy(localOptions, function(login, password, done){
 
     User.findOne({login: login})
-    .populate('dpa office region province commune','name id_region id_province id_commune')
+    .populate('dpa office region commune province','name id_region id_commune id_province')
+    .populate('province')
     .exec(function(err, user){
 
         if(err){
@@ -40,6 +40,7 @@ var localLogin = new LocalStrategy(localOptions, function(login, password, done)
     });
 
 });
+
 
 var jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeader(),

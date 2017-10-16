@@ -9,7 +9,8 @@ function generateToken(user){
 }
 
 function setUserInfo(request){
-    return {
+
+    var user = {
         _id: request._id,
         login: request.login,
         email: request.email,
@@ -23,19 +24,29 @@ function setUserInfo(request){
             dpa:request.dpa,
             office:request.office}
         };
+    return user
 }
 
+function setUserMobile(request){
+    return {
+        _id: request._id,
+        login: request.login,
+        email: request.email,
+        role: request.role,
+        nom : request.nom,
+        prenom: request.prenom,
+        telephone: request.telephone,
+    }
+}
 exports.login = function(req, res){
     if(req.user.error == true){
         return res.status(401).json(req.user)
     }else{
         var userInfo = setUserInfo(req.user);
-        
             res.status(200).json({
                 error: false,
-                token: 'JWT ' + generateToken(userInfo),
+                token: 'JWT ' + generateToken(setUserMobile(req.user)),
                 user: userInfo,
-        
             });
     }
 }
@@ -45,14 +56,14 @@ exports.loginMobile = function(req, res){
     if(req.user.error == true){
         return res.status(401).json(req.user)
     }else if(req.user.role !== 'agent'){
-        return res.status(401).json({error: true,message:"l'accès est limiter au agents de collect"})
+        return res.status(401).json({error: true,message:"l'accès est limitée au agents de collectes"})
     }
     else{
         var userInfo = setUserInfo(req.user);
         
             res.status(200).json({
                 error: false,
-                token: 'JWT ' + generateToken(userInfo),
+                token: 'JWT ' + generateToken(setUserMobile(req.user)),
                 user: userInfo,
             });
     }

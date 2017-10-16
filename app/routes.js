@@ -10,7 +10,6 @@ var AuthenticationController = require('./controllers/authentication'),
     passport = require('passport'),
     validate = require('express-validation');
     validation = require('./validation')
-
 var requireAuth = passport.authenticate('jwt', {session: false}),
     requireLogin = passport.authenticate('local', {session: false});
 

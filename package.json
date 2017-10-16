@@ -19,6 +19,7 @@
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.17.4",
     "mongoose": "^4.6.3",
+    "mongoose-geojson-schema": "^2.1.2",
     "morgan": "^1.7.0",
     "nodemon": "^1.12.1",
     "passport": "^0.3.2",

@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
+var GeoJSON = require('mongoose-geojson-schema');
 
 var Schema =  mongoose.Schema
 
 var RegionSchema = new Schema({
     name : String,
     id_region : Number,
-    geometry: { type: { 
-        type: String }, 
-        coordinates: [Number] }
+    geometry: mongoose.Schema.Types.GeoJSON
     
 },{ toJSON: { virtuals: true },
     collection: 'region'
@@ -24,9 +23,7 @@ var ProvinceSchema = new Schema({
     name : String,
     id_region : Number,
     id_province: Number,
-    geometry: { type: { 
-        type: String }, 
-        coordinates: [Number] }
+    geometry: mongoose.Schema.Types.GeoJSON
 },{
     collection: 'province'
 })
@@ -36,9 +33,7 @@ let CommuneSchema = new Schema({
     id_commune : Number,
     id_region : Number,
     id_province: Number,
-    geometry: { type: {
-        type: String },
-        coordinates: [Number] }
+    geometry: mongoose.Schema.Types.GeoJSON
 },{ toJSON: { virtuals: true },
     collection: 'commune'
 })
