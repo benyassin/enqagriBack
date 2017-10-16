@@ -25,6 +25,7 @@ module.exports = function(app){
         projetRoutes = express.Router();
     var mobileRoutes = express.Router();
         projetmobileRoutes = express.Router();
+        mobileAuthRoutes = express.Router()
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
 
@@ -83,6 +84,9 @@ module.exports = function(app){
 
     mobileRoutes.use('/projets',projetmobileRoutes)
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile)
+
+    mobileRoutes.use('/auth', mobileAuthRoutes)
+    mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile)
     // Set up routes
     app.use('/api', apiRoutes);
 

@@ -49,8 +49,47 @@ var UserSchema = new Schema({
         },
     },
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true }
 });
+
+
+UserSchema.virtual('dpa',{
+    ref:'Dpa',
+    localField: 'perimetre.dpa',
+    foreignField: '_id',
+    justOne: true
+})
+
+UserSchema.virtual('office',{
+    ref:'Office',
+    localField: 'perimetre.office',
+    foreignField: '_id',
+    justOne: true
+})
+
+UserSchema.virtual('region',{
+    ref:'Region',
+    localField: 'perimetre.region',
+    foreignField: 'id_region',
+    justOne: true
+})
+
+UserSchema.virtual('province',{
+    ref:'Province',
+    localField: 'perimetre.province',
+    foreignField: 'id_province',
+    justOne: true
+})
+
+UserSchema.virtual('commune',{
+    ref:'Commune',
+    localField: 'perimetre.commune',
+    foreignField: 'id_province',
+    justOne: true
+})
+
+
 //pre save 
 UserSchema.pre('save', function(next){
 

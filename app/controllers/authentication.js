@@ -17,8 +17,12 @@ function setUserInfo(request){
         nom : request.nom,
         prenom: request.prenom,
         telephone: request.telephone,
-        perimetre: request.perimetre,
-    };
+        perimetre: {region: request.region,
+            province:request.province,
+            commune:request.commune,
+            dpa:request.dpa,
+            office:request.office}
+        };
 }
 
 exports.login = function(req, res){
@@ -34,8 +38,24 @@ exports.login = function(req, res){
         
             });
     }
- 
+}
 
+
+exports.loginMobile = function(req, res){
+    if(req.user.error == true){
+        return res.status(401).json(req.user)
+    }else if(req.user.role !== 'agent'){
+        return res.status(401).json({error: true,message:"l'accès est limiter au agents de collect"})
+    }
+    else{
+        var userInfo = setUserInfo(req.user);
+        
+            res.status(200).json({
+                error: false,
+                token: 'JWT ' + generateToken(userInfo),
+                user: userInfo,
+            });
+    }
 }
 
 exports.register = function(req, res, next){

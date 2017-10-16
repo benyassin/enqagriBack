@@ -11,9 +11,9 @@ var localOptions = {
 
 var localLogin = new LocalStrategy(localOptions, function(login, password, done){
 
-    User.findOne({
-        login: login
-    }, function(err, user){
+    User.findOne({login: login})
+    .populate('dpa office region province commune','name id_region id_province id_commune')
+    .exec(function(err, user){
 
         if(err){
             return done(err);
