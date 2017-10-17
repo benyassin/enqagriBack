@@ -86,14 +86,17 @@ exports.deleteUser = function (req, res) {
 exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
+    if(req.body.role === 'superviseurR' || req.body.role === 'admin'){
+        req.body.province = null
+        req.body.office = null
+        req.body.dpa = null
+    }
     data.perimetre = {
         region : req.body.region,
         province: req.body.province,
         commune: req.body.commune,
         office: req.body.office,
         dpa: req.body.dpa
-
-
     };
    let query = {_id : data._id};
 

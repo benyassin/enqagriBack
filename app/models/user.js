@@ -90,6 +90,18 @@ UserSchema.virtual('commune',{
 })
 
 
+UserSchema.pre('save', function(next){
+        var user = this
+        if(!user.isModified('perimetre.dpa') && !user.isModified('perimetre.office')){
+            return next();
+        }
+        if(user.perimetre.dpa == ""){user.perimetre.dpa = null} 
+        if(user.perimetre.office == ""){ user.perimetre.office = null}
+        
+        console.log(user)
+        next();
+});
+
 //pre save 
 UserSchema.pre('save', function(next){
 
