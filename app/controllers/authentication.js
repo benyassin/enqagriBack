@@ -27,17 +27,6 @@ function setUserInfo(request){
     return user
 }
 
-function setUserMobile(request){
-    return {
-        _id: request._id,
-        login: request.login,
-        email: request.email,
-        role: request.role,
-        nom : request.nom,
-        prenom: request.prenom,
-        telephone: request.telephone,
-    }
-}
 exports.login = function(req, res){
     if(req.user.error == true){
         return res.status(401).json(req.user)
@@ -45,7 +34,7 @@ exports.login = function(req, res){
         var userInfo = setUserInfo(req.user);
             res.status(200).json({
                 error: false,
-                token: 'JWT ' + generateToken(setUserMobile(req.user)),
+                token: 'JWT ' + generateToken(userInfo),
                 user: userInfo,
             });
     }
@@ -63,7 +52,7 @@ exports.loginMobile = function(req, res){
         
             res.status(200).json({
                 error: false,
-                token: 'JWT ' + generateToken(setUserMobile(req.user)),
+                token: 'JWT ' + generateToken(userInfo),
                 user: userInfo,
             });
     }
