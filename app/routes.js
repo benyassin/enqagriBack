@@ -5,6 +5,7 @@ var AuthenticationController = require('./controllers/authentication'),
     FieldsController = require('./controllers/fields'),
     PerimetreController = require('./controllers/perimetre'),
     ProjetController = require('./controllers/projet');
+    CollecteController = require('./controllers/collecte')
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
@@ -22,9 +23,10 @@ module.exports = function(app){
         formRoutes = express.Router();
         perimetreRoutes = express.Router();
         projetRoutes = express.Router();
+        collecteRoutes = express.Router();
     var mobileRoutes = express.Router();
         projetmobileRoutes = express.Router();
-        mobileAuthRoutes = express.Router()
+        mobileAuthRoutes = express.Router();
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
 
@@ -65,6 +67,8 @@ module.exports = function(app){
     formRoutes.post('/fields/:form_id',FieldsController.createFields);
     formRoutes.get('/:form_id/fields',FieldsController.getFields)
 
+
+    // Perimetre Routes
     apiRoutes.use('/perimetre',perimetreRoutes);
 
     perimetreRoutes.get('/region', PerimetreController.getRegion)
@@ -73,13 +77,20 @@ module.exports = function(app){
     perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
     perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice)
 
-
+    // Projet Routes 
     apiRoutes.use('/projets',projetRoutes);
 
     projetRoutes.post('/',ProjetController.createProjet)
     projetRoutes.get('/:projet_id?',ProjetController.getProjets)
     projetRoutes.delete('/:projet_id',ProjetController.deleteProjet)
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre)
+
+
+    //Collecte Routes
+
+    apiRoutes.use('/collectes', collecteRoutes);
+    collecteRoutes.get('/:id_collecte?',CollecteController.getCollectes)
+
 
     mobileRoutes.use('/projets',projetmobileRoutes)
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile)
