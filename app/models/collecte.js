@@ -12,7 +12,10 @@ var CollecteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
-    id_exploitation: String,
+    id_exploitation: {
+        type: String,
+        required:true
+    },
     exploitation : {
         superficieTotale:Number,
         form: String,

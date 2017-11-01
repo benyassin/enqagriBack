@@ -5,6 +5,7 @@ exports.storeCollecte = function(req,res,next){
     let user = req.user._id
     data = req.body
     data.agent = user
+    console.log(data)
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
@@ -14,7 +15,7 @@ exports.storeCollecte = function(req,res,next){
 }
 exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
-    Collecte.find({},'id_projet').populate('id_projet','name theme').exec(function(err,collectes){
+    Collecte.find({},'projet').populate('projet','name theme').exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
         }
