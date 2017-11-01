@@ -1,7 +1,17 @@
 var Collecte = require('../models/collecte')
 
 
-
+exports.storeCollecte = function(req,res,next){
+    let user = req.user._id
+    data = req.body
+    data.agent = user
+    Collecte.create(data,function(err,collecte){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collecte._id)
+    })
+}
 exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
     Collecte.find({},'id_projet').populate('id_projet','name theme').exec(function(err,collectes){

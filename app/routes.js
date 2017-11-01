@@ -90,7 +90,7 @@ module.exports = function(app){
 
     apiRoutes.use('/collectes', collecteRoutes);
     collecteRoutes.get('/:id_collecte?',CollecteController.getCollectes)
-
+    collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte)
 
     mobileRoutes.use('/projets',projetmobileRoutes)
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile)

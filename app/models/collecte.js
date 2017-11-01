@@ -4,38 +4,39 @@ var GeoJSON = require('mongoose-geojson-schema');
 var Schema =  mongoose.Schema
 
 var CollecteSchema = new Schema({
-    id_projet : {
+    projet : {
         type : Schema.Types.ObjectId,
         ref: 'Projet'
     },
+    agent:{
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
+    id_exploitation: String,
     exploitation : {
-        id_exploitation: String,
         superficieTotale:Number,
         form: String,
-        data: Object
+        formdata: Object
     },
     blocs:[{
-        id_exploitation: String,
         number: Number,
-        Shape:String,
-        gjson:{
-            type:mongoose.Schema.Types.GeoJSON
-        },
+        shape:String,
+        gjson:mongoose.Schema.Types.GeoJSON,
         superficie: Number,
         date_creation : Date
     }],
     collecte:[{
         type: {type:String},
         form: String,
-        parcelles: [{
-            id_exploitation:String,
+        formname: String,
+        data: [{
             numero_bloc: Number,
             numero : Number,
-            Shape:String,
+            shape:String,
             gjson:mongoose.Schema.Types.GeoJSON,
             superficie: Number,
             date_creation: Date,
-            data:Object
+            formdata:Object
         }]
     }],
 });
