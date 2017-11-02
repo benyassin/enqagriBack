@@ -2,7 +2,7 @@ var Collecte = require('../models/collecte')
 
 
 exports.storeCollecte = function(req,res,next){
-    console.log(req.body)
+    console.log(req)
     let user = req.user._id
     data = req.body
     data.agent = user
