@@ -42,7 +42,11 @@ var CollecteSchema = new Schema({
             formdata:Object
         }]
     }],
-});
+},{
+    timestamps: true,
+    versionKey: false
+}
+);
 
 
 module.exports = mongoose.model('Collecte',CollecteSchema);;

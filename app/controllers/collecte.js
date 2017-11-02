@@ -2,11 +2,9 @@ var Collecte = require('../models/collecte')
 
 
 exports.storeCollecte = function(req,res,next){
-    console.log(req)
     let user = req.user._id
     data = req.body
     data.agent = user
-    console.log(data)
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
@@ -16,7 +14,10 @@ exports.storeCollecte = function(req,res,next){
 }
 exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
-    Collecte.find({},'projet').populate('projet','name theme').exec(function(err,collectes){
+    Collecte.find({},'projet agent createdAt')
+    .populate('projet','name theme')
+    .populate('agent','nom prenom')
+    .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
         }
