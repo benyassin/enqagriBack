@@ -7,12 +7,12 @@ exports.storeCollecte = function(req,res,next){
     data = req.body
     data.agent = user
     console.log(data)
-    // Collecte.create(data,function(err,collecte){
-    //     if(err){
-    //         return res.status(500).json(err)
-    //     }
-    //     res.status(200).json(collecte._id)
-    // })
+    Collecte.create(data,function(err,collecte){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collecte._id)
+    })
 }
 exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
