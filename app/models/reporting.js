@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
-var Schema =  mongoose.Schema
+let Schema =  mongoose.Schema;
 
-var ReportingSchema = new Schema({
+let ReportingSchema = new Schema({
     exploitation : {type:Number,default:0},
     polygone : {type:Number,default:0},
     polyline : {type:Number,default:0},

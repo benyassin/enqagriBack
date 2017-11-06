@@ -5,18 +5,19 @@ var AuthenticationController = require('./controllers/authentication'),
     FieldsController = require('./controllers/fields'),
     PerimetreController = require('./controllers/perimetre'),
     ProjetController = require('./controllers/projet');
-    CollecteController = require('./controllers/collecte')
+    CollecteController = require('./controllers/collecte');
+    ReportingController = require('./controllers/reporting');
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
     validate = require('express-validation');
     validation = require('./validation')
-var requireAuth = passport.authenticate('jwt', {session: false}),
+let requireAuth = passport.authenticate('jwt', {session: false}),
     requireLogin = passport.authenticate('local', {session: false});
 
 module.exports = function(app){
 
-    var apiRoutes = express.Router(),
+    let apiRoutes = express.Router(),
         authRoutes = express.Router(),
         userRoutes = express.Router();
         blocRoutes = express.Router();
@@ -24,7 +25,8 @@ module.exports = function(app){
         perimetreRoutes = express.Router();
         projetRoutes = express.Router();
         collecteRoutes = express.Router();
-    var mobileRoutes = express.Router();
+        reportingRoutes = express.Router();
+    let mobileRoutes = express.Router();
         projetmobileRoutes = express.Router();
         mobileAuthRoutes = express.Router();
     // Auth Routes
@@ -75,29 +77,38 @@ module.exports = function(app){
     perimetreRoutes.get('/province/:id_region?',PerimetreController.getProvinces);
     perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune)
     perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
-    perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice)
+    perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice);
 
     // Projet Routes 
     apiRoutes.use('/projets',projetRoutes);
 
-    projetRoutes.post('/',ProjetController.createProjet)
-    projetRoutes.get('/:projet_id?',ProjetController.getProjets)
-    projetRoutes.delete('/:projet_id',ProjetController.deleteProjet)
-    projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre)
+    projetRoutes.post('/',ProjetController.createProjet);
+    projetRoutes.get('/:projet_id?',ProjetController.getProjets);
+    projetRoutes.delete('/:projet_id',ProjetController.deleteProjet);
+    projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
 
 
     //Collecte Routes
 
     apiRoutes.use('/collectes', collecteRoutes);
-    collecteRoutes.get('/:id_collecte?',CollecteController.getCollectes)
-    collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte)
-    collecteRoutes.get('/aggregate/test',CollecteController.aggregate)
+    collecteRoutes.get('/:id_collecte?',CollecteController.getCollectes);
+    collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
+    collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
 
-    mobileRoutes.use('/projets',projetmobileRoutes)
-    projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile)
+    //Reporting Routes
 
-    mobileRoutes.use('/auth', mobileAuthRoutes)
-    mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile)
+    apiRoutes.use('/reporting',reportingRoutes);
+    reportingRoutes.get('/dashboard/',ReportingController.aggregate);
+    reportingRoutes.get('/dashboards/',ReportingController.aggregatee);
+
+
+    //mobile routes
+
+    mobileRoutes.use('/projets',projetmobileRoutes);
+    projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
+
+    mobileRoutes.use('/auth', mobileAuthRoutes);
+    mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile);
     // Set up routes
     app.use('/api', apiRoutes);
 
