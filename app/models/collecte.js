@@ -17,13 +17,14 @@ var CollecteSchema = new Schema({
         type: String,
         required:true
     },
+    superficie: Number,
     exploitation : {
-        superficieTotale:Number,
         form: String,
+        formname:String,
         formdata: Object
     },
     blocs:[{
-        number: Number,
+        numero: Number,
         shape:String,
         gjson:mongoose.Schema.Types.GeoJSON,
         superficie: Number,
@@ -58,7 +59,7 @@ CollecteSchema.post("save", function(doc,next){
      },{});
     var now = new Date();
     var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: 1,polygone:count.polygone || 0,polyline:count.polyline || 0,point:count.point || 0,parcelle:parcelle}},{upsert:true},
+    Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: 1,polygone:count.polygone || 0,polyline:count.polyline || 0,point:count.point || 0,superficie:self.superficie || 0}},{upsert:true},
         function(err,data){
         if(err){
             console.log(err)

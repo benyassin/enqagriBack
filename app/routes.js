@@ -98,7 +98,7 @@ module.exports = function(app){
     //Reporting Routes
 
     apiRoutes.use('/reporting',reportingRoutes);
-    reportingRoutes.get('/dashboard/',ReportingController.aggregate);
+    reportingRoutes.get('/dashboard/',ReportingController.getReports);
     reportingRoutes.get('/dashboards/',ReportingController.aggregatee);
 
 

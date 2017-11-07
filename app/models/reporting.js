@@ -8,7 +8,7 @@ let ReportingSchema = new Schema({
     polyline : {type:Number,default:0},
     point : {type:Number,default:0},
     parcelle : {type:Number,default:0},
-    superficier: {type:Number,default:0},
+    superficie: {type:Number,default:0},
 },{
     timestamps:true
 });
