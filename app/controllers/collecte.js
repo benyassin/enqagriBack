@@ -47,7 +47,11 @@ exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
     Collecte.find({},'projet agent createdAt')
     .populate('projet','name theme')
-    .populate('agent','nom prenom')
+    .populate('agent')
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
+    
+    
+    })
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -55,7 +59,8 @@ exports.getCollectes = function(req, res, next){
         res.status(200).json(collectes)
     })
     }else{
-        Collecte.findOne({'_id':req.params.id_collecte},function(err,collectes){
+        Collecte.findOne({'_id':req.params.id_collecte})
+        .exec(function(err,collectes){
             if(err){
                 return res.status(500).json(err)
             }
