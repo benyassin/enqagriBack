@@ -17,6 +17,9 @@ var CollecteSchema = new Schema({
         type: String,
         required:true
     },
+    geo: Boolean,
+    lat: String,
+    lng: String,
     superficie: Number,
     exploitation : {
         form: String,
@@ -43,6 +46,7 @@ var CollecteSchema = new Schema({
             gjson:mongoose.Schema.Types.GeoJSON,
             superficie: Number,
             date_creation: Date,
+            capture: String,
             formdata:Object
         }]
     }],
