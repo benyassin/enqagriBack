@@ -11,7 +11,7 @@ var ProjetSchema = new Schema({
     },
     theme: {
         type: String,
-        enum : ['rna','annuelle','modulaire','complementaire']
+        enum : ['rna','annuelle','modulaire','complementaire','pillier1','pillier2',"financier"]
     },
     statut: {
         type: Boolean,
