@@ -151,3 +151,12 @@ exports.getAgentByProvince = function(req,res, next) {
     })
 
 };
+
+exports.getControllers = function(req,res,next){
+    User.find({role:"controlleur",},'nom prenom',function(err,controllers){
+        if(err){
+            return res.status(400).json(err)
+        }
+        res.status(200).json(controllers)
+    })
+}

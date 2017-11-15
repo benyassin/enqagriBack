@@ -27,6 +27,10 @@ var ProjetSchema = new Schema({
             ref: 'Province'
         }],
     },
+    validation:[{
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    }],
     forms : [{
         type : Schema.Types.ObjectId,
         ref: 'Form'

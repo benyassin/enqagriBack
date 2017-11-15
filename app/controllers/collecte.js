@@ -1,4 +1,5 @@
 var Collecte = require('../models/collecte')
+var mongoose = require('mongoose');
 
 
 exports.storeCollecte = function(req,res,next){
@@ -46,11 +47,9 @@ exports.aggregate = function(req,res,next){
 exports.getCollectes = function(req, res, next){
     if(!req.params.id_collecte){
     Collecte.find({},'projet agent createdAt')
-    .populate('projet','name theme')
+    .populate({path:'projet',select:'name theme validation'})
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
-    
-    
     })
     .exec(function(err,collectes){
         if(err){

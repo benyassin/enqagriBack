@@ -48,6 +48,7 @@ module.exports = function(app){
     userRoutes.delete('/:user_id',requireAuth,UserController.deleteUser);
     userRoutes.put('/:user_id',requireAuth,UserController.updateUser);
     userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
+    userRoutes.get('/controlleurs/',requireAuth,UserController.getControllers)
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
@@ -91,7 +92,7 @@ module.exports = function(app){
     //Collecte Routes
 
     apiRoutes.use('/collectes', collecteRoutes);
-    collecteRoutes.get('/:id_collecte?',CollecteController.getCollectes);
+    collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
 
