@@ -102,6 +102,7 @@ exports.getProjetsMobile = function(req,res,next){
 
 exports.getProjetsByRoleMobile = function (req, res, next){
     perimetre = req.user.perimetre;
+    console.log("perimetre utilist",perimetre)    
     Projet.find()
           .populate({
               path:'perimetre.region',
@@ -120,8 +121,8 @@ exports.getProjetsByRoleMobile = function (req, res, next){
               if(err) {
                   return res.status(500).send(err)
               }
+              console.log("list des projets",projets)
                 projets = projets.filter(function(projet){
-                    console.log(projet)
                     return projet.perimetre.province.length > 0
                 })
                 res.status(200).json(projets)
