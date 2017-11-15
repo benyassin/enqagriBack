@@ -8,7 +8,7 @@ exports.createProjet = function (req, res, next) {
         data._id = new mongoose.mongo.ObjectID()
     }
     query = {_id : data._id};
-    data.perimetre= {'region': data.region,'province': data.province}
+    data.perimetre= {'region': data.region || [],'province': data.province || []}
 
     Projet.update(query, data,{runValidators: true, upsert: true}, function(err, projet) {
             if (err) {
