@@ -22,6 +22,8 @@ var CollecteSchema = new Schema({
     lng: String,
     superficie: Number,
     exploitation : {
+        superficieTotale: String,
+        date_creation : Date,
         form: String,
         formname:String,
         formdata: Object
