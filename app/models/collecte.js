@@ -42,7 +42,7 @@ var CollecteSchema = new Schema({
         form: String,
         formname: String,
         data: [{
-            numero_bloc: Number,
+            bloc: Number,
             numero : Number,
             shape:String,
             gjson:mongoose.Schema.Types.GeoJSON,
