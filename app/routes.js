@@ -87,6 +87,7 @@ module.exports = function(app){
     projetRoutes.get('/:projet_id?',ProjetController.getProjets);
     projetRoutes.delete('/:projet_id',ProjetController.deleteProjet);
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
+    projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets)
 
 
     //Collecte Routes
@@ -95,6 +96,7 @@ module.exports = function(app){
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
+    collecteRoutes.get('/projet/:id_projet',CollecteController.getCollecteByProjet)
 
     //Reporting Routes
 

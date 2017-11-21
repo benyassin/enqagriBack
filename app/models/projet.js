@@ -28,8 +28,11 @@ var ProjetSchema = new Schema({
         }],
     },
     validation:[{
-        type: Schema.Types.ObjectId,
-        ref:'User'
+        name: String,
+        agent:{
+            type:Schema.Types.ObjectId,
+            ref:'User'
+        }   
     }],
     forms : [{
         type : Schema.Types.ObjectId,

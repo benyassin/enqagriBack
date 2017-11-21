@@ -21,6 +21,14 @@ var CollecteSchema = new Schema({
     lat: String,
     lng: String,
     superficie: Number,
+    validation : {
+        type: Number,
+        default : 1
+    },
+    status : {
+        type: Number,
+        default : false
+    },
     exploitation : {
         superficieTotale: String,
         date_creation : Date,

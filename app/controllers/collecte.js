@@ -1,6 +1,6 @@
 var Collecte = require('../models/collecte')
 var mongoose = require('mongoose');
-
+var qs = require('querystring')
 
 exports.storeCollecte = function(req,res,next){
     let user = req.user._id
@@ -66,4 +66,26 @@ exports.getCollectes = function(req, res, next){
             res.status(200).json(collectes)
         })
     }
+}
+
+
+exports.getCollecteByProjet = function (req,res, next){
+    id_projet = req.params.id_projet
+    qs.parse(req.query)
+    console.log(req.query)
+    query = {
+        'projet' : req.params.id_projet,
+        'validation': req.query.niveau,
+        'status': req.query.status
+    }
+    console.log(query)
+    Collecte.find(query)
+    .populate('agent')
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+    .exec(function(err,collectes){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collectes)
+    })
 }

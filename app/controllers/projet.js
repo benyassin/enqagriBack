@@ -129,7 +129,16 @@ exports.getProjetsByRoleMobile = function (req, res, next){
         })
     
 }
-
+ 
+exports.controllerProjets = function(req, res,next){
+    console.log('id',req.user.id)
+    Projet.find({'validation.agent':req.user._id},function (err,projets){
+        if(err){
+            return res.json(err)
+        }
+        res.json(projets)
+    })
+}
 
 exports.deleteProjet = function (req, res, next) {
     Projet.remove({_id :req.params.projet_id}, function (err, projet) {
