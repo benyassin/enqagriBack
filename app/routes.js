@@ -96,7 +96,8 @@ module.exports = function(app){
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
-    collecteRoutes.get('/projet/:id_projet',CollecteController.getCollecteByProjet)
+    collecteRoutes.get('/projet/:id_projet',CollecteController.getCollecteByProjet);
+    collecteRoutes.post('/validate',CollecteController.validate)
 
     //Reporting Routes
 

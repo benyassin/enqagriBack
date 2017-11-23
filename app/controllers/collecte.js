@@ -73,11 +73,11 @@ exports.getCollecteByProjet = function (req,res, next){
     id_projet = req.params.id_projet
     qs.parse(req.query)
     console.log(req.query)
+
     query = {
         'projet' : req.params.id_projet,
-        'validation': req.query.niveau,
-        'status': req.query.status
-    }
+    };
+    query['validation.' + parseInt(req.query.niveau)] = req.query.status
     console.log(query)
     Collecte.find(query)
     .populate('agent')
@@ -87,5 +87,27 @@ exports.getCollecteByProjet = function (req,res, next){
             return res.status(500).json(err)
         }
         res.status(200).json(collectes)
+    })
+}
+
+exports.validate = function(req,res,next){
+    let data = req.body
+    let query = {}
+    switch(data.action){
+        case 'valid':
+        query['validation.' + parseInt(data.niveau+1)] = 'new'
+        query['validation.' + parseInt(data.niveau)] = data.action
+        break;
+        case 'reject':
+        query['validation.' + parseInt(data.niveau)] = 'null'        
+        query['validation.' + parseInt(data.niveau-1)] = data.action
+        break      
+    }
+    console.log(query)
+    Collecte.update({_id:data.id},{ $set: query},function(err,collecte){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collecte)
     })
 }
