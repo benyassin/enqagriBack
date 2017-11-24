@@ -89,6 +89,19 @@ exports.getCollecteByProjet = function (req,res, next){
         res.status(200).json(collectes)
     })
 }
+exports.getCollecteEnTraitement = function(req,res,next){
+    id_projet = req.params.id_projet
+    qs.parse(req.query)
+    Collecte.find({'projet':req.params.id_projet}).nor([{'validation.0':'new'},{'validation.1' : 'valid'}])
+    .populate('agent')
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+    .exec(function(err,collectes){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collectes)
+    })
+}
 
 exports.validate = function(req,res,next){
     let data = req.body
