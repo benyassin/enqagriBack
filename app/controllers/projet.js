@@ -42,25 +42,37 @@ exports.getProjets = function(req,res,next){
 exports.getProjetsByPerimetre = function (req, res, next){
     perimetre = req.user.perimetre;
     if(req.user.role === 'admin'){
-        Projet.find({}).exec(function(err,projets){
+        Projet.find({}).populate({
+            path:'perimetre.region',
+            select:'-geometry'})
+        .populate({
+          path:'perimetre.province',
+          select:'-geometry',
+         }).exec(function(err,projets){
             if(err){
                 return res.status(500).send(err)
             }
             res.status(200).json(projets)
         })
     }else{
+        let populate = {
+            path:'perimetre.province',
+            select:'-geometry',
+        }
+        if(req.user.role ==="superviseurP"){
+            populate.match= {
+                id_province: perimetre.province
+            }  
+        }
     Projet.find()
           .populate({
               path:'perimetre.region',
+              select:'-geometry',
               match: {
                   id_region: perimetre.region
               }  
-          }).populate({
-            path:'perimetre.province',
-            match: {
-                id_province:perimetre.province
-            }
-            }).exec(function(err, projets){
+          })
+          .populate(populate).exec(function(err, projets){
               if(err) {
                   return res.status(500).send(err)
               }
@@ -131,8 +143,10 @@ exports.getProjetsByRoleMobile = function (req, res, next){
 }
  
 exports.controllerProjets = function(req, res,next){
-    console.log('id',req.user.id)
-    Projet.find({'validation.agent':req.user._id},function (err,projets){
+    Projet.find({'validation.agent':req.user._id})          
+    .populate({path:'perimetre.region',select:'name id_region'})
+    .populate({path:'perimetre.province',select:'name id_province id_region'})
+    .exec(function (err,projets){
         if(err){
             return res.json(err)
         }

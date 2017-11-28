@@ -73,10 +73,16 @@ exports.getCollecteByProjet = function (req,res, next){
     id_projet = req.params.id_projet
     qs.parse(req.query)
     console.log(req.query)
-
-    query = {
+    let query = {
         'projet' : req.params.id_projet,
     };
+    if(req.query.region != 0 ){
+        query.region = req.query.region
+    }
+    if(req.query.province != 0){
+        query.province = req.query.province
+    }
+
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     console.log(query)
     Collecte.find(query)

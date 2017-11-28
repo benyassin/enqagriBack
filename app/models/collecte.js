@@ -20,6 +20,8 @@ var CollecteSchema = new Schema({
     geo: Boolean,
     lat: String,
     lng: String,
+    region: Number,
+    province: Number,
     superficie: Number,
     validation : [{
         type: String,
