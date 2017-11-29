@@ -82,8 +82,9 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.query.province != 0){
         query.province = req.query.province
     }
-
+    if(req.query.niveau != -1){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
+    }
     console.log(query)
     Collecte.find(query)
     .populate('agent')
