@@ -5,18 +5,44 @@ var mongoose = require('mongoose')
 
 exports.createFields = function(req, res ,next){
     data = req.body;
+    var keys = new Array;
+    var types = ['container','htmlelement','hidden','columns','fieldset','table','well','datagrid','editgrid','panel']
+
     query = {form : req.params.form_id};
     let toinsert = {}
     toinsert.components = req.body.components
     toinsert.form = req.params.form_id
     toinsert.display = req.body.display
 
-    Fields.update(query, toinsert,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
-        if (err) {
-          return res.send(err)
-        }
-        res.status(201).send(req.body);
-    })
+    var obj = toinsert.components
+    
+    function searchObj(obj){
+    for (var key in obj){
+        var value = obj[key];
+        if(types.includes(obj['type'])){
+            if (typeof value === 'object') {
+                searchObj(value);
+    }	
+    }else{
+    if (typeof value === 'object') {
+        searchObj(value);
+    }
+    if (key === 'key') {
+        keys.push(value);
+    }
+    }
+    }
+}
+    searchObj(obj)
+    console.log(keys)
+
+    
+    // Fields.update(query, toinsert,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
+    //     if (err) {
+    //       return res.send(err)
+    //     }
+    //     res.status(201).send(req.body);
+    // })
 
 };
 
