@@ -23,7 +23,7 @@ exports.createFields = function(req, res ,next){
                 console.log(obj);
                 searchObj(component['components']);
             }else{
-               keys.push({'type':component['type'],keys:component['key'],label:component['label'],values:component['data']});
+                keys.push({'type':component['type'],keys:component['key'],label:component['label'],values:component['data']});
             }
         }
     }
