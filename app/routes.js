@@ -68,7 +68,8 @@ module.exports = function(app){
     formRoutes.get('/:theme?',FormController.getForms);
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
     formRoutes.post('/fields/:form_id',FieldsController.createFields);
-    formRoutes.get('/:form_id/fields',FieldsController.getFields)
+    formRoutes.get('/:form_id/fields',FieldsController.getFields);
+    formRoutes.get('/:form_id/extrapolation',FieldsController.getExtrapolationFields);
 
 
     // Perimetre Routes
