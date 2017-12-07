@@ -3,11 +3,13 @@ var mongoose = require('mongoose');
 var qs = require('querystring')
 
 exports.storeCollecte = function(req,res,next){
-    let user = req.user._id
-    data = req.body
-    data.agent = user
-    data.region = req.user.perimetre.region.id_region
-    data.province = req.user.perimetre.province.id_province
+    let user = req.user._id;
+    data = req.body;
+    data.agent = user;
+    data.region = req.user.perimetre.region.id_region;
+    data.province = req.user.perimetre.province.id_province;
+    data.validation = ['new','null','null','null','null'];
+    console.log(data)
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
