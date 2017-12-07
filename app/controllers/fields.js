@@ -63,6 +63,7 @@ exports.getExtrapolationFields = function(req,res,next){
                                     searchObj(component['rows'][i][r]['components']);
                                 }
                             }
+
                             break;
                         default:
                             searchObj(component['components']);
@@ -70,10 +71,10 @@ exports.getExtrapolationFields = function(req,res,next){
                             break;
                     }
                 }else{
-                    if(component['key'] === 'submit'){
+                    if(component['key'] === 'submit' || component['key'] === 'custom' ){
                         done()
                     }
-                    fields.push({'type':component['type'],keys:component['key'],label:component['label'],values:component['data']});
+                    fields.push({'type':component['type'],key:component['key'],label:component['label'],values:component['data'] || component['values']});
                 }
             }
 

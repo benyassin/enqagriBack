@@ -6,6 +6,8 @@ exports.storeCollecte = function(req,res,next){
     let user = req.user._id
     data = req.body
     data.agent = user
+    data.region = user.perimetre.region.id_region
+    data.province = user.perimetre.province.id_province
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
@@ -96,6 +98,7 @@ exports.getCollecteByProjet = function (req,res, next){
         res.status(200).json(collectes)
     })
 }
+
 exports.getCollecteEnTraitement = function(req,res,next){
     id_projet = req.params.id_projet
     qs.parse(req.query)
