@@ -6,8 +6,8 @@ exports.storeCollecte = function(req,res,next){
     let user = req.user._id
     data = req.body
     data.agent = user
-    data.region = user.perimetre.region.id_region
-    data.province = user.perimetre.province.id_province
+    data.region = req.user.perimetre.region.id_region
+    data.province = req.user.perimetre.province.id_province
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
