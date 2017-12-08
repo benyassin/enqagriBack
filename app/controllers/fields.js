@@ -5,8 +5,6 @@ var mongoose = require('mongoose');
 
 exports.createFields = function(req, res ,next){
     data = req.body;
-    let keys = [];
-    var types = ['container','htmlelement','hidden','columns','fieldset','editgrid','table','well','panel'];
 
     query = {form : req.params.form_id};
     let toinsert = {};
@@ -14,27 +12,14 @@ exports.createFields = function(req, res ,next){
     toinsert.form = req.params.form_id;
     toinsert.display = req.body.display;
 
-    var obj = toinsert.components;
 
-    function searchObj(obj){
-        for (let key in obj){
-            let component = obj[key];
-            if(types.includes(component['type'])){
-                console.log(obj);
-                searchObj(component['components']);
-            }else{
-                keys.push({'type':component['type'],keys:component['key'],label:component['label'],values:component['data']});
-            }
+
+    Fields.update(query, toinsert,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
+        if (err) {
+          return res.send(err)
         }
-    }
-    searchObj(obj);
-    console.log(keys)
-    // Fields.update(query, toinsert,{upsert: true, setDefaultsOnInsert: true,'new': true}, function (err, bloc) {
-    //     if (err) {
-    //       return res.send(err)
-    //     }
-    //     res.status(201).send(req.body);
-    // })
+        res.status(201).send(req.body);
+    })
 
 };
 exports.getExtrapolationFields = function(req,res,next){
