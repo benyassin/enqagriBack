@@ -86,7 +86,7 @@ exports.deleteUser = function (req, res) {
 exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
-    if(req.body.role === 'superviseurR' || req.body.role === 'admin'){
+    if(req.body.role === 'superviseurR' || req.body.role === 'admin' || req.body.role === 'controleur'){
         req.body.province = null
         req.body.office = null
         req.body.dpa = null
@@ -105,8 +105,9 @@ exports.createUser = function(req, res ,next){
             if(!user){
                 console.log("user not found creating new one")
                 let newUser = new User(data);
+                console.log(newUser)
                 newUser.save(function(err){
-                    if(err) return res.status(500).send({error:'name',message: 'Ce login est déjà utilisé'});
+                    if(err) return res.status(500).send(err);
                         console.log("user created with _id = " + newUser._id );
                      res.status(200).send(newUser)
                 })

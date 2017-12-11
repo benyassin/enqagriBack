@@ -104,8 +104,19 @@ exports.getCollecteByProjet = function (req,res, next){
 
 exports.getCollecteEnTraitement = function(req,res,next){
     id_projet = req.params.id_projet
+    
     qs.parse(req.query)
-    Collecte.find({'projet':req.params.id_projet}).nor([{'validation.0':'new'},{'validation.1' : 'valid'}])
+    let query = {
+        'projet' : req.params.id_projet,
+    };
+    if(req.query.region != 0 ){
+        query.region = req.query.region
+    }
+    if(req.query.province != 0){
+        query.province = req.query.province
+    }
+    
+    Collecte.find(query).nor([{'validation.0':'new'},{'validation.1' : 'valid'}])
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
     .exec(function(err,collectes){
