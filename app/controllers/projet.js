@@ -135,7 +135,7 @@ exports.getProjetsByRoleMobile = function (req, res, next){
               }
               console.log("list des projets",projets)
                 projets = projets.filter(function(projet){
-                    return projet.perimetre.province.length > 0
+                    return projet.perimetre.province.length > 0 && projet.forms.length > 0
                 })
                 res.status(200).json(projets)
         })

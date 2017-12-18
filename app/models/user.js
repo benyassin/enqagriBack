@@ -22,6 +22,14 @@ var UserSchema = new Schema({
         type: String,
         required: true,
     },
+
+    affectation: [{
+        projet:{
+        type:Schema.Types.ObjectId,
+        ref: 'Region'
+    },
+        commune :[]
+    }],
     nom : String,
     prenom : String,
     telephone : String,
