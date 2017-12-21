@@ -22,7 +22,9 @@ function setUserInfo(request){
             province:request.province,
             commune:request.commune,
             dpa:request.dpa,
-            office:request.office}
+            office:request.office,},
+        affectation: request.affectation,
+        communes: request.communes
         };
     return user
 }

@@ -23,10 +23,49 @@ exports.getUser = function (req, res, next) {
     })
 };
 
+exports.setAffectation = function(req,res,next){
+    let data = req.body.data
+    let agents = []
+    data.forEach(commune => {
+        if(commune.agents.length > 0){
+            commune.id_agents.forEach(agent => {
+                if(!agents.includes(agent)){
+                    agents.push(agent)
+                }
+            })
+        }
+    });
+    newArray = []
+    agents.forEach(agent => {
+        communes = []
+        data.forEach(function(obj){
+            if(obj.id_agents.includes(agent)){
+                communes.push(obj.id_commune)
+            }
+        })
+        newArray[agent] = communes
+
+    })
+    // console.log(newArray)
+    Object.keys(newArray).forEach(element =>{
+        User.findById(element).exec(function(err,user){
+           index = user.affectation.findIndex(x => x.projet==req.body.projet)
+           if(index == -1){
+             user.affectation.push({'projet':req.body.projet,'communes':newArray[element]})
+           }else{
+               user.affectation[index].communes = newArray[element]
+           }
+           user.save()
+        })
+        res.status(200).json('saved')
+    })
+    return req.body
+}
+
 
 
 exports.deleteUser = function (req, res) {
-
+    let data = req.body
     User.remove({_id :req.params.user_id}, function (err, user) {
             res.json(user)
         });

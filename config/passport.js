@@ -13,7 +13,7 @@ var localLogin = new LocalStrategy(localOptions, function(login, password, done)
     User.findOne({login: login})
     .populate('dpa office region commune province','name id_region id_commune id_province')
     .exec(function(err, user){
-
+        
         if(err){
             return done(err);
         }

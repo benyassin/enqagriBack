@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-
+var Perimetre = require('./perimetre')
 var Schema =  mongoose.Schema
 
 var UserSchema = new Schema({
@@ -26,9 +26,9 @@ var UserSchema = new Schema({
     affectation: [{
         projet:{
         type:Schema.Types.ObjectId,
-        ref: 'Region'
+        ref: 'Projet'
     },
-        commune :[]
+        communes :[]
     }],
     nom : String,
     prenom : String,
@@ -96,7 +96,28 @@ UserSchema.virtual('commune',{
     foreignField: 'id_province',
     justOne: true
 })
-
+UserSchema.method('communes',function() {
+    let array = []
+    let retest = []
+    this.affectation.forEach(projet => {
+        projet.communes.forEach(commune => {
+            if(!array.includes(commune)){
+                array.push(commune)
+            }
+        });
+    });
+  Perimetre.Commune.find({
+    'id_commune': { $in: array}
+    }, function(err, docs){
+        if(err){
+            return err
+        }
+    done(docs)
+    });
+    function done(data){
+        return data
+    }
+})
 
 UserSchema.pre('save', function(next){
         var user = this

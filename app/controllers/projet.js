@@ -1,5 +1,8 @@
 var Projet = require('../models/projet');
+var Perimetre = require('../models/perimetre');
 var mongoose = require('mongoose');
+
+var q = require('q')
 
 exports.createProjet = function (req, res, next) {
 
@@ -113,33 +116,72 @@ exports.getProjetsMobile = function(req,res,next){
 
 
 exports.getProjetsByRoleMobile = function (req, res, next){
-    perimetre = req.user.perimetre;
-    console.log("perimetre utilist",perimetre)    
-    Projet.find()
-          .populate({
-              path:'perimetre.region',
-              select:'-geometry',
-              match: {
-                  id_region: perimetre.region
-              }  
-          }).populate({
-            path:'perimetre.province',
-            select:'-geometry',
-            match: {
-                id_province:perimetre.province
-            }
-            }).populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
-            .exec(function(err, projets){
-              if(err) {
-                  return res.status(500).send(err)
-              }
-              console.log("list des projets",projets)
-                projets = projets.filter(function(projet){
-                    return projet.perimetre.province.length > 0 && projet.forms.length > 0
+    let affectation = req.user.affectation;
+    // console.log("perimetre utilist",perimetre)    
+    // Projet.find()
+    //       .populate({
+    //           path:'perimetre.region',
+    //           select:'-geometry',
+    //           match: {
+    //               id_region: perimetre.region
+    //           }  
+    //       }).populate({
+    //         path:'perimetre.province',
+    //         select:'-geometry',
+    //         match: {
+    //             id_province:perimetre.province
+    //         }
+    //         }).populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
+    //         .exec(function(err, projets){
+    //           if(err) {
+    //               return res.status(500).send(err)
+    //           }
+    //           console.log("list des projets",projets)
+    //             projets = projets.filter(function(projet){
+    //                 return projet.perimetre.province.length > 0 && projet.forms.length > 0
+    //             })
+    //             res.status(200).json(projets)
+    //     })
+    let ayoub = []
+    let promises = []
+    length = affectation.length
+    // let i = 0
+    for (let element of affectation){
+        if(element.communes.length > 0){             
+            var promise2 = Projet.findById(element.projet).exec(function(err,rprojet){
+                if(err) {
+                   return console.log(err)
+                }
+                var promise = Perimetre.Commune.find({
+                    'id_commune': { $in: element.communes}
+                }).exec(function(err,communes){
+                    if(err) {
+                       return console.log(err)
+                    }
+                    // console.log(communes)
+                    
+                    var newVar = rprojet
+                    newVar.communes = communes
+                    // console.log(newVar)
+                    ayoub.push(newVar)
+                    // rprojet['AYOUUUBBBBBB'] = communes
+                    // projets.push(rprojet)             
+                    // console.log(rprojet)
                 })
-                res.status(200).json(projets)
-        })
-    
+                promises.push(promise,promise2)
+            })
+            
+        }
+        q.all(promises).then(console.log(ayoub))
+        // console.log('lenght ayoub : ' ,ayoub.length)
+        // console.log('length affecaat', affectation.length) 
+        // if(ayoub.length == affectation.length){
+        //     console.log('marouane')
+        //     console.log(ayoub)
+
+        // }
+    };
+
 }
  
 exports.controllerProjets = function(req, res,next){

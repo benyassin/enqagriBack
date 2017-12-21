@@ -49,6 +49,7 @@ module.exports = function(app){
     userRoutes.put('/:user_id',requireAuth,UserController.updateUser);
     userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
     userRoutes.get('/controlleurs/',requireAuth,UserController.getControllers)
+    userRoutes.post('/affectation/',UserController.setAffectation)
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
