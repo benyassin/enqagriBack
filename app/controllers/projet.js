@@ -151,8 +151,10 @@ exports.getProjetsByRoleMobile = function (req, res, next) {
         var prom = [];
         var test;
         var test2 ;
-        prom.push(Projet.findById(element.projet,'-perimetre').then(function(rprojet) {
-            test = rprojet
+        prom.push(Projet.findById(element.projet,'-perimetre')
+        .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
+        .exec(function(err,results){
+            test = results            
         }));
         prom.push(Perimetre.Commune.find({
             'id_commune': {$in: element.communes}

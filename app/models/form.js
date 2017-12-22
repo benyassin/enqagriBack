@@ -44,10 +44,14 @@ var FormSchema = new Schema({
 
 }, {
     toJSON: { virtuals: true },
+    toObject:{ virtuals: true },
     timestamps: true,
     versionKey: false
 });
-
+FormSchema.method('fieldss', function(callback){
+    Fields.find({form: this.id_fields})
+        .exec(callback)
+})
 FormSchema.virtual('fields',{
     ref:'Fields',
     localField: 'id_fields',
