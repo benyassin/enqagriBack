@@ -7,6 +7,7 @@ var AuthenticationController = require('./controllers/authentication'),
     ProjetController = require('./controllers/projet');
     CollecteController = require('./controllers/collecte');
     ReportingController = require('./controllers/reporting');
+    SegmentController = require('./controllers/segment');
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
@@ -28,6 +29,7 @@ module.exports = function(app){
         reportingRoutes = express.Router();
     let mobileRoutes = express.Router();
         projetmobileRoutes = express.Router();
+        segmentmobileRoutes = express.Router();
         mobileAuthRoutes = express.Router();
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
@@ -113,6 +115,9 @@ module.exports = function(app){
 
     mobileRoutes.use('/projets',projetmobileRoutes);
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
+
+    mobileRoutes.use('/segment',segmentmobileRoutes);
+    segmentmobileRoutes.get('/',SegmentController.getSegment);
 
     mobileRoutes.use('/auth', mobileAuthRoutes);
     mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile);
