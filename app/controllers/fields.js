@@ -23,7 +23,7 @@ exports.createFields = function(req, res ,next){
 
 };
 exports.getExtrapolationFields = function(req,res,next){
-    console.log(req.params.form_id)
+    console.log(req.params.form_id);
     var types = ['container','htmlelement','hidden','columns','fieldset','editgrid','datagrid','table','well','panel'];
 
     Fields.findOne({'form':req.params.form_id},function(err,form){

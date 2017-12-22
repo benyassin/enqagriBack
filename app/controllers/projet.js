@@ -1,8 +1,7 @@
 var Projet = require('../models/projet');
 var Perimetre = require('../models/perimetre');
 var mongoose = require('mongoose');
-
-var q = require('q')
+var Promise = require('es6-promise').Promise;
 
 exports.createProjet = function (req, res, next) {
 
@@ -115,7 +114,7 @@ exports.getProjetsMobile = function(req,res,next){
 }
 
 
-exports.getProjetsByRoleMobile = function (req, res, next){
+exports.getProjetsByRoleMobile = function (req, res, next) {
     let affectation = req.user.affectation;
     // console.log("perimetre utilist",perimetre)    
     // Projet.find()
@@ -142,45 +141,38 @@ exports.getProjetsByRoleMobile = function (req, res, next){
     //             })
     //             res.status(200).json(projets)
     //     })
-    let ayoub = []
-    let promises = []
-    length = affectation.length
+    let ayoub = [];
+    let ayoub2 = [];
+    length = affectation.length;
     // let i = 0
-    for (let element of affectation){
-        if(element.communes.length > 0){             
-            var promise2 = Projet.findById(element.projet).exec(function(err,rprojet){
-                if(err) {
-                   return console.log(err)
-                }
-                var promise = Perimetre.Commune.find({
-                    'id_commune': { $in: element.communes}
-                }).exec(function(err,communes){
-                    if(err) {
-                       return console.log(err)
-                    }
-                    // console.log(communes)
-                    
-                    var newVar = rprojet
-                    newVar.communes = communes
-                    // console.log(newVar)
-                    ayoub.push(newVar)
-                    // rprojet['AYOUUUBBBBBB'] = communes
-                    // projets.push(rprojet)             
-                    // console.log(rprojet)
-                })
-                promises.push(promise,promise2)
-            })
-            
+    var promises = [];
+    for (let element of affectation) {
+        if(element.communes.length > 0){
+        var prom = [];
+        var test;
+        var test2 ;
+        prom.push(Projet.findById(element.projet,'-perimetre').then(function(rprojet) {
+            test = rprojet
+        }));
+        prom.push(Perimetre.Commune.find({
+            'id_commune': {$in: element.communes}
+        },'-geometry').exec(function(err, communes) {
+            test2 = communes;
+        }));
+        Promise.all(prom).then(function(){
+                data(test,test2)
+        })};
+        function data(n,n2){
+               n=n.toObject() ;
+               n.communes = n2;
+                ayoub.push(n);
+        if(ayoub.length == length){
+            res.status(200).send(ayoub)
         }
-        q.all(promises).then(console.log(ayoub))
-        // console.log('lenght ayoub : ' ,ayoub.length)
-        // console.log('length affecaat', affectation.length) 
-        // if(ayoub.length == affectation.length){
-        //     console.log('marouane')
-        //     console.log(ayoub)
+        }
+    }
 
-        // }
-    };
+
 
 }
  
