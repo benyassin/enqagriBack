@@ -115,6 +115,7 @@ exports.getProjetsMobile = function(req,res,next){
 
 
 exports.getProjetsByRoleMobile = function (req, res, next) {
+    console.log('AYOUBBBBBBBBBBB')
     let affectation = req.user.affectation;
     // console.log("perimetre utilist",perimetre)    
     // Projet.find()
