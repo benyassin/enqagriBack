@@ -121,7 +121,15 @@ UserSchema.pre('save', function(next){
         console.log(user)
         next();
 });
-
+UserSchema.pre('save',function(next){
+    var user = this
+    if(!user.isModified('perimetre')){
+        return next();
+    }
+    user.affectation = []
+    console.log('already affected clear affecation')
+    next()
+})
 //pre save 
 UserSchema.pre('save', function(next){
 
@@ -131,7 +139,7 @@ UserSchema.pre('save', function(next){
     if(!user.isModified('password')){
         return next();
     }
-
+    
     bcrypt.genSalt(SALT_FACTOR, function(err, salt){
 
         if(err){
