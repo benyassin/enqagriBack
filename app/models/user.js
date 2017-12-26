@@ -96,27 +96,18 @@ UserSchema.virtual('commune',{
     foreignField: 'id_province',
     justOne: true
 })
-UserSchema.method('communes',function() {
-    let array = []
-    let retest = []
-    this.affectation.forEach(projet => {
-        projet.communes.forEach(commune => {
-            if(!array.includes(commune)){
-                array.push(commune)
-            }
-        });
-    });
-  Perimetre.Commune.find({
-    'id_commune': { $in: array}
-    }, function(err, docs){
-        if(err){
-            return err
-        }
-    done(docs)
-    });
-    function done(data){
-        return data
-    }
+UserSchema.virtual('communes', {
+    ref:'Commune',
+    localField: 'affectation.communes',
+    foreignField: 'id_commune',
+    justOne: false
+})
+
+UserSchema.virtual('projet', {
+    ref:'Projet',
+    localField: 'affectation.projet',
+    foreignField: '_id',
+    justOne: false
 })
 
 UserSchema.pre('save', function(next){
