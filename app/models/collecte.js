@@ -13,10 +13,6 @@ var CollecteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
-    id_exploitation: {
-        type: String,
-        required:true
-    },
     geo: Boolean,
     lat: String,
     lng: String,
@@ -52,6 +48,8 @@ var CollecteSchema = new Schema({
         form: String,
         formname: String,
         data: [{
+            id_segment : Number,
+            id_parcelle : Number,
             bloc: Number,
             numero : Number,
             shape:String,

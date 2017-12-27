@@ -91,7 +91,7 @@ exports.getCollecteByProjet = function (req,res, next){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
     console.log(query)
-    Collecte.find(query)
+    Collecte.find(query,'-gjson')
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
     .exec(function(err,collectes){
