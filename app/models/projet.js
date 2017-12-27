@@ -34,6 +34,11 @@ var ProjetSchema = new Schema({
             ref:'User'
         }   
     }],
+    extrapolation:[{
+        key:String,
+        label:String,
+        form : String
+    }],
     forms : [{
         type : Schema.Types.ObjectId,
         ref: 'Form'
@@ -43,6 +48,7 @@ var ProjetSchema = new Schema({
     timestamps: true,
     versionKey: false
 });
+
 
 ProjetSchema.pre('findOneAndUpdate', function(next) {
     this.options.runValidators = true;

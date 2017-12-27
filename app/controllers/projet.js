@@ -3,6 +3,7 @@ var Perimetre = require('../models/perimetre');
 var mongoose = require('mongoose');
 var Promise = require('es6-promise').Promise;
 var User = require('../models/user');
+var _ = require('underscore')
 
 exports.createProjet = function (req, res, next) {
 
@@ -12,7 +13,6 @@ exports.createProjet = function (req, res, next) {
     }
     query = {_id : data._id};
     data.perimetre= {'region': data.region || [],'province': data.province || []}
-
     Projet.update(query, data,{runValidators: true, upsert: true}, function(err, projet) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
