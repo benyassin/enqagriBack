@@ -115,8 +115,8 @@ exports.getCollecteEnTraitement = function(req,res,next){
     if(req.query.province != 0){
         query.province = req.query.province
     }
-    
-    Collecte.find(query).nor([{'validation.0':'new'},{'validation.1' : 'valid'}])
+    let index = 'validation.' +  req.query.index
+    Collecte.find(query).nor([{'validation.0':'new'},{index : 'valid'}])
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
     .exec(function(err,collectes){

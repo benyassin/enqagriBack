@@ -6,7 +6,7 @@ let fs = require('fs');
 
 exports.getProvinces = function(req, res ,next){
     let query = {}
-    if(req.params.id_region){
+    if(req.params.id_region && req.params.id_region != 0){
         query = {"id_region" : req.params.id_region}
     }
     Perimetre.Province.find(query,'id_province name id_region').exec(function(err,provinces){

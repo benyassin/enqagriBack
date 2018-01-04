@@ -28,11 +28,12 @@ var ProjetSchema = new Schema({
         }],
     },
     validation:[{
-        name: String,
+        alias: String,
         agent:{
             type:Schema.Types.ObjectId,
             ref:'User'
-        }   
+        },
+        name:String   
     }],
     extrapolation:[{
         key:String,
