@@ -31,6 +31,7 @@ exports.getExtrapolationFields = function(req,res,next){
         if(err){
             return res.status(400).send(err);
         }
+        console.log(form)
         function searchObj(obj){
             for (let key in obj){
                 let component = obj[key];

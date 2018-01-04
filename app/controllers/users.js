@@ -26,7 +26,10 @@ exports.getUser = function (req, res, next) {
 exports.setAffectation = function(req,res,next){
     let data = req.body.data
     let agents = []
-    data.forEach(commune => {
+
+    User.update({'affectation.projet' :req.body.projet},{ $pull: {"affectation": {'projet':req.body.projet} } },function(err,results){
+        console.log(results)
+            data.forEach(commune => {
         if(commune.agents.length > 0){
             commune.id_agents.forEach(agent => {
                 if(!agents.includes(agent)){
@@ -35,6 +38,9 @@ exports.setAffectation = function(req,res,next){
             })
         }
     });
+    if(agents.length == 0 ){
+        return res.status(200).json('saved')
+    }
     newArray = []
     agents.forEach(agent => {
         communes = []
@@ -60,6 +66,8 @@ exports.setAffectation = function(req,res,next){
         res.status(200).json('saved')
     })
     return req.body
+    })
+
 }
 
 
