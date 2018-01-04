@@ -130,10 +130,14 @@ exports.getCollecteEnTraitement = function(req,res,next){
 exports.validate = function(req,res,next){
     let data = req.body
     let query = {}
+    if(req.body.rmessage){
+        query.rmessage = req.body.rmessage
+    }
     switch(data.action){
         case 'valid':
         query['validation.' + parseInt(data.niveau+1)] = 'new'
         query['validation.' + parseInt(data.niveau)] = data.action
+        query.rmessage = null
         break;
         case 'reject':
         query['validation.' + parseInt(data.niveau)] = 'null'        

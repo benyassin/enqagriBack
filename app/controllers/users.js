@@ -27,7 +27,7 @@ exports.setAffectation = function(req,res,next){
     let data = req.body.data
     let agents = []
 
-    User.update({'affectation.projet' :req.body.projet},{ $pull: {"affectation": {'projet':req.body.projet} } },function(err,results){
+    User.update({'affectation.projet' :req.body.projet,'role':'agent'},{ $pull: {"affectation": {'projet':req.body.projet} } },function(err,results){
         console.log(results)
             data.forEach(commune => {
         if(commune.agents.length > 0){

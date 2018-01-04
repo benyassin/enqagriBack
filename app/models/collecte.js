@@ -23,6 +23,10 @@ var CollecteSchema = new Schema({
         type: String,
         default: ['new','null','null','null','null']
     }],
+    rmessage:{
+        type:String,
+        default:null
+    },
     status : {
         type: Number,
         default : 0
