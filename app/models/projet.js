@@ -36,9 +36,9 @@ var ProjetSchema = new Schema({
         name:String   
     }],
     extrapolation:[{
-        key:String,
+        field:Object,
         label:String,
-        form : String
+        form : String,
     }],
     forms : [{
         type : Schema.Types.ObjectId,
