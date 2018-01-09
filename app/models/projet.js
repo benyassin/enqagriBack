@@ -39,6 +39,11 @@ var ProjetSchema = new Schema({
         field:Object,
         label:String,
         form : String,
+        formule:Object,
+        type:{
+            type:String
+        },
+        hidden:Boolean
     }],
     forms : [{
         type : Schema.Types.ObjectId,
