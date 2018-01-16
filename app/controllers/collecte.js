@@ -90,6 +90,9 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.query.niveau != -1){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
+    if(req.user.role == 'agent'){
+        query.agent = req.user._id
+    }
     console.log(query)
     Collecte.find(query,'-gjson')
     .populate('agent')

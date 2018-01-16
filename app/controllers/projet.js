@@ -123,6 +123,15 @@ exports.getProjetsByRoleMobile = function(req,res,next){
 })
 }
 
+exports.getProjetsByRoleWeb = function(req,res,next){
+    User.findById(req.user._id)
+    .populate({path:'affectation.projet',populate:{path:'perimetre.region',select:'name id_region'}})
+    .populate({path:'affectation.projet',populate:{path:'perimetre.province',select:'name id_region id_province'}})
+
+    .exec(function(err,results){
+        res.status(200).json(results.affectation)
+})
+}
  
 exports.controllerProjets = function(req, res,next){
     Projet.find({'validation.agent':req.user._id})          

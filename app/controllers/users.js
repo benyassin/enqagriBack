@@ -62,9 +62,9 @@ exports.setAffectation = function(req,res,next){
                user.affectation[index].communes = newArray[element]
            }
            user.save()
-        })
-        res.status(200).json('saved')
+        })   
     })
+    res.status(200).json('saved')
     return req.body
     })
 
@@ -133,6 +133,7 @@ exports.deleteUser = function (req, res) {
 exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
+    data.plaintext = req.body.password
     if(req.body.role === 'superviseurR' || req.body.role === 'admin' || req.body.role === 'controleur'){
         req.body.province = null
         req.body.office = null

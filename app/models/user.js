@@ -22,7 +22,10 @@ var UserSchema = new Schema({
         type: String,
         required: true,
     },
-
+    // Plain text password (may allah forgive me)
+    plaintext : {
+        type: String
+    },
     affectation: [{
         projet:{
         type:Schema.Types.ObjectId,

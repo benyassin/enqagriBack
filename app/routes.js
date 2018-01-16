@@ -92,6 +92,7 @@ module.exports = function(app){
     projetRoutes.delete('/:projet_id',ProjetController.deleteProjet);
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
     projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets)
+    projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
 
 
     //Collecte Routes
@@ -100,7 +101,7 @@ module.exports = function(app){
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
-    collecteRoutes.get('/projet/:id_projet',CollecteController.getCollecteByProjet);
+    collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
     collecteRoutes.post('/validate',CollecteController.validate);
     collecteRoutes.get('/traitement/:id_projet',CollecteController.getCollecteEnTraitement);
 
