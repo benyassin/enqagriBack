@@ -64,6 +64,10 @@ exports.getCollectes = function(req, res, next){
     })
     }else{
         Collecte.findOne({'_id':req.params.id_collecte})
+        .populate({path:'projet',select:'name theme validation'})
+        .populate('agent')
+        .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
+        })
         .exec(function(err,collectes){
             if(err){
                 return res.status(500).json(err)
@@ -118,8 +122,11 @@ exports.getCollecteEnTraitement = function(req,res,next){
     if(req.query.province != 0){
         query.province = req.query.province
     }
-    let index = 'validation.' +  req.query.index
-    Collecte.find(query).nor([{'validation.0':'new'},{index : 'valid'}])
+    let test = {}
+    test['validation.' +  req.query.index] = 'valid'
+
+    console.log({'validation.0':'new'},test)
+    Collecte.find(query).nor([{'validation.0':'new'},test])
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
     .exec(function(err,collectes){
@@ -128,6 +135,7 @@ exports.getCollecteEnTraitement = function(req,res,next){
         }
         res.status(200).json(collectes)
     })
+    
 }
 
 exports.validate = function(req,res,next){
