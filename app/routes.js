@@ -12,7 +12,9 @@ var AuthenticationController = require('./controllers/authentication'),
     passportService = require('../config/passport'),
     passport = require('passport'),
     validate = require('express-validation');
-    validation = require('./validation')
+    validation = require('./validation');
+
+    
 let requireAuth = passport.authenticate('jwt', {session: false}),
     requireLogin = passport.authenticate('local', {session: false});
 
@@ -99,6 +101,7 @@ module.exports = function(app){
 
     apiRoutes.use('/collectes', collecteRoutes);
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
+    collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte)
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
@@ -126,6 +129,5 @@ module.exports = function(app){
     app.use('/api', apiRoutes);
 
     app.use('/mobile',mobileRoutes);
-
 
 }

@@ -1,0 +1,188 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <base href="/">    
+  <meta charset="utf-8">
+  <title>Form.io Form Builder</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootswatch@3.3.7/yeti/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="public/dist/ngFormBuilder-full.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+</head>
+<body ng-app="formBuilder">
+<!-- BROWSE HAPPY BEGINS HERE -->
+<style>
+  .browsehappy {
+    display:block;
+    width:100%;
+    height:100px;
+    background-color:#f2dede;
+    margin: 0 0 10px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: #333;
+    padding-top: 15px;
+    vertical-align:middle;
+  }
+  .browsehappy span {
+    vertical-align:middle;
+    margin:20px 20px 20px 20px;
+    background:url("https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png") no-repeat;
+    height:64px;
+    width:64px;
+    display:inline-block;
+  }
+
+  .formbuilder {
+    height: 600px;
+  }
+
+  .formcomponents {
+    width: 30%;
+  }
+
+  .formarea {
+    width: 70%;
+  }
+
+  .component-settings .nav-link {
+    font-size: 0.6em;
+  }
+
+  .jsonviewer {
+    max-height: 600px;
+    overflow: scroll;
+  }
+
+  .form-type-select {
+    display: inline-block;
+    width: 100px;
+    height: 28px;
+    vertical-align: top;
+  }
+</style>
+<!--[if IE 6]><p class="browsehappy"><img />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+<!--[if IE 7]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+<!--[if IE 8]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+<!--[if IE 9]><p class="browsehappy"><img src="https://cdn.rawgit.com/alrra/browser-logos/master/internet-explorer/internet-explorer_64x64.png" />You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+<!-- BROWSE HAPPY ENDS HERE -->
+<div class="page-content" ng-app="formioApp">
+  <div class="container-fluid">
+    <div>
+	    <div class="row">
+        <div class="col-sm-12">
+          <div class="well">
+            <div id="target"></div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
+<script src="https://unpkg.com/signature_pad@1.5.3/signature_pad.min.js"></script>
+<script src="public/dist/ngFormBuilder-full.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<script src="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.js"></script>
+<script type="text/javascript">
+
+
+
+
+
+  angular
+    .module("formBuilder", ["ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer","ngSanitize"])
+    .run([
+      "$rootScope",
+      'formioComponents',
+      '$timeout',
+      '$location',
+      '$http',
+      '$compile',
+      function(
+        $rootScope,
+        formioComponents,
+        $timeout,
+        $location,
+        $http,
+        $compile,
+      ) {
+        $rootScope.form = {
+          components: [],
+          display: 'form'
+        };
+        $rootScope.submitData
+        $rootScope.newElement = null
+        var myHTML = angular.element('<formio form="form" submission="submitData"></formio>')
+        var target = document.getElementById('target')
+        $rootScope.receiveMessage = function(event){
+            if (event.origin !== "http://localhost:4200")
+                return;
+
+            if(event.data.message == 'data' && event.data.window == window.name){
+            $rootScope.submitData = event.data.data
+            $rootScope.newElement = angular.element(target).append(myHTML);
+            $compile($rootScope.newElement)($rootScope)
+            console.log($rootScope.submitData)
+            console.log("set new data")
+            }
+            console.log(event.data)
+
+        }
+        window.addEventListener("message", $rootScope.receiveMessage, false);
+
+
+        $rootScope.paramValue = $location.absUrl().split('=')[1];
+        $rootScope.elements
+
+
+        var request = $http.get('/api/forms/'+$rootScope.paramValue+'/fields').then(function(response){
+          $rootScope.elements = response.data
+          $rootScope.form.components = response.data.components
+          $rootScope.form.display = response.data.display
+          parent.postMessage({"window":window.name,"message":'loaded'},'http://localhost:4200')
+          $rootScope.newElement = angular.element(target).append(myHTML);
+            $compile($rootScope.newElement)($rootScope)
+          console.log(window)
+          },function(err){
+          console.log('error unable to get form fields')
+		      console.log(err)
+          });
+
+
+        $rootScope.$on('formSubmit', function(event,submission) {
+          console.log($rootScope.submitData)
+          event.preventDefault() 
+          parent.postMessage({"window":window.name,"message":"submission","data":submission} ,'http://localhost:4200')
+        })
+
+		  //   $rootScope.renderForm = true;
+        // $rootScope.$on('formUpdate', function(event, form) {
+        //   angular.merge($rootScope.form, form);
+        //   $rootScope.renderForm = false;
+        //   setTimeout(function() {
+        //     $rootScope.renderForm = true;
+        //   }, 10);
+		    // console.log($rootScope.form)
+        // });
+
+        $rootScope.submit = function (){
+          var data = {};
+          data.components = $rootScope.form.components
+          data.display = $rootScope.form.display
+          $http.post('/api/forms/fields/'+ $rootScope.paramValue,angular.toJson(data),{'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'}).then(function(){
+            console.log('fields enregistre')
+          }),function(err){
+            console.log('erreur pendant la creation des fields', err)
+          }
+        };
+        
+      }
+    ]);
+</script>
+</body>
+</html>

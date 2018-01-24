@@ -5,6 +5,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var compression = require('compression')
 var cors = require('cors');
+var path    = require("path");
 
 var databaseConfig = require('./config/database');
 var router = require('./app/routes');
@@ -23,4 +24,12 @@ app.use(bodyParser.json({limit: '50mb'})); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 app.use(cors());
 app.use(compression());
+
+app.use('/public', express.static(path.join(__dirname + '/ng')));
+app.use('/angular', express.static(path.join(__dirname + '/angular')));
+
+
+
+
+
 router(app);
