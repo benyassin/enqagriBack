@@ -75,16 +75,16 @@ exports.getCollectes = function(req, res, next){
         res.status(200).json(collectes)
     })
     }else{
-        Collecte.findOne({'_id':req.params.id_collecte})
+        Collecte.findOne({'_id':req.params.id_collecte}) 
         .populate({path:'projet',select:'name theme validation'})
         .populate('agent')
         .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
         })
-        .exec(function(err,collectes){
+        .exec(function(err,collecte){
             if(err){
                 return res.status(500).json(err)
             }
-            res.status(200).json(collectes)
+                res.status(200).json(collecte)
         })
     }
 }

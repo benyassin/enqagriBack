@@ -107,6 +107,7 @@ module.exports = function(app){
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
     collecteRoutes.post('/validate',CollecteController.validate);
     collecteRoutes.get('/traitement/:id_projet',CollecteController.getCollecteEnTraitement);
+    collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment)
 
     //Reporting Routes
 
@@ -121,7 +122,7 @@ module.exports = function(app){
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
 
     mobileRoutes.use('/segment',segmentmobileRoutes);
-    segmentmobileRoutes.get('/',SegmentController.getSegment);
+    segmentmobileRoutes.get('/',SegmentController.getSegmentWithCommunes);
 
     mobileRoutes.use('/auth', mobileAuthRoutes);
     mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile);
