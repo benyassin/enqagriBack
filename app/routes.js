@@ -8,6 +8,7 @@ var AuthenticationController = require('./controllers/authentication'),
     CollecteController = require('./controllers/collecte');
     ReportingController = require('./controllers/reporting');
     SegmentController = require('./controllers/segment');
+    SupportController = require('./controllers/support');
     express = require('express'),
     passportService = require('../config/passport'),
     passport = require('passport'),
@@ -45,7 +46,7 @@ module.exports = function(app){
 
     // User routes
     apiRoutes.use('/users', userRoutes);
-
+    apiRoutes.use('/upload',SupportController.Upload);
     userRoutes.get('/', requireAuth, UserController.getUsers);
    // userRoutes.get('/:user_id',UserController.getUser)
     userRoutes.post('/',requireAuth,UserController.createUser);
@@ -80,13 +81,16 @@ module.exports = function(app){
     // Perimetre Routes
     apiRoutes.use('/perimetre',perimetreRoutes);
 
-    perimetreRoutes.get('/region', PerimetreController.getRegion)
+    perimetreRoutes.get('/region', PerimetreController.getRegion);
     perimetreRoutes.get('/province/:id_region?',PerimetreController.getProvinces);
-    perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune)
+    perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune);
     perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
     perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice);
+    perimetreRoutes.get('/collections',SupportController.getCollection);
+    perimetreRoutes.get('/support',SupportController.GetSupport);
+    perimetreRoutes.post('/collections',SupportController.createCollection);
 
-    // Projet Routes 
+    // Projet Routes
     apiRoutes.use('/projets',projetRoutes);
 
     projetRoutes.post('/',ProjetController.createProjet);
@@ -107,7 +111,8 @@ module.exports = function(app){
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
     collecteRoutes.post('/validate',CollecteController.validate);
     collecteRoutes.get('/traitement/:id_projet',CollecteController.getCollecteEnTraitement);
-    collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment)
+    collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment);
+
 
     //Reporting Routes
 
