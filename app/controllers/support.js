@@ -63,7 +63,7 @@ exports.getCollection = function(req,res){
 
 exports.createCollection = function(req,res){
     console.log(req.body);
-    Collection.create(req.params,function(err,collection){
+    Collection.create(req.body,function(err,collection){
         if(err){
             return res.status(500).json(err)
         }

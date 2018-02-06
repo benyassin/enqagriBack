@@ -17,6 +17,10 @@ var ProjetSchema = new Schema({
         type: Boolean,
         default: true
     },
+    cid :{
+        type:Schema.Types.ObjectId,
+        ref: 'Collection'
+    },
     perimetre: {
         region:[{
             type:Schema.Types.ObjectId,

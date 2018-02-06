@@ -12,6 +12,9 @@ exports.createProjet = function (req, res, next) {
         data._id = new mongoose.mongo.ObjectID()
     }
     query = {_id : data._id};
+    if(!data.cid){
+        data.cid = null
+    }
     data.perimetre= {'region': data.region || [],'province': data.province || []}
     Projet.update(query, data,{runValidators: true, upsert: true}, function(err, projet) {
             if (err) {
@@ -125,6 +128,7 @@ exports.getProjetsByRoleMobile = function(req,res,next){
 
 exports.getProjetsByRoleWeb = function(req,res,next){
     User.findById(req.user._id)
+    .populate({path:'affectation.projet',populate:{path:'cid'}})
     .populate({path:'affectation.projet',populate:{path:'perimetre.region',select:'name id_region'}})
     .populate({path:'affectation.projet',populate:{path:'perimetre.province',select:'name id_region id_province'}})
 
@@ -134,7 +138,7 @@ exports.getProjetsByRoleWeb = function(req,res,next){
 }
  
 exports.controllerProjets = function(req, res,next){
-    Projet.find({'validation.agent':req.user._id})          
+    Projet.find({'validation.agent':req.user._id})       
     .populate({path:'perimetre.region',select:'name id_region'})
     .populate({path:'perimetre.province',select:'name id_province id_region'})
     .exec(function (err,projets){
