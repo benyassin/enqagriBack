@@ -95,8 +95,8 @@ CollecteSchema.post("remove", function(doc,next){
         sums[entry.type] = (sums[entry.type] || 0) + 1;
         return sums;
      },{});
-    var now = new Date();
-    var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    let now = new Date();
+    let startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: -1,polygone:-count.polygone || 0,polyline:-count.polyline || 0,point:-count.point || 0,parcelle:-parcelle}},{upsert:true},
         function(err,data){
         if(err){

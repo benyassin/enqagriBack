@@ -19,8 +19,8 @@ let upload = multer({ //multer settings
 }).single('file');
 
 exports.Upload = function(req,res){
-    console.log(req);
     upload(req,res,function(err){
+        console.log(req.file);
         if(err){
             res.json({error_code:1,err_desc:err});
             return;
@@ -41,6 +41,7 @@ exports.Upload = function(req,res){
 };
 
 
+
 exports.GetSupport = function(req,res){
 
     Support.find({},function(err,data){
@@ -51,6 +52,9 @@ exports.GetSupport = function(req,res){
         res.status(200).json(data)
     })
 };
+
+
+
 
 exports.getCollection = function(req,res){
     Collection.find({},function (err,collections) {
