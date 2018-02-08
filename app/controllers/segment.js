@@ -4,9 +4,9 @@ var Collecte = require('../models/collecte');
 let Support = require('../models/support');
 
 exports.getSegmentWithCommunes = function(req,res,next){
-    if(req.query.id && req.query.cid){
-    console.log(req.query.id);
     let id = req.query.id;
+    if(req.query.id &&  req.query.cid){
+
      Support.find({'properties.id_commune':id,'cid':req.query.cid})
     .exec(function(err,segments){
         if(err){
@@ -20,10 +20,18 @@ exports.getSegmentWithCommunes = function(req,res,next){
         })
 
     })
+    }else if (!req.query.cid){
+        Perimetre.Commune.find({'id_commune':id}).exec(function(err,commune){
+            if(err){
+                console.log(err)
+            }
+            res.status(200).json({commune:commune,support:{}})
+        })
+
         }else{
-            res.status(500).json({error:'query',message: '"id commune" or "id collection" is missing'})
-        }
-}
+        res.status(500).json({error:'query',message: '"id commune" or "id collection" is missing'})
+    }
+};
 exports.getSegment = function(req,res,next){
     Segment.findOne({'id':req.params.id_segment})
         .populate({path:'parcelles',select:'id geometry id_commune'})
