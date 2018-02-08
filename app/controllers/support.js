@@ -1,6 +1,8 @@
 let fs = require('fs');
 let Support = require('../models/support');
 let Collection = require('../models/collection');
+let mongoose = require('mongoose');
+
 let multer = require('multer');
 
 
@@ -27,8 +29,14 @@ exports.Upload = function(req,res){
         }
         let data = JSON.parse(fs.readFileSync(req.file.path,'utf8'));
         data.features.forEach(element  => {
-            element.cid = req.query.id
+            element.cid = mongoose.Types.ObjectId(req.query.id)
         });
+        Support.remove({cid:mongoose.Types.ObjectId(req.query.id)},function(err,data){
+            if(err){
+                return res.status(500).json(err)
+            }
+            console.log('removed elements',data)
+        })
         Support.collection.insert(data.features,test);
         function test(err,docs){
             if(err){
@@ -43,12 +51,11 @@ exports.Upload = function(req,res){
 
 
 exports.GetSupport = function(req,res){
-
-    Support.find({},function(err,data){
+    console.log(req.query);
+    Support.find({cid:mongoose.Types.ObjectId(req.query.id)},function(err,data){
         if(err){
             return res.status(500).json(err)
         }
-        console.log(data);
         res.status(200).json(data)
     })
 };

@@ -126,7 +126,7 @@ module.exports = function(app){
     mobileRoutes.use('/projets',projetmobileRoutes);
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
 
-    mobileRoutes.use('/segment',segmentmobileRoutes);
+    mobileRoutes.use('/support',segmentmobileRoutes);
     segmentmobileRoutes.get('/',SegmentController.getSegmentWithCommunes);
 
     mobileRoutes.use('/auth', mobileAuthRoutes);
