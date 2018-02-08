@@ -2,16 +2,19 @@ var Perimetre = require('../models/perimetre');
 var Segment = Perimetre.Segment;
 var Collecte = require('../models/collecte');
 let Support = require('../models/support');
+let mongoose = require('mongoose');
 
 exports.getSegmentWithCommunes = function(req,res,next){
     let id = req.query.id;
     if(req.query.id &&  req.query.cid){
+        console.log(id);
 
-     Support.find({'properties.id_commune':id,'cid':req.query.cid})
+        Support.find({'properties.id_commune':parseInt(id),cid: mongoose.Types.ObjectId(req.query.cid)})
     .exec(function(err,segments){
         if(err){
             console.log(err)
         }
+        console.log('found :',segments.length )
         Perimetre.Commune.find({'id_commune':id}).exec(function(err,commune){
             if(err){
                 console.log(err)
@@ -21,6 +24,7 @@ exports.getSegmentWithCommunes = function(req,res,next){
 
     })
     }else if (!req.query.cid){
+        console.log('using this function')
         Perimetre.Commune.find({'id_commune':id}).exec(function(err,commune){
             if(err){
                 console.log(err)
