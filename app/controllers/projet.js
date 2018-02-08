@@ -119,9 +119,13 @@ exports.getProjetsMobile = function(req,res,next){
 
 exports.getProjetsByRoleMobile = function(req,res){
         User.findById(req.user._id)
-        .populate({path:'affectation.projet',select:'-perimetre -extrapolation -validation',populate:{path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}}})
+            .populate({path:'affectation.projet',populate:{path:'cid'}})
+            .populate({path:'affectation.projet',select:'-perimetre -extrapolation -validation',populate:{path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}}})
         .populate({path:'communes',select:'-geometry'})
         .exec(function(err,results){
+            if(err){
+                return res.status(500).json(err)
+            }
             res.status(200).json(results.affectation)
 })
 }
