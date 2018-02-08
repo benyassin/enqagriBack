@@ -13,6 +13,7 @@ let CollecteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
+    numero: Number,
     geo: Boolean,
     lat: String,
     lng: String,
@@ -51,11 +52,7 @@ let CollecteSchema = new Schema({
         form: String,
         formname: String,
         data: [{
-            id_support : Number,
-            support : {
-                type: Schema.Types.ObjectId,
-                ref: 'Support'
-            },
+            support : Object,
             numero : Number,
             shape:String,
             gjson:mongoose.Schema.Types.GeoJSON,
@@ -70,8 +67,8 @@ let CollecteSchema = new Schema({
 );
 
 CollecteSchema.post("save", function(doc,next){
-    self = this
-    parcelle = this.collecte.length
+    self = this;
+    parcelle = this.collecte.length;
     count = this.collecte.reduce(function(sums,entry){
         sums[entry.type] = (sums[entry.type] || 0) + 1;
         return sums;
