@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
-var GeoJSON = require('mongoose-geojson-schema');
-var Reporting = require('./reporting');
-var _ = require('lodash');
-var Schema =  mongoose.Schema
+let mongoose = require('mongoose');
+let GeoJSON = require('mongoose-geojson-schema');
+let Reporting = require('./reporting');
+let _ = require('lodash');
+let Schema =  mongoose.Schema;
 
-var CollecteSchema = new Schema({
+let CollecteSchema = new Schema({
     projet : {
         type : Schema.Types.ObjectId,
         ref: 'Projet'
@@ -18,6 +18,7 @@ var CollecteSchema = new Schema({
     lng: String,
     region: Number,
     province: Number,
+    commune: Number,
     superficie: Number,
     validation : [{
         type: String,
@@ -32,8 +33,6 @@ var CollecteSchema = new Schema({
         default : 0
     },
     exploitation : {
-        superficieTotale: String,
-        date_creation : Date,
         form: String,
         formname:String,
         formdata: Object
@@ -52,9 +51,11 @@ var CollecteSchema = new Schema({
         form: String,
         formname: String,
         data: [{
-            id_segment : Number,
-            id_parcelle : Number,
-            bloc: Number,
+            id_support : Number,
+            support : {
+                type: Schema.Types.ObjectId,
+                ref: 'Support'
+            },
             numero : Number,
             shape:String,
             gjson:mongoose.Schema.Types.GeoJSON,
