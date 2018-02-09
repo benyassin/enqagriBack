@@ -6,11 +6,11 @@ exports.storeCollecte = function(req,res,next){
     let user = req.user._id;
     data = req.body;
     data.agent = user;
-    data.region = req.user.perimetre.region;
-    data.province = req.user.perimetre.province;
+    // data.region = req.user.perimetre.region;
+    // data.province = req.user.perimetre.province;
     data.validation = ['new','null','null','null','null'];
-    console.log(req.user)
-    console.log(data)
+    console.log(req.user);
+    console.log(data);
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)

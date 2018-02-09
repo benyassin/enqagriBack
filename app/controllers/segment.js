@@ -14,7 +14,7 @@ exports.getSegmentWithCommunes = function(req,res,next){
         if(err){
             console.log(err)
         }
-        console.log('found :',segments.length )
+        console.log('found :',segments.length );
         Perimetre.Commune.find({'id_commune':id}).exec(function(err,commune){
             if(err){
                 console.log(err)
@@ -24,7 +24,7 @@ exports.getSegmentWithCommunes = function(req,res,next){
 
     })
     }else if (!req.query.cid){
-        console.log('using this function')
+        console.log('using this function');
         Perimetre.Commune.find({'id_commune':id}).exec(function(err,commune){
             if(err){
                 console.log(err)
