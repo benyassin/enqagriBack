@@ -1,6 +1,6 @@
-var Collecte = require('../models/collecte')
+var Collecte = require('../models/collecte');
 var mongoose = require('mongoose');
-var qs = require('querystring')
+var qs = require('querystring');
 
 exports.storeCollecte = function(req,res,next){
     let user = req.user._id;
@@ -37,10 +37,10 @@ exports.updateCollecte = function(req,res){
         if(err){
             return res.status(500).json(err)
         }
-        console.log(collecte)
-        collecte.collecte[0].data[0].formdata = req.body.data
-        console.log(collecte)
-        collecte.save()
+        console.log(collecte);
+        collecte.collecte[0].data[0].formdata = req.body.data;
+        console.log(collecte);
+        collecte.save();
         res.status(200).json(collecte)
     })
 }
@@ -91,7 +91,7 @@ exports.getCollectes = function(req, res, next){
 
 
 exports.getCollecteByProjet = function (req,res, next){
-    id_projet = req.params.id_projet
+    id_projet = req.params.id_projet;
     qs.parse(req.query)
     console.log(req.query)
     let query = {
@@ -103,7 +103,10 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.query.province != 0){
         query.province = req.query.province
     }
-    if(req.query.niveau != -1){
+    if(req.query.commune != 0){
+        query.commune = req.query.commune
+    }
+    if(req.query.niveau !== -1){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
     if(req.user.role == 'agent'){
