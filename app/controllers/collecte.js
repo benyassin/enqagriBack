@@ -125,9 +125,9 @@ exports.getCollecteByProjet = function (req,res, next){
 }
 
 exports.getCollecteEnTraitement = function(req,res,next){
-    id_projet = req.params.id_projet
+    id_projet = req.params.id_projet;
     
-    qs.parse(req.query)
+    qs.parse(req.query);
     let query = {
         'projet' : req.params.id_projet,
     };
@@ -138,9 +138,9 @@ exports.getCollecteEnTraitement = function(req,res,next){
         query.province = req.query.province
     }
     let test = {}
-    test['validation.' +  req.query.index] = 'valid'
+    test['validation.' +  req.query.index] = 'valid';
 
-    console.log({'validation.0':'new'},test)
+    console.log({'validation.0':'new'},test);
     Collecte.find(query).nor([{'validation.0':'new'},test])
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
