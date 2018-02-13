@@ -33,17 +33,17 @@ exports.storeCollecte = function(req,res,next){
 // }
 
 exports.updateCollecte = function(req,res){
-    Collecte.findById(req.body.id).exec(function(err,collecte){
+    Collecte.findById(req.body._id).exec(function(err,collecte){
+
         if(err){
             return res.status(500).json(err)
         }
-        console.log(collecte);
-        collecte.collecte[0].data[0].formdata = req.body.data;
-        console.log(collecte);
+        collecte.exploitation = req.body.exploitation;
+        collecte.collecte = req.body.collecte;
         collecte.save();
         res.status(200).json(collecte)
     })
-}
+};
 
 exports.aggregate = function(req,res,next){
     Collecte.aggregate([

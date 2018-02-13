@@ -58,6 +58,14 @@ exports.GetSupport = function(req,res){
     })
 };
 
+exports.GetSupportByid = function(req,res){
+    Support.findbyid(req.query.id).exec(function(err,data){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(data)
+    })
+};
 
 exports.getCollection = function(req,res){
     Collection.find({},function (err,collections) {

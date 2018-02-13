@@ -89,7 +89,7 @@ module.exports = function(app){
     perimetreRoutes.get('/collections',SupportController.getCollection);
     perimetreRoutes.get('/support',SupportController.GetSupport);
     perimetreRoutes.post('/collections',SupportController.createCollection);
-
+    perimetreRoutes.post('supportbyid',SupportController.GetSupportByid);
     // Projet Routes
     apiRoutes.use('/projets',projetRoutes);
 
