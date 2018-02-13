@@ -1,7 +1,10 @@
-var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
-var Perimetre = require('./perimetre')
-var Schema =  mongoose.Schema
+let mongoose = require('mongoose');
+    bcrypt   = require('bcrypt-nodejs');
+    Perimetre = require('./perimetre')
+    Schema =  mongoose.Schema;
+    autoIncrement = require('mongoose-auto-increment');
+
+
 
 var UserSchema = new Schema({
 
@@ -176,5 +179,9 @@ UserSchema.methods.comparePassword = function(passwordAttempt, cb){
             });
         
         }
-            
+
+autoIncrement.initialize(mongoose);
+
+UserSchema.plugin(autoIncrement.plugin, { model: 'User', field: 'userId',startAt: 100,incrementBy: 2 });
+
 module.exports = mongoose.model('User', UserSchema);

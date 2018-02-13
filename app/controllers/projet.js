@@ -56,7 +56,9 @@ exports.getProjetsByPerimetre = function (req, res, next){
         .populate({
           path:'perimetre.province',
           select:'-geometry',
-         }).exec(function(err,projets){
+         })
+            .populate({path:'forms'})
+            .exec(function(err,projets){
             if(err){
                 return res.status(500).send(err)
             }

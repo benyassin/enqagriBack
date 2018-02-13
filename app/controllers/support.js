@@ -48,8 +48,6 @@ exports.Upload = function(req,res){
     });
 };
 
-
-
 exports.GetSupport = function(req,res){
     console.log(req.query);
     Support.find({cid:mongoose.Types.ObjectId(req.query.id)},function(err,data){
@@ -59,8 +57,6 @@ exports.GetSupport = function(req,res){
         res.status(200).json(data)
     })
 };
-
-
 
 
 exports.getCollection = function(req,res){
