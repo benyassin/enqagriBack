@@ -53,6 +53,10 @@ let CollecteSchema = new Schema({
         formname: String,
         data: [{
             support : Object,
+            id_support:{
+                type:Schema.Types.ObjectId,
+                ref:'Support'
+            },
             numero : Number,
             shape:String,
             gjson:mongoose.Schema.Types.GeoJSON,
