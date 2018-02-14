@@ -112,6 +112,7 @@ module.exports = function(app){
     collecteRoutes.post('/validate',CollecteController.validate);
     collecteRoutes.get('/traitement/:id_projet',CollecteController.getCollecteEnTraitement);
     collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment);
+    collecteRoutes.get('/voisin/:id_support',CollecteController.getVoisin);
 
 
     //Reporting Routes

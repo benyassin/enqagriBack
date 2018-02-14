@@ -33,15 +33,27 @@ exports.storeCollecte = function(req,res,next){
 // }
 
 exports.updateCollecte = function(req,res){
-    Collecte.findById(req.body._id).exec(function(err,collecte){
-
+    Collecte.findById(req.body.id).exec(function(err,collecte){
         if(err){
             return res.status(500).json(err)
         }
+        console.log(collecte)
+        console.log('/////////////////REQ BODY//////////////////')
+        console.log(req.body)
+        if(collecte != null){
         collecte.exploitation = req.body.exploitation;
         collecte.collecte = req.body.collecte;
-        collecte.save();
-        res.status(200).json(collecte)
+
+        collecte.save().then(function(err,savedoc){
+            if(err){
+                return res.status(500).json(err)
+            }
+            console.log(savedoc);
+            res.status(200).json(savedoc)
+
+        });
+        console.log(req.body);
+        }
     })
 };
 
@@ -78,13 +90,41 @@ exports.getCollectes = function(req, res, next){
         Collecte.findOne({'_id':req.params.id_collecte}) 
         .populate({path:'projet',select:'name theme validation'})
         .populate('agent')
+        .populate('collecte.data.id_support')
         .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
         })
         .exec(function(err,collecte){
             if(err){
                 return res.status(500).json(err)
             }
-                res.status(200).json(collecte)
+            let listsupport = [];
+            collecte.collecte.forEach(c =>{
+                c.data.forEach(element => {
+                    if(!listsupport.includes(element.id_support._id)){
+                        listsupport.push({'collecte.data.id_support':element.id_support._id});
+                    }
+                });
+            });
+            Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
+                if(err){
+                    return res.status(500).json(err)
+                }
+                let result = [];
+                voisin.forEach(element =>{
+                    if(element._id.toString() != collecte._id.toString()) {
+                        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+                        console.log(element._id)
+                        console.log(collecte._id)
+                        element.collecte.forEach(c => {
+                            c.data.forEach(p => {
+                                result.push(p.gjson)
+                            })
+                        })
+                    }
+                })
+
+                res.status(200).json({'collecte':collecte,'voisin':result})
+            })
         })
     }
 }
@@ -161,13 +201,13 @@ exports.validate = function(req,res,next){
     }
     switch(data.action){
         case 'valid':
-        query['validation.' + parseInt(data.niveau+1)] = 'new'
-        query['validation.' + parseInt(data.niveau)] = data.action
+        query['validation.' + parseInt(data.niveau+1)] = 'new';
+        query['validation.' + parseInt(data.niveau)] = data.action;
         query.rmessage = null
         break;
         case 'reject':
-        query['validation.' + parseInt(data.niveau)] = 'null'        
-        query['validation.' + parseInt(data.niveau-1)] = data.action
+        query['validation.' + parseInt(data.niveau)] = 'null';
+        query['validation.' + parseInt(data.niveau-1)] = data.action;
         break      
     }
     console.log(query)
@@ -176,5 +216,25 @@ exports.validate = function(req,res,next){
             return res.status(500).json(err)
         }
         res.status(200).json(collecte)
+    })
+}
+
+exports.getVoisin = function(req,res){
+
+    Collecte.find({'projet':req.query.pid,'collecte.data.id_support':mongoose.Types.ObjectId(req.id.sid)},function(err,collecte){
+        if(err){
+            return res.status(500).json(err)
+        }
+        let result = [];
+        collecte.forEach(element =>{
+            if(element._id !== cid) {
+                element.collecte.forEach(c => {
+                    c.data.forEach(p => {
+                        result.push(p.gjson)
+                    })
+                })
+            }
+        })
+        res.status(200).json(result)
     })
 }
