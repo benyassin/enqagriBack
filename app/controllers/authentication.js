@@ -12,6 +12,7 @@ function setUserInfo(request){
 
     var user = {
         _id: request._id,
+        userId:request.userId,
         login: request.login,
         email: request.email,
         role: request.role,
