@@ -32,14 +32,7 @@ var ProjetSchema = new Schema({
             ref: 'Province'
         }],
     },
-    validation:[{
-        alias: String,
-        agent:{
-            type:Schema.Types.ObjectId,
-            ref:'User'
-        },
-        name:String   
-    }],
+    validation:Object,
     extrapolation:[{
         field:Object,
         label:String,

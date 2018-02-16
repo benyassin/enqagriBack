@@ -13,7 +13,7 @@ let CollecteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
-    numero: Number,
+    numero: String,
     geo: Boolean,
     lat: String,
     lng: String,
