@@ -202,10 +202,19 @@ exports.getAgentByProvince = function(req,res, next) {
 };
 
 exports.getControllers = function(req,res,next){
-    User.find({role:"controleur",},'nom prenom',function(err,controllers){
+    if(req.params.id_region){
+        User.find({role:"controleur",'perimetre.region':req.params.id_region},'nom prenom',function(err,controllers){
+            if(err){
+                return res.status(400).json(err)
+            }
+            res.status(200).json(controllers)
+        })
+    }else{
+    User.find({role:"controleur"},'nom prenom',function(err,controllers){
         if(err){
             return res.status(400).json(err)
         }
         res.status(200).json(controllers)
     })
+    }
 }

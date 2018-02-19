@@ -32,6 +32,10 @@ var ProjetSchema = new Schema({
             ref: 'Province'
         }],
     },
+    niveau : {
+        type:Number,
+        default: 0
+    },
     validation:Object,
     extrapolation:[{
         field:Object,

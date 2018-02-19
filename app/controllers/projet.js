@@ -82,7 +82,9 @@ exports.getProjetsByPerimetre = function (req, res, next){
                   id_region: perimetre.region
               }  
           })
-          .populate(populate).exec(function(err, projets){
+        .populate('forms','name geometry theme id_fields')
+
+        .populate(populate).exec(function(err, projets){
               if(err) {
                   return res.status(500).send(err)
               }
@@ -110,7 +112,7 @@ exports.getProjetsMobile = function(req,res,next){
         query = {'_id': req.params.projet_id}
     }
     Projet.find(query)
-          .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
+        .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
           .populate({path:'perimetre.region',select:'name id_region'})
           .populate({path:'perimetre.province',select:'name id_province id_region'})
           .exec(function(err,projets){
@@ -123,6 +125,7 @@ exports.getProjetsMobile = function(req,res,next){
 
 exports.getProjetsByRoleMobile = function(req,res){
         User.findById(req.user._id)
+
             .populate({path:'affectation.projet',populate:{path:'cid'}})
             .populate({path:'affectation.projet',select:'-perimetre -extrapolation -validation',populate:{path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}}})
         .populate({path:'communes',select:'-geometry'})
@@ -136,6 +139,7 @@ exports.getProjetsByRoleMobile = function(req,res){
 
 exports.getProjetsByRoleWeb = function(req,res){
     User.findById(req.user._id)
+    .populate('forms','name geometry theme id_fields')
     .populate({path:'affectation.projet',populate:{path:'cid'}})
     .populate({path:'affectation.projet',populate:{path:'perimetre.region',select:'name id_region'}})
     .populate({path:'affectation.projet',populate:{path:'perimetre.province',select:'name id_region id_province'}})
@@ -145,16 +149,20 @@ exports.getProjetsByRoleWeb = function(req,res){
 })
 }
  
-exports.controllerProjets = function(req, res,next){
-    Projet.find({'validation.agent':req.user._id})       
-    .populate({path:'perimetre.region',select:'name id_region'})
-    .populate({path:'perimetre.province',select:'name id_province id_region'})
-    .exec(function (err,projets){
-        if(err){
-            return res.json(err)
-        }
-        res.json(projets)
-    })
+exports.controllerProjets = function(req, res){
+    let test = {}
+    test['validation.' + req.user.perimetre.region + '.agent'] = req.user._id.toString();
+    console.log(test)
+    Projet.find(test)
+        .populate('forms','name geometry theme id_fields')
+        .populate({path:'perimetre.region',select:'name id_region'})
+        .populate({path:'perimetre.province',select:'name id_province id_region'})
+        .exec(function (err,projets){
+            if(err){
+                return res.json(err)
+            }
+            res.json(projets)
+        })
 }
 
 
