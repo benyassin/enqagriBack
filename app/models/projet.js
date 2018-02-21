@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var notification = require('./notification');
 var Schema =  mongoose.Schema
 
 var ProjetSchema = new Schema({
@@ -67,4 +68,16 @@ ProjetSchema.pre('update', function(next) {
     this.options.runValidators = true;
     next();
   });
+
+ProjetSchema.pre('findOneAndUpdate', function(next){
+    var projet = this
+    if(!projet.isModified('validation')){
+        return next();
+    }
+    console.log('this projet')
+    console.log(this)
+
+    next();
+});
+
 module.exports = mongoose.model('Projet',ProjetSchema);

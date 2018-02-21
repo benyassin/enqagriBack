@@ -99,6 +99,7 @@ module.exports = function(app){
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
     projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets)
     projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
+    projetRoutes.get('/projet/notification',ProjetController.getnotification);
 
 
     //Collecte Routes
@@ -120,6 +121,8 @@ module.exports = function(app){
     apiRoutes.use('/reporting',reportingRoutes);
     reportingRoutes.get('/dashboard/',ReportingController.getReports);
     reportingRoutes.get('/dashboards/',ReportingController.aggregatee);
+    reportingRoutes.get('/dashboard2/:id_projet',ReportingController.aggregate);
+
 
 
     //mobile routes

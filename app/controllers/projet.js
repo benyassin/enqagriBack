@@ -4,6 +4,7 @@ let mongoose = require('mongoose');
 let Promise = require('es6-promise').Promise;
 let User = require('../models/user');
 let _ = require('underscore');
+let Notification = require('../models/notification');
 
 exports.createProjet = function (req, res, next) {
 
@@ -16,19 +17,37 @@ exports.createProjet = function (req, res, next) {
         data.cid = null
     }
     console.log(req.body);
-
+    let list = []
+    Object.keys(data.validation).forEach(region =>{
+        data.validation[region].forEach(niveau =>{
+            list.push({user:niveau.agent,type:'affectation',projet:data.name})
+        })
+    });
     data.perimetre= {'region': data.region || [],'province': data.province || []};
-    Projet.update(query, data,{runValidators: true, upsert: true}, function(err, projet) {
+    Projet.update(query, data,{runValidators: true, upsert: true,new:true}, function(err, projet) {
             if (err) {
                 if (err.name === 'MongoError' && err.code === 11000) {
                     // Duplicate name
                     return res.status(500).send({error:'name', message: 'Ce nom est déjà utilisé'});
                   }
             }
-            res.status(200).json(projet);
+            list.forEach((_) =>{
+                Notification.update({user:_.user,projet:_.name},_,{upsert:true}).exec()
+
+            })
+            res.status(200).json(projet)
+
         })
 
 };
+exports.getnotification = function(req,res,next){
+    Notification.find({},function(err,response){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(response)
+    })
+}
 
 exports.getProjets = function(req,res,next){
     let query = {};

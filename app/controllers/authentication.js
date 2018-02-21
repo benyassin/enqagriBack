@@ -26,7 +26,8 @@ function setUserInfo(request){
             dpa:request.dpa,
             office:request.office,},
         affectation: request.affectation,
-        communes: request.communes
+        communes: request.communes,
+        notification:request.notification
         };
     return user
 }

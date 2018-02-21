@@ -82,6 +82,13 @@ UserSchema.virtual('office',{
     justOne: true
 })
 
+UserSchema.virtual('notification',{
+    ref:'Notification',
+    localField: '_id',
+    foreignField: 'user',
+})
+
+
 UserSchema.virtual('region',{
     ref:'Region',
     localField: 'perimetre.region',

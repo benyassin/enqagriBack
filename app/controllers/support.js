@@ -37,8 +37,8 @@ exports.Upload = function(req,res){
             }
             console.log('removed elements',data)
         })
-        Support.collection.insert(data.features,test);
-        function test(err,docs){
+        Support.collection.insert(data.features,cb);
+        function cb(err,docs){
             if(err){
                 res.json(err)
             }else{
@@ -60,6 +60,7 @@ exports.GetSupport = function(req,res){
 };
 
 exports.GetSupportByid = function(req,res){
+
     Support.findbyid(req.query.id).exec(function(err,data){
         if(err){
             return res.status(500).json(err)
