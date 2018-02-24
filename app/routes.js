@@ -88,6 +88,8 @@ module.exports = function(app){
     perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice);
     perimetreRoutes.get('/collections',SupportController.getCollection);
     perimetreRoutes.get('/support',SupportController.GetSupport);
+    perimetreRoutes.get('/supportkeys',SupportController.getSupportKeys);
+
     perimetreRoutes.post('/collections',SupportController.createCollection);
     perimetreRoutes.post('supportbyid',SupportController.GetSupportByid);
     // Projet Routes

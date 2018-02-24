@@ -59,6 +59,16 @@ exports.GetSupport = function(req,res){
     })
 };
 
+exports.getSupportKeys = function (req,res) {
+    Support.findOne({cid:mongoose.Types.ObjectId(req.query.id)},function(err,data){
+        if(err){
+            return res.status(500).json(err)
+        }
+        let order = Object.keys(data.properties);
+        res.status(200).json(order)
+    })
+};
+
 exports.GetSupportByid = function(req,res){
 
     Support.findbyid(req.query.id).exec(function(err,data){

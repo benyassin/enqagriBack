@@ -44,18 +44,13 @@ exports.aggregate = function(req,res,next){
     if(parseInt(req.query.province) !== 0){
         query.province = req.query.province
     }
-    if(parseInt(req.query.commune) !== 0){
-        query.commune = req.query.commune
-    }
 
     // if(req.user.role === 'agent'){
     //     query.agent = req.user._id
     // }
     console.log(query)
     let p0 = Collecte.count(query).exec();
-    let test = {}
-    test['validation.' +  req.query.pmax] = 'valid';
-    let p3 = Collecte.count(query).nor([{'validation.0':'new'},test]).exec();
+    let p3 = Collecte.count(query).nor([{'validation.0':'new'},{['validation.' +  req.query.pmax]: 'valid'}]).exec();
 
     if(parseInt(req.query.niveau) !== -1){
         query['validation.' + 0] = req.query.status
@@ -68,7 +63,7 @@ exports.aggregate = function(req,res,next){
     let p2 = Collecte.count(query).exec();
 
     let d = new Date();
-    d.setDate(d.getDate()-30);
+    d.setDate(d.getDate()-6);
 
     let p4 = Collecte.aggregate({
         $match: {
@@ -95,7 +90,6 @@ exports.aggregate = function(req,res,next){
             console.log(data);
         }
     })
-    console.log(test)
     let p5 = Collecte.aggregate({
         $match: {
             'projet':mongoose.Types.ObjectId(req.params.id_projet),
