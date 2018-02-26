@@ -98,6 +98,7 @@ exports.getCollectes = function(req, res, next){
                 return res.status(500).json(err)
             }
             let listsupport = [];
+            console.log(collecte)
             collecte.collecte.forEach(c =>{
                 c.data.forEach(element => {
                     if(!listsupport.includes(element.id_support._id)){
@@ -111,10 +112,8 @@ exports.getCollectes = function(req, res, next){
                 }
                 let result = [];
                 voisin.forEach(element =>{
-                    if(element._id.toString() != collecte._id.toString()) {
-                        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
-                        console.log(element._id)
-                        console.log(collecte._id)
+                    if(element._id.toString() !== collecte._id.toString()) {
+
                         element.collecte.forEach(c => {
                             c.data.forEach(p => {
                                 result.push(p.gjson)
@@ -126,6 +125,7 @@ exports.getCollectes = function(req, res, next){
                 res.status(200).json({'collecte':collecte,'voisin':result})
             })
         })
+
     }
 }
 
