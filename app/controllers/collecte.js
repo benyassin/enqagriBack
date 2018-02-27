@@ -105,6 +105,7 @@ exports.getCollectes = function(req, res, next){
                         listsupport.push({'collecte.data.id_support':element.id_support._id});
                     }
                 });
+
             });
             Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
                 if(err){
@@ -120,14 +121,14 @@ exports.getCollectes = function(req, res, next){
                             })
                         })
                     }
-                })
+                });
 
                 res.status(200).json({'collecte':collecte,'voisin':result})
             })
         })
 
     }
-}
+};
 
 
 exports.getCollecteByProjet = function (req,res, next){
@@ -160,7 +161,9 @@ exports.getCollecteByProjet = function (req,res, next){
         if(err){
             return res.status(500).json(err)
         }
-        res.status(200).json(collectes)
+        let order = Object.keys(collectes[0].collecte[0].data[0].support);
+        // collectes.push({order:order});
+        res.status(200).json({collectes:collectes,order:order})
     })
 }
 
