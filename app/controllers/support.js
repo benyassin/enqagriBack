@@ -50,7 +50,7 @@ exports.Upload = function(req,res){
 
 exports.GetSupport = function(req,res){
     console.log(req.query);
-    Support.find({cid:mongoose.Types.ObjectId(req.query.id)},function(err,data){
+    Support.find({cid:mongoose.Types.ObjectId(req.query.id)}).lean().exec(function(err,data){
         if(err){
             return res.status(500).json(err)
         }

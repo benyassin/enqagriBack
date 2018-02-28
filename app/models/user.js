@@ -1,12 +1,12 @@
 let mongoose = require('mongoose');
     bcrypt   = require('bcrypt-nodejs');
-    Perimetre = require('./perimetre')
+    Perimetre = require('./perimetre');
     Schema =  mongoose.Schema;
     autoIncrement = require('mongoose-auto-increment');
 
 
 
-var UserSchema = new Schema({
+let UserSchema = new Schema({
 
     login: {
         type: String,
@@ -73,20 +73,20 @@ UserSchema.virtual('dpa',{
     localField: 'perimetre.dpa',
     foreignField: '_id',
     justOne: true
-})
+});
 
 UserSchema.virtual('office',{
     ref:'Office',
     localField: 'perimetre.office',
     foreignField: '_id',
     justOne: true
-})
+});
 
 UserSchema.virtual('notification',{
     ref:'Notification',
     localField: '_id',
     foreignField: 'user',
-})
+});
 
 
 UserSchema.virtual('region',{
@@ -123,31 +123,21 @@ UserSchema.virtual('projet', {
     justOne: false
 })
 
-UserSchema.pre('save', function(next){
-        var user = this
-        if(!user.isModified('perimetre.dpa') && !user.isModified('perimetre.office')){
-            return next();
-        }
-        if(user.perimetre.dpa == ""){user.perimetre.dpa = null} 
-        if(user.perimetre.office == ""){ user.perimetre.office = null}
-        
-        console.log(user)
-        next();
-});
 UserSchema.pre('save',function(next){
-    var user = this
+    let user = this
     if(!user.isModified('perimetre')){
         return next();
     }
-    user.affectation = []
-    console.log('already affected clear affecation')
+    console.log(user);
+    user.affectation = [];
+    console.log('already affected clear affecation');
     next()
 })
 //pre save 
 UserSchema.pre('save', function(next){
 
-    var user = this;
-    var SALT_FACTOR = 5;
+    let user = this;
+    let SALT_FACTOR = 5;
 
     if(!user.isModified('password')){
         return next();

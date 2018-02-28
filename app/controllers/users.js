@@ -1,7 +1,7 @@
-var User = require('../models/user');
-var mongoose = require('mongoose');
-var _ = require('lodash');
-
+let User = require('../models/user');
+let mongoose = require('mongoose');
+let _ = require('lodash');
+let Projet = require('../models/projet');
 
 exports.getUsers = function(req, res,next ) {
    User.find()
@@ -160,6 +160,8 @@ exports.createUser = function(req, res ,next){
                      res.status(200).send(newUser)
                 })
         }else{
+
+            Projet.find({['projet.validation.'+ user.perimetre.region] : user.perimetre.region});
             console.log("user Found !")
             _.merge(user,data)
             user.save( function(err){
