@@ -156,7 +156,7 @@ exports.getCollecteByProjet = function (req,res, next){
     console.log(query)
     Collecte.find(query,'-gjson')
     .populate('agent')
-    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -186,7 +186,7 @@ exports.getCollecteEnTraitement = function(req,res,next){
     console.log({'validation.0':'new'},test);
     Collecte.find(query).nor([{'validation.0':'new'},test])
     .populate('agent')
-    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)

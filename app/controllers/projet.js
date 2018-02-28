@@ -18,11 +18,13 @@ exports.createProjet = function (req, res, next) {
     }
     console.log(req.body);
     let list = []
-    // Object.keys(data.validation).forEach(region =>{
-    //     data.validation[region].forEach(niveau =>{
-    //         list.push({user:niveau.agent,type:'affectation',projet:data.name})
-    //     })
-    // });
+    if(data.validation){
+    Object.keys(data.validation).forEach(region => {
+        data.validation[region].forEach(niveau => {
+            list.push({user:niveau.agent,type:'affectation',projet:data.name})
+        })
+    });
+    }
     data.perimetre= {'region': data.region || [],'province': data.province || []};
     Projet.update(query, data,{runValidators: true, upsert: true,new:true}, function(err, projet) {
             if (err) {

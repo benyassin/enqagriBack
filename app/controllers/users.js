@@ -219,4 +219,12 @@ exports.getControllers = function(req,res,next){
         res.status(200).json(controllers)
     })
     }
-}
+};
+
+exports.clearNotification  = function(req,res){
+    User.findbyId(req.user._id).exec(function(err,user){
+        user.notification = [];
+        user.save();
+        res.status(200).json(user)
+    })
+};
