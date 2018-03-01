@@ -86,6 +86,7 @@ exports.getProjetsByPerimetre = function (req, res, next){
             }
             res.status(200).json(projets)
         })
+
     }else{
         let populate = {
             path:'perimetre.province',
