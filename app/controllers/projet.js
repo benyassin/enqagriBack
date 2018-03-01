@@ -1,5 +1,6 @@
 let Projet = require('../models/projet');
 let Perimetre = require('../models/perimetre');
+let Collecte = require('../models/collecte')
 let mongoose = require('mongoose');
 let Promise = require('es6-promise').Promise;
 let User = require('../models/user');
@@ -17,7 +18,7 @@ exports.createProjet = function (req, res, next) {
         data.cid = null
     }
     console.log(req.body);
-    let list = []
+    let list = [];
     if(data.validation){
     Object.keys(data.validation).forEach(region => {
         data.validation[region].forEach(niveau => {
@@ -184,16 +185,34 @@ exports.controllerProjets = function(req, res){
             }
             res.json(projets)
         })
-}
+};
 
+exports.Check = function(req,res){
+    Collecte.count({projet:req.params.projet_id}).exec(function(err,count) {
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(count)
+    })
+};
 
 exports.deleteProjet = function (req, res, next) {
-    Projet.remove({_id :req.params.projet_id}, function (err, projet) {
+    Collecte.count({projet:req.params.projet_id}).exec(function(err,count){
         if(err){
-            return res.json(err)
+            return res.status(500).json(err)
         }
-        res.json(projet)
-    });
+        if(count > 0){
+            return res.status(500).json({error:'collecte',message: 'Des collectes exist pour ce projet'})
+        }else{
+            Projet.remove({_id :req.params.projet_id}, function (err, projet) {
+                if(err){
+                    return res.json(err)
+                }
+                res.json(projet)
+            });
+        }
+    })
+
 }
 
 

@@ -2,6 +2,7 @@ let User = require('../models/user');
 let mongoose = require('mongoose');
 let _ = require('lodash');
 let Projet = require('../models/projet');
+let parse = require('../helpers/errorParse');
 
 exports.getUsers = function(req, res,next ) {
    User.find()
@@ -150,25 +151,41 @@ exports.createUser = function(req, res ,next){
 
     User.findOne(query, function(err,user){
         if(err) return res.status(500).send(err)
-            if(!user){
+        if(!user){
                 console.log("user not found creating new one")
                 let newUser = new User(data);
                 console.log(newUser)
                 newUser.save(function(err){
-                    if(err) return res.status(500).send(err);
+                    err = parse(err);
+                    if(err) return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
                         console.log("user created with _id = " + newUser._id );
                      res.status(200).send(newUser)
                 })
         }else{
+            console.log("user Found !");
+            let query = {['validation.'+user.perimetre.region]:{$elemMatch: {agent: user._id.toString()} }};
+            console.log(query)
+                Projet.count(query).exec(function(err,count){
+                    if(err){
+                        return res.status(500).json(err)
+                    }
+                    if(count > 0) {
+                        return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
+                    }
+                    _.merge(user,data);
+                    user.save( function(err){
+                        console.log("trying to save " + user);
+                        console.log(parse(err));
+                        if(err) {
+                            err = parse(err);
+                            return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
 
-            Projet.find({['projet.validation.'+ user.perimetre.region] : user.perimetre.region});
-            console.log("user Found !")
-            _.merge(user,data)
-            user.save( function(err){
-                console.log("trying to save " + user)
-                if(err) return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
-                    return res.status(200).send(user)
-                })
+                            // return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
+                        }
+                        return res.status(200).send(user)
+                    })
+                });
+
             }
     })
 

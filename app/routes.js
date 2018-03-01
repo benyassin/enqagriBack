@@ -103,6 +103,7 @@ module.exports = function(app){
     projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets)
     projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
     projetRoutes.get('/projet/notification',ProjetController.getnotification);
+    projetRoutes.get('/:projet_id/check/',ProjetController.Check);
 
 
     //Collecte Routes
