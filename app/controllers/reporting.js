@@ -84,9 +84,6 @@ exports.aggregate = function(req,res,next){
         if (err) {
             console.log('Error Fetching model');
             console.log(err);
-        } else {
-            console.log('p6')
-            console.log(data);
         }
     })
     let p5 = Collecte.aggregate({
@@ -110,9 +107,6 @@ exports.aggregate = function(req,res,next){
         if (err) {
             console.log('Error Fetching model');
             console.log(err);
-        } else {
-            console.log('p5')
-            console.log(data);
         }
     })
 

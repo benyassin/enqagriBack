@@ -37,16 +37,14 @@ exports.updateCollecte = function(req,res){
         if(err){
             return res.status(500).json(err)
         }
-        console.log(collecte)
-        console.log('/////////////////REQ BODY//////////////////')
-        console.log(req.body)
+
         if(collecte != null){
         collecte.exploitation = req.body.exploitation;
         collecte.collecte = req.body.collecte;
 
-        collecte.save().then(function(err,savedoc){
+        collecte.save().then(function(err){
             if(err){
-                return res.status(500).json(err)
+                return res.status(200).json(err)
             }
             console.log(savedoc);
             res.status(200).json(savedoc)
@@ -98,7 +96,7 @@ exports.getCollectes = function(req, res, next){
                 return res.status(500).json(err)
             }
             let listsupport = [];
-            console.log(collecte)
+            console.log(collecte);
             collecte.collecte.forEach(c =>{
 
 
@@ -109,6 +107,9 @@ exports.getCollectes = function(req, res, next){
                 });
 
             });
+            if(listsupport.length === 0){
+                return res.status(200).json({'collecte':collecte,'voisin':[]})
+            }
             Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
                 if(err){
                     return res.status(500).json(err)
