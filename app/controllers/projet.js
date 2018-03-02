@@ -22,7 +22,7 @@ exports.createProjet = function (req, res, next) {
     if(data.validation){
     Object.keys(data.validation).forEach(region => {
         data.validation[region].forEach(niveau => {
-            list.push({user:niveau.agent,type:'affectation',projet:data.name})
+            list.push({user:niveau.agent,type:'affectation',projet:data.name,vue:false})
         })
     });
     }

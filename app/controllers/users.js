@@ -3,6 +3,7 @@ let mongoose = require('mongoose');
 let _ = require('lodash');
 let Projet = require('../models/projet');
 let parse = require('../helpers/errorParse');
+let notification = require('../models/notification');
 
 exports.getUsers = function(req, res,next ) {
    User.find()
@@ -239,9 +240,11 @@ exports.getControllers = function(req,res,next){
 };
 
 exports.clearNotification  = function(req,res){
-    User.findbyId(req.user._id).exec(function(err,user){
-        user.notification = [];
-        user.save();
+    notification.update({'user':mongoose.Types.ObjectId(req.user.id)},{'vue':true},{multi: true}).exec(function(err,user){
+        if(err){
+            return res.status(500).json(err)
+        }
         res.status(200).json(user)
+
     })
 };

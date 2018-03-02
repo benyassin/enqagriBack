@@ -134,7 +134,6 @@ exports.getCollectes = function(req, res, next){
 exports.getCollecteByProjet = function (req,res, next){
     id_projet = req.params.id_projet;
     qs.parse(req.query)
-    console.log(req.query)
     let query = {
         'projet' : req.params.id_projet,
     };
@@ -147,7 +146,7 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.query.commune != 0){
         query.commune = req.query.commune
     }
-    if(req.query.niveau !== -1){
+    if(req.query.niveau != -1){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
     if(req.user.role == 'agent'){

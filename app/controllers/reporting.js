@@ -48,11 +48,10 @@ exports.aggregate = function(req,res,next){
     // if(req.user.role === 'agent'){
     //     query.agent = req.user._id
     // }
-    console.log(query)
     let p0 = Collecte.count(query).exec();
     let p3 = Collecte.count(query).nor([{'validation.0':'new'},{['validation.' +  req.query.pmax]: 'valid'}]).exec();
 
-    if(parseInt(req.query.niveau) !== -1){
+    if(parseInt(req.query.niveau) != -1){
         query['validation.' + 0] = req.query.status
     }
     let p1 =  Collecte.count(query).exec();

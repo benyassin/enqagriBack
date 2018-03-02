@@ -55,7 +55,7 @@ module.exports = function(app){
     userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
     userRoutes.get('/controlleurs/:id_region',requireAuth,UserController.getControllers);
     userRoutes.post('/affectation/',UserController.setAffectation);
-    userRoutes.delete('/notification',requireAuth,UserController.clearNotification);
+    userRoutes.delete('/notification/clear',requireAuth,UserController.clearNotification);
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
