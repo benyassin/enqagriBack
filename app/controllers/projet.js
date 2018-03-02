@@ -203,7 +203,7 @@ exports.deleteProjet = function (req, res, next) {
             return res.status(500).json(err)
         }
         if(count > 0){
-            return res.status(500).json({error:'collecte',message: 'Des collectes exist pour ce projet'})
+            return res.status(500).json({error:'collecte',message: 'Une ou plusieurs collectes sont liées à cette enquête'})
         }else{
             Projet.remove({_id :req.params.projet_id}, function (err, projet) {
                 if(err){

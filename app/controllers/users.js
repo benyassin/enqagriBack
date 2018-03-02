@@ -179,7 +179,12 @@ exports.createUser = function(req, res ,next){
                         console.log(parse(err));
                         if(err) {
                             err = parse(err);
-                            return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
+                            if(err.path == 'email'){
+                                return res.status(500).send({error:err.path,message: 'Cet '+err.path +' est déjà utilisé'});
+                            }else{
+                                return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
+                            }
+
 
                             // return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
                         }
