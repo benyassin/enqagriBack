@@ -54,6 +54,9 @@ exports.GetSupport = function(req,res){
         if(err){
             return res.status(500).json(err)
         }
+        if(data.length == 0){
+            return res.status(200).json({support:[],order:[]})
+        }
         let order = Object.keys(data[0].properties);
         res.status(200).json({support:data,order:order})
     })

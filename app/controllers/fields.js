@@ -81,9 +81,11 @@ exports.getFields = function(req,res,next){
         if(err) {
             return res.status(400).send(err);
         }
+        if(req.query.rsubmit === true){
         if(fields){
         if(fields.components[fields.components.length-1].key == "submit"){
             fields.components.splice(fields.components.length-1, 1);
+        }
         }
         }
         res.status(200).json(fields)
