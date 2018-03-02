@@ -100,6 +100,8 @@ exports.getCollectes = function(req, res, next){
             let listsupport = [];
             console.log(collecte)
             collecte.collecte.forEach(c =>{
+
+
                 c.data.forEach(element => {
                     if(!listsupport.includes(element.id_support._id)){
                         listsupport.push({'collecte.data.id_support':element.id_support._id});
