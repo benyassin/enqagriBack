@@ -93,6 +93,8 @@ module.exports = function(app){
 
     perimetreRoutes.post('/collections',SupportController.createCollection);
     perimetreRoutes.post('supportbyid',SupportController.GetSupportByid);
+    perimetreRoutes.delete('/collection/:cid',SupportController.deleteCollection);
+
     // Projet Routes
     apiRoutes.use('/projets',projetRoutes);
 
