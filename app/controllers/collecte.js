@@ -86,7 +86,7 @@ exports.getCollectes = function(req, res, next){
     })
     }else{
         Collecte.findOne({'_id':req.params.id_collecte}) 
-        .populate({path:'projet',select:'name theme validation'})
+        .populate({path:'projet',select:'name theme validation cid'})
         .populate('agent')
         .populate('collecte.data.id_support')
         .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
@@ -97,8 +97,10 @@ exports.getCollectes = function(req, res, next){
             }
             let listsupport = [];
             console.log(collecte);
-            collecte.collecte.forEach(c =>{
+            if(collecte.projet.cid != null){
 
+
+            collecte.collecte.forEach(c =>{
 
                 c.data.forEach(element => {
                     if(!listsupport.includes(element.id_support._id)){
@@ -107,9 +109,7 @@ exports.getCollectes = function(req, res, next){
                 });
 
             });
-            if(listsupport.length === 0){
-                return res.status(200).json({'collecte':collecte,'voisin':[]})
-            }
+
             Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
                 if(err){
                     return res.status(500).json(err)
@@ -128,6 +128,9 @@ exports.getCollectes = function(req, res, next){
 
                 res.status(200).json({'collecte':collecte,'voisin':result})
             })
+            }else{
+                res.status(200).json({'collecte':collecte,'voisin':[]})
+            }
         })
 
     }
