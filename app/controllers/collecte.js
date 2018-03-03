@@ -203,7 +203,13 @@ exports.getCollecteEnTraitement = function(req,res,next){
         if(err){
             return res.status(500).json(err)
         }
-        res.status(200).json(collectes)
+        if(collectes.length > 0){
+            let order = Object.keys(collectes[0].collecte[0].data[0].support);
+            // collectes.push({order:order});
+            res.status(200).json({collectes:collectes,order:order})
+        }else{
+            res.status(200).json({collectes:collectes,order:[]})
+        }
     })
     
 }
