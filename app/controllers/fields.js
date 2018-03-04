@@ -31,9 +31,8 @@ exports.getExtrapolationFields = function(req,res,next){
         if(err){
             return res.status(400).send(err);
         }
-        console.log(form)
-        if(form.components.length == 0){
-            return res.status(500).json({})
+        if(!form || form.components.length == 0){
+            return res.status(200).json([])
         }
         function searchObj(obj){
             for (let key in obj){
@@ -84,10 +83,10 @@ exports.getFields = function(req,res,next){
         if(err) {
             return res.status(400).send(err);
         }
-        if(req.query.hasOwnProperty('rsubmit') && req.query.rsubmit === true){
-            if (fields && fields.components[fields.components.length - 1].key == "submit") {
-                fields.components.splice(fields.components.length - 1, 1);
-            }
+        console.log('RSSSSSSSSSSSSSSS')
+        console.log(req.query.hasOwnProperty('rsubmit'))
+        if (req.query.hasOwnProperty('rsubmit') && fields.components[fields.components.length - 1].key == "submit") {
+            fields.components.splice(fields.components.length - 1, 1);
         }
         res.status(200).json(fields)
     })

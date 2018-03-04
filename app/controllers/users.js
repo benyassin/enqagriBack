@@ -157,9 +157,14 @@ exports.createUser = function(req, res ,next){
                 let newUser = new User(data);
                 console.log(newUser)
                 newUser.save(function(err){
-                    err = parse(err);
-                    if(err) return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
-                        console.log("user created with _id = " + newUser._id );
+                    if(err) {
+                        err = parse(err);
+                        if(err.path == 'email'){
+                            return res.status(500).send({error:err.path,message: 'Cet '+err.path +' est déjà utilisé'});
+                        }else{
+                            return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
+                        }
+                    }
                      res.status(200).send(newUser)
                 })
         }else{
@@ -181,6 +186,7 @@ exports.createUser = function(req, res ,next){
                 return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
             }else{
                 handler(user,data)
+
             }
             }
 

@@ -197,6 +197,9 @@ exports.getCollecteEnTraitement = function(req,res,next){
     if(req.query.province != 0){
         query.province = req.query.province
     }
+    if(req.query.commune != 0){
+        query.commune = req.query.commune
+    }
     let test = {}
     test['validation.' +  req.query.index] = 'valid';
 
