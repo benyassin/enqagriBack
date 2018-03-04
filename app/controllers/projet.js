@@ -196,23 +196,35 @@ exports.Check = function(req,res){
         res.status(200).json(count)
     })
 };
-
-exports.deleteProjet = function (req, res, next) {
+exports.deleteProjet = function (req, res) {
     Collecte.count({projet:req.params.projet_id}).exec(function(err,count){
         if(err){
             return res.status(500).json(err)
         }
         if(count > 0){
             return res.status(500).json({error:'collecte',message: 'Une ou plusieurs collectes sont liées à cette enquête'})
-        }else{
-            Projet.remove({_id :req.params.projet_id}, function (err, projet) {
-                if(err){
-                    return res.json(err)
-                }
-                res.json(projet)
-            });
         }
-    })
+        User.findOne({'affectation.projet':req.params.projet_id}).exec(function(err,user){
+            if(err){
+                return res.status(500).json(err)
+            }
+            if(!user){
+                remove(req.params.projet_id)
+            }else{
+            res.status(500).json({error:'User',message: 'Un ou plusieurs utilisateurs sont liées à cette enquête'})
+            }
+        })
+    });
+
+
+    function remove(id) {
+        Projet.remove({_id :id}, function (err, projet) {
+            if(err){
+                return res.json(err)
+            }
+            res.json(projet)
+        });
+    }
 
 }
 

@@ -32,7 +32,7 @@ exports.getReports = function(req,res,next){
 
 };
 
-exports.aggregate = function(req,res,next){
+exports.aggregate = function(req,res){
 
     qs.parse(req.query)
     let query = {
@@ -44,25 +44,35 @@ exports.aggregate = function(req,res,next){
     if(parseInt(req.query.province) !== 0){
         query.province = req.query.province
     }
+    if(req.user.role == 'agent'){
+        query.agent = req.user._id
+    }
 
-    // if(req.user.role === 'agent'){
+    // if(req.user.role == 'admin'){
     //     query.agent = req.user._id
     // }
     let p0 = Collecte.count(query).exec();
-    let p3 = Collecte.count(query).nor([{'validation.0':'new'},{['validation.' +  req.query.pmax]: 'valid'}]).exec();
+    let p3 = Collecte.count(query).nor([{'validation.0':'new'},{['validation.' + req.query.pmax]: 'valid'}]).exec();
 
     if(parseInt(req.query.niveau) != -1){
-        query['validation.' + 0] = req.query.status
+        query['validation.' + req.query.niveau] = 'new'
     }
     let p1 =  Collecte.count(query).exec();
+    query['validation.'+req.query.niveau] = 'reject';
+    let p6 = Collecte.count(query).exec();
 
-    query['validation.'+ req.query.pmax] = 'valid';
-    delete query['validation.0'];
 
+    query['validation.'+ req.query.niveau] = 'valid';
+    if(req.user.role != 'controleur'){
+        delete query['validation.'+ req.query.niveau];
+        query['validation.'+ req.query.pmax] = 'valid';
+    }
+    console.log(query)
     let p2 = Collecte.count(query).exec();
 
     let d = new Date();
     d.setDate(d.getDate()-6);
+
 
     let p4 = Collecte.aggregate({
         $match: {
@@ -112,8 +122,8 @@ exports.aggregate = function(req,res,next){
 
 
 
-    Promise.all([p0,p1,p2,p3,p4,p5]).then(function(values) {
-        res.status(200).json({'total':values[0],'wait':values[1],'valid':values[2],'entraitment':values[3],'validePerDay':values[4],'totalPerDay':values[5]})
+    Promise.all([p0,p1,p2,p3,p4,p5,p6]).then(function(values) {
+        res.status(200).json({'total':values[0],'wait':values[1],'valid':values[2],'entraitment':values[3],'validePerDay':values[4],'totalPerDay':values[5],'refus':values[6]})
     },reason => {
         console.log(res.status(500).json(reason))
     });

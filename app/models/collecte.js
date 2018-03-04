@@ -3,6 +3,8 @@ let GeoJSON = require('mongoose-geojson-schema');
 let Reporting = require('./reporting');
 let _ = require('lodash');
 let Schema =  mongoose.Schema;
+let Perimetre = require('./perimetre');
+
 
 let CollecteSchema = new Schema({
     projet : {
@@ -69,6 +71,14 @@ let CollecteSchema = new Schema({
 },{
     timestamps: true,}
 );
+
+
+CollecteSchema.virtual('test',{
+    ref:'Commune',
+    localField: 'commune',
+    foreignField: 'id_commune',
+    justOne: true
+});
 
 CollecteSchema.post("save", function(doc,next){
     self = this;

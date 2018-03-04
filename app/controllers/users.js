@@ -164,6 +164,7 @@ exports.createUser = function(req, res ,next){
                 })
         }else{
             console.log("user Found !");
+            if(user.role === 'controleur'){
             let query = {['validation.'+user.perimetre.region]:{$elemMatch: {agent: user._id.toString()} }};
             console.log(query)
                 Projet.count(query).exec(function(err,count){
@@ -173,28 +174,36 @@ exports.createUser = function(req, res ,next){
                     if(count > 0) {
                         return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
                     }
-                    _.merge(user,data);
-                    user.save( function(err){
-                        console.log("trying to save " + user);
-                        console.log(parse(err));
-                        if(err) {
-                            err = parse(err);
-                            if(err.path == 'email'){
-                                return res.status(500).send({error:err.path,message: 'Cet '+err.path +' est déjà utilisé'});
-                            }else{
-                                return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
-                            }
-
-
-                            // return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
-                        }
-                        return res.status(200).send(user)
-                    })
+                    handler(user,data)
                 });
 
+            }else if(user.role == 'agent' && user.affectation.length !== 0){
+                return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
+            }else{
+                handler(user,data)
             }
-    })
+            }
 
+    })
+    function handler(user,data) {
+        _.merge(user,data);
+        user.save( function(err){
+            console.log("trying to save " + user);
+            console.log(parse(err));
+            if(err) {
+                err = parse(err);
+                if(err.path == 'email'){
+                    return res.status(500).send({error:err.path,message: 'Cet '+err.path +' est déjà utilisé'});
+                }else{
+                    return res.status(500).send({error:err.path,message: 'Ce '+err.path +' est déjà utilisé'});
+                }
+
+
+                // return res.status(500).send({error:'login',message: 'Ce login est déjà utilisé'});
+            }
+            return res.status(200).send(user)
+        })
+    }
 
 };
 

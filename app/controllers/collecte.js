@@ -89,6 +89,7 @@ exports.getCollectes = function(req, res, next){
         .populate({path:'projet',select:'name theme validation cid'})
         .populate('agent')
         .populate('collecte.data.id_support')
+        .populate('test')
         .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
         })
         .exec(function(err,collecte){
@@ -101,6 +102,7 @@ exports.getCollectes = function(req, res, next){
 
 
             collecte.collecte.forEach(c =>{
+
 
                 c.data.forEach(element => {
                     if(!listsupport.includes(element.id_support._id)){
@@ -168,6 +170,9 @@ exports.getCollecteByProjet = function (req,res, next){
         }
         // res.status(200).json(collectes)
         if(collectes.length > 0){
+            if(collectes[0].geo === false){
+                return res.status(200).json({collectes:collectes,order:[]})
+            }
         let order = Object.keys(collectes[0].collecte[0].data[0].support);
         // collectes.push({order:order});
         res.status(200).json({collectes:collectes,order:order})
