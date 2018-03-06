@@ -267,3 +267,15 @@ exports.getVoisin = function(req,res){
         res.status(200).json(result)
     })
 }
+
+exports.delete = function(req,res){
+    let id = req.params.id_collecte;
+
+    
+    Collecte.remove({_id:id},function(err,collecte){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collecte)
+    })
+}

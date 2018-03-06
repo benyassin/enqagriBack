@@ -35,8 +35,7 @@ exports.createProjet = function (req, res, next) {
                   }
             }
             list.forEach((_) =>{
-                Notification.update({user:_.user,projet:_.name},_,{upsert:true}).exec()
-
+                Notification.update({user:_.user,projet:_.name,vue:false},_,{upsert:true}).exec()
             })
             res.status(200).json(projet)
 
