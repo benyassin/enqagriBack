@@ -145,7 +145,7 @@ exports.getCollecteByProjet = function (req,res, next){
     let query = {
         'projet' : req.params.id_projet,
     };
-    if(req.query.region != 0 ){
+    if(req.query.region != 0){
         query.region = req.query.region
     }
     if(req.query.province != 0){
@@ -160,8 +160,9 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.user.role == 'agent'){
         query.agent = req.user._id
     }
+
     console.log(query)
-    Collecte.find(query,'-gjson')
+    Collecte.find(query)
     .populate('agent')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
     .exec(function(err,collectes){
@@ -181,8 +182,35 @@ exports.getCollecteByProjet = function (req,res, next){
         }
 
     })
-
 }
+
+exports.exportData = function(req,res){
+    let keys = Object.keys(req.query);
+    let query = Object.assign({},req.query)
+
+    Collecte.find(query)
+        .populate('agent')
+        .exec(function(err,collectes){
+        if(err){
+            return res.status(500).json(err)
+        }
+        let result = [];
+        collectes.forEach(collecte =>{
+            let data = {
+                region:collecte.region,
+                province:collecte.province,
+                commune:collecte.commune,
+                agent:collecte.agent.userId,
+                id_collecte:collecte._id
+            }
+            if(collecte.exploitation.hasOwnProperty('formdata')){
+            result.push(Object.assign(data,collecte.exploitation.formdata.data))
+            }
+        });
+        res.status(200).json({query:query,result:result})
+    })
+
+};
 
 exports.getCollecteEnTraitement = function(req,res,next){
     id_projet = req.params.id_projet;

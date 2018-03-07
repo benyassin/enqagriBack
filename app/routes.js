@@ -121,6 +121,7 @@ module.exports = function(app){
     collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment);
     collecteRoutes.get('/voisin/:id_support',CollecteController.getVoisin);
     collecteRoutes.delete('/:id_collecte',requireAuth,CollecteController.delete);
+    collecteRoutes.get('/export/:id_projet',requireAuth,CollecteController.exportData);
 
 
     //Reporting Routes
