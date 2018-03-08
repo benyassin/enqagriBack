@@ -1,6 +1,9 @@
-var Collecte = require('../models/collecte');
-var mongoose = require('mongoose');
-var qs = require('querystring');
+const Collecte = require('../models/collecte');
+const mongoose = require('mongoose');
+const qs = require('querystring');
+const excel = require('node-excel-export');
+const fs =require('fs');
+
 
 exports.storeCollecte = function(req,res,next){
     let user = req.user._id;
@@ -85,7 +88,7 @@ exports.getCollectes = function(req, res, next){
         res.status(200).json(collectes)
     })
     }else{
-        Collecte.findOne({'_id':req.params.id_collecte}) 
+        Collecte.findOne({'_id':req.params.id_collecte})
         .populate({path:'projet',select:'name theme validation cid'})
         .populate('agent')
         .populate('collecte.data.id_support')
@@ -187,6 +190,39 @@ exports.getCollecteByProjet = function (req,res, next){
 exports.exportData = function(req,res){
     let keys = Object.keys(req.query);
     let query = Object.assign({},req.query)
+    let identificationSpec = {};
+    let parcelleSpec = {}
+    const styles = {
+        headerDark: {
+            fill: {
+                fgColor: {
+                    rgb: 'FF000000'
+                }
+            },
+            font: {
+                color: {
+                    rgb: 'FFFFFFFF'
+                },
+                sz: 14,
+                bold: true,
+                underline: true
+            }
+        },
+        cellPink: {
+            fill: {
+                fgColor: {
+                    rgb: 'FFFFCCFF'
+                }
+            }
+        },
+        cellGreen: {
+            fill: {
+                fgColor: {
+                    rgb: 'FF00FF00'
+                }
+            }
+        }
+    };
 
     Collecte.find(query)
         .populate('agent')
@@ -194,27 +230,100 @@ exports.exportData = function(req,res){
         if(err){
             return res.status(500).json(err)
         }
-        let result = [];
+        let identification = [];
+        let parcelle = [];
         collectes.forEach(collecte =>{
             let data = {
+                id_collecte:collecte._id,
+                numero_collecte:collecte.numero,
                 region:collecte.region,
                 province:collecte.province,
                 commune:collecte.commune,
-                agent:collecte.agent.userId,
-                id_collecte:collecte._id
-            }
+                agent:collecte.agent.userId
+            };
             if(collecte.exploitation.hasOwnProperty('formdata')){
-            result.push(Object.assign(data,collecte.exploitation.formdata.data))
+                identification.push(Object.assign(data,collecte.exploitation.formdata.data))
             }
+            collecte.collecte.forEach(form =>{
+                form.data.forEach(p =>{
+                    let pdata = {
+                        collecte:collecte._id,
+                        numero_collecte:collecte.numero,
+                        numero:p.numero,
+                        superficie:p.superficie,
+                        data_creation:p.date_creation,
+                    };
+                    Object.keys(p.formdata.data).forEach(key =>{
+                        if(typeof p.formdata.data[key] === 'object'){
+                                truekeys = []
+                                Object.keys(p.formdata.data[key]).forEach(k =>{
+                                    if(p.formdata.data[key][k] === true){
+                                        truekeys.push(k)
+                                    }
+                                });
+                                p.formdata.data[key] = JSON.stringify(truekeys)
+                        }
+                    })
+                    parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
+
+                })
+            })
         });
-        res.status(200).json({query:query,result:result})
+        if(identification.length > 0){
+        Object.keys(identification[0]).forEach(key =>{
+            identificationSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+        });
+        Object.keys(parcelle[0]).forEach(key =>{
+            parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+        });
+        const report = excel.buildExport(
+            [
+                {
+                    name: 'Identification',
+                    specification: identificationSpec,
+                    data: identification
+                },
+                {
+                    name:'Parcelle',
+                    specification:parcelleSpec,
+                    data:parcelle
+                }
+            ]
+        );
+
+            res.writeHead(200, {
+                'Content-Type':'application/vnd.openxmlformats',
+                'Content-disposition': 'attachment;filename=' + 'Report.xlsx',
+            });
+            return res.end(new Buffer(report, 'binary'));
+
+            // fs.writeFile("test.xlsx", report,  "binary",function(err) {
+            //     if(err) {
+            //         console.log(err);
+            //     } else {
+            //         console.log("The file was saved!");
+            //         res.download('test.xlsx');
+            //       // return  res.status(200).send(parcelleSpec)
+            //     }
+            // });
+
+
+
+        }else{
+            res.status(200).send({test:'test'})
+        }
+
     })
+
+    function getKeyByValue(object) {
+        return Object.keys(object).find(key => object[key] === true);
+    }
 
 };
 
 exports.getCollecteEnTraitement = function(req,res,next){
     id_projet = req.params.id_projet;
-    
+
     qs.parse(req.query);
     let query = {
         'projet' : req.params.id_projet,
@@ -247,7 +356,7 @@ exports.getCollecteEnTraitement = function(req,res,next){
             res.status(200).json({collectes:collectes,order:[]})
         }
     })
-    
+
 }
 
 exports.validate = function(req,res,next){
@@ -265,7 +374,7 @@ exports.validate = function(req,res,next){
         case 'reject':
         query['validation.' + parseInt(data.niveau)] = 'null';
         query['validation.' + parseInt(data.niveau-1)] = data.action;
-        break      
+        break
     }
     console.log(query)
     Collecte.update({_id:data.id},{ $set: query},function(err,collecte){
@@ -299,7 +408,7 @@ exports.getVoisin = function(req,res){
 exports.delete = function(req,res){
     let id = req.params.id_collecte;
 
-    
+
     Collecte.remove({_id:id},function(err,collecte){
         if(err){
             return res.status(500).json(err)
