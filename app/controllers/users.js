@@ -39,6 +39,7 @@ exports.setAffectation = function(req,res,next){
                 }
             })
         }
+
     });
     if(agents.length == 0 ){
         return res.status(200).json('saved')

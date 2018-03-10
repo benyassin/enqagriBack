@@ -4,6 +4,23 @@ const qs = require('querystring');
 const excel = require('node-excel-export');
 const fs =require('fs');
 
+const styles = {
+    headerDark: {
+        fill: {
+            fgColor: {
+                rgb: 'FF000000'
+            }
+        },
+        font: {
+            color: {
+                rgb: 'FFFFFFFF'
+            },
+            sz: 14,
+            bold: true,
+            underline: true
+        }
+    },
+};
 
 exports.storeCollecte = function(req,res,next){
     let user = req.user._id;
@@ -157,7 +174,7 @@ exports.getCollecteByProjet = function (req,res, next){
     if(req.query.commune != 0){
         query.commune = req.query.commune
     }
-    if(req.query.niveau != -1){
+    if(req.query.niveau != -1 && req.query.status != 'all'){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
     if(req.user.role == 'agent'){
@@ -189,40 +206,13 @@ exports.getCollecteByProjet = function (req,res, next){
 
 exports.exportData = function(req,res){
     let keys = Object.keys(req.query);
-    let query = Object.assign({},req.query)
+    if(keys.includes('status')){
+    }
+    let query = Object.assign({},req.query);
     let identificationSpec = {};
-    let parcelleSpec = {}
-    const styles = {
-        headerDark: {
-            fill: {
-                fgColor: {
-                    rgb: 'FF000000'
-                }
-            },
-            font: {
-                color: {
-                    rgb: 'FFFFFFFF'
-                },
-                sz: 14,
-                bold: true,
-                underline: true
-            }
-        },
-        cellPink: {
-            fill: {
-                fgColor: {
-                    rgb: 'FFFFCCFF'
-                }
-            }
-        },
-        cellGreen: {
-            fill: {
-                fgColor: {
-                    rgb: 'FF00FF00'
-                }
-            }
-        }
-    };
+    let parcelleSpec = {};
+
+
 
     Collecte.find(query)
         .populate('agent')
@@ -255,7 +245,7 @@ exports.exportData = function(req,res){
                     };
                     Object.keys(p.formdata.data).forEach(key =>{
                         if(typeof p.formdata.data[key] === 'object'){
-                                truekeys = []
+                                truekeys = [];
                                 Object.keys(p.formdata.data[key]).forEach(k =>{
                                     if(p.formdata.data[key][k] === true){
                                         truekeys.push(k)
@@ -263,7 +253,7 @@ exports.exportData = function(req,res){
                                 });
                                 p.formdata.data[key] = JSON.stringify(truekeys)
                         }
-                    })
+                    });
                     parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
 
                 })
