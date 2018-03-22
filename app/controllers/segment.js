@@ -9,8 +9,7 @@ exports.getSegmentWithCommunes = function(req,res,next){
     if(req.query.id &&  req.query.cid){
         console.log(id);
 
-        Support.find({'properties.id_commune':parseInt(id),cid: mongoose.Types.ObjectId(req.query.cid)})
-    .exec(function(err,segments){
+        Support.find({$or: [{'properties.id_commune':parseInt(id),cid: mongoose.Types.ObjectId(req.query.cid)}, {'id_commune':id,cid: mongoose.Types.ObjectId(req.query.cid)}]}).exec(function(err,segments){
         if(err){
             console.log(err)
         }

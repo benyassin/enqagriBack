@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2f2484c1-cfdc-42ca-9fbf-55cecc54090e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/collecte.js" afterPath="$PROJECT_DIR$/app/controllers/collecte.js" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/users.js" afterPath="$PROJECT_DIR$/app/controllers/users.js" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/segment.js" afterPath="$PROJECT_DIR$/app/controllers/segment.js" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/support.js" afterPath="$PROJECT_DIR$/app/controllers/support.js" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
+      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,11 +21,31 @@
   <component name="ChangesViewManager" show_ignored="true" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/collecte.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
+            <state relative-caret-position="3744">
               <caret line="208" column="32" lean-forward="false" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="support.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="segment.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/segment.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -49,21 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/user.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="36" lean-forward="false" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="users.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/users.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="324">
-              <caret line="18" column="45" lean-forward="true" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
+              <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -94,16 +106,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="828">
               <caret line="46" column="33" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="auth.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/auth.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="1" lean-forward="false" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -189,7 +191,6 @@
         <option value="$PROJECT_DIR$/app/models/reporting.js" />
         <option value="$PROJECT_DIR$/app/models/support.js" />
         <option value="$PROJECT_DIR$/app/models/collection.js" />
-        <option value="$PROJECT_DIR$/app/controllers/segment.js" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/app/models/projet.js" />
         <option value="$PROJECT_DIR$/app/controllers/authentication.js" />
@@ -197,7 +198,6 @@
         <option value="C:/Downloads/shp to geojson/Support.geojson" />
         <option value="$PROJECT_DIR$/app/helpers/errorParse.js" />
         <option value="$PROJECT_DIR$/config/passport.js" />
-        <option value="$PROJECT_DIR$/app/controllers/support.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/models/user.js" />
         <option value="$PROJECT_DIR$/app/models/collecte.js" />
@@ -207,6 +207,8 @@
         <option value="$PROJECT_DIR$/app/routes.js" />
         <option value="$PROJECT_DIR$/app/controllers/users.js" />
         <option value="$PROJECT_DIR$/app/controllers/collecte.js" />
+        <option value="$PROJECT_DIR$/app/controllers/segment.js" />
+        <option value="$PROJECT_DIR$/app/controllers/support.js" />
       </list>
     </option>
   </component>
@@ -219,11 +221,11 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="374" />
-    <option name="y" value="62" />
-    <option name="width" value="1309" />
-    <option name="height" value="822" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="708" />
+    <option name="y" value="96" />
+    <option name="width" value="931" />
+    <option name="height" value="1028" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -261,7 +263,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -269,49 +270,11 @@
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="helpers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="validation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="ng" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -319,7 +282,7 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dss" />
     <property name="SearchEverywhereHistoryKey" value="support&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/support.js&#10;user&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/user.js&#10;projet&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/projet.js&#10;collec&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/collection.js" />
   </component>
   <component name="RecentsManager">
@@ -464,11 +427,13 @@
       <workItem from="1520588411850" duration="4492000" />
       <workItem from="1520606240227" duration="1428000" />
       <workItem from="1520608855663" duration="4776000" />
+      <workItem from="1521717964192" duration="85000" />
+      <workItem from="1521718063443" duration="1645000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="322998000" />
+    <option name="totallyTimeSpent" value="324728000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -480,25 +445,25 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="-4" width="1861" height="1084" extended-state="6" />
+    <frame x="708" y="96" width="931" height="1028" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19423287" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2092511" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3190184" sideWeight="0.50671685" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3497382" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972796" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32670158" sideWeight="0.49328318" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4393771" sideWeight="0.49328318" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43769634" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -671,13 +636,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/jsonwebtoken/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="2" lean-forward="false" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/jsonwebtoken/index.js" />
     <entry file="file://$PROJECT_DIR$/app/controllers/perimetre.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="688">
@@ -743,13 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/segment.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/authentication.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
@@ -761,13 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="14" column="38" lean-forward="false" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="108" column="21" lean-forward="false" selection-start-line="108" selection-start-column="21" selection-end-line="108" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -796,7 +741,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="32" column="14" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -867,15 +811,31 @@
     <entry file="file://$PROJECT_DIR$/app/controllers/users.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
-          <caret line="18" column="45" lean-forward="true" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
+          <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/collecte.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
+        <state relative-caret-position="3744">
           <caret line="208" column="32" lean-forward="false" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/segment.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
           <folding />
         </state>
       </provider>
