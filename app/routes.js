@@ -56,7 +56,6 @@ module.exports = function(app){
     userRoutes.get('/controlleurs/:id_region',requireAuth,UserController.getControllers);
     userRoutes.post('/affectation/',UserController.setAffectation);
     userRoutes.delete('/notification/clear',requireAuth,UserController.clearNotification);
-    userRoutes.get('/prestataires/',requireAuth,UserController.getPrestataires);
 
     // Bloc routes
     apiRoutes.use('/blocs', blocRoutes);
@@ -113,7 +112,7 @@ module.exports = function(app){
 
     apiRoutes.use('/collectes', collecteRoutes);
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
-    collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte);
+    collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte)
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);

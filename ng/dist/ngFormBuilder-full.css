@@ -1019,6 +1019,9 @@ input[type="password"][draggable="true"] {
 .input-group {
   width: 100%;
 }
+.form-field-type-datagrid .input-group {
+  width: auto;
+}
 
 .form-field-type-datagrid .form-group {
   margin-bottom: 0;
@@ -1421,11 +1424,6 @@ ul.component-list li {
 }
 
 /***************************** Form Component Buttons *********************/
-
-.formcomponents {
-  overflow: auto;
-  min-height: 200px;
-}
 
 .formcomponents .formcomponentcontainer {
   margin: 0 2px 2px 0;
