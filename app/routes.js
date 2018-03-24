@@ -122,6 +122,7 @@ module.exports = function(app){
     collecteRoutes.get('/voisin/:id_support',CollecteController.getVoisin);
     collecteRoutes.delete('/:id_collecte',requireAuth,CollecteController.delete);
     collecteRoutes.get('/export/:id_projet',requireAuth,CollecteController.exportData);
+    collecteRoutes.get('/exportgeo/:id_projet',CollecteController.exportGeo);
 
 
     //Reporting Routes

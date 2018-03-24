@@ -213,12 +213,14 @@ exports.exportData = function(req,res){
     let parcelleSpec = {};
 
 
-
     Collecte.find(query)
         .populate('agent')
         .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
+        }
+        if(collectes.length === 0){
+            return res.status(200).json({})
         }
         let identification = [];
         let parcelle = [];
@@ -232,8 +234,11 @@ exports.exportData = function(req,res){
                 agent:collecte.agent.userId
             };
             if(collecte.exploitation.hasOwnProperty('formdata')){
-                identification.push(Object.assign(data,collecte.exploitation.formdata.data))
+                identification.push(Object.assign(data))
+            }else{
+                identification.push(data)
             }
+
             collecte.collecte.forEach(form =>{
                 form.data.forEach(p =>{
                     let pdata = {
@@ -244,8 +249,9 @@ exports.exportData = function(req,res){
                         data_creation:p.date_creation,
                     };
                     Object.keys(p.formdata.data).forEach(key =>{
-                        if(typeof p.formdata.data[key] === 'object'){
+                        if(typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null){
                                 truekeys = [];
+                                console.log(p.formdata.data[key]);
                                 Object.keys(p.formdata.data[key]).forEach(k =>{
                                     if(p.formdata.data[key][k] === true){
                                         truekeys.push(k)
@@ -254,11 +260,17 @@ exports.exportData = function(req,res){
                                 p.formdata.data[key] = JSON.stringify(truekeys)
                         }
                     });
-                    parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
+                    if(p.support != -2){
+                        parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
+                    }else{
+                        parcelle.push(Object.assign(pdata,p.formdata.data))
+                    }
 
                 })
             })
+
         });
+
         if(identification.length > 0){
         Object.keys(identification[0]).forEach(key =>{
             identificationSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
@@ -286,28 +298,76 @@ exports.exportData = function(req,res){
                 'Content-disposition': 'attachment;filename=' + 'Report.xlsx',
             });
             return res.end(new Buffer(report, 'binary'));
-
-            // fs.writeFile("test.xlsx", report,  "binary",function(err) {
-            //     if(err) {
-            //         console.log(err);
-            //     } else {
-            //         console.log("The file was saved!");
-            //         res.download('test.xlsx');
-            //       // return  res.status(200).send(parcelleSpec)
-            //     }
-            // });
-
-
-
         }else{
             res.status(200).send({test:'test'})
         }
 
-    })
+    });
 
-    function getKeyByValue(object) {
-        return Object.keys(object).find(key => object[key] === true);
-    }
+};
+
+exports.exportGeo = function(req,res) {
+    let keys = Object.keys(req.query);
+    let query = Object.assign({}, req.query);
+
+    Collecte.find(query)
+        .populate('agent')
+        .exec(function (err, collectes) {
+            if (err) {
+                return res.status(500).json(err)
+            }
+            if (collectes.length === 0) {
+                return res.status(200).json({})
+            }
+            let parcelles = []
+            collectes.forEach(collecte => {
+                let data = {
+                    id_collecte: collecte._id,
+                    numero_collecte: collecte.numero,
+                    region: collecte.region,
+                    province: collecte.province,
+                    commune: collecte.commune,
+                    agent: collecte.agent.userId
+                };
+                if (collecte.exploitation.hasOwnProperty('formdata')) {
+                    data = Object.assign(data)
+                }
+
+
+                collecte.collecte.forEach(form => {
+                    form.data.forEach(p => {
+                        let pdata = {
+                            collecte: collecte._id,
+                            numero_collecte: collecte.numero,
+                            numero: p.numero,
+                            superficie: p.superficie,
+                            data_creation: p.date_creation,
+                        };
+                        Object.keys(p.formdata.data).forEach(key => {
+                            if (typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null) {
+                                truekeys = [];
+                                Object.keys(p.formdata.data[key]).forEach(k => {
+                                    if (p.formdata.data[key][k] === true) {
+                                        truekeys.push(k)
+                                    }
+                                });
+                                p.formdata.data[key] = JSON.stringify(truekeys)
+                            }
+                        });
+                        if (p.support != -2) {
+                            data = Object.assign(data,pdata, p.support, p.formdata.data);
+                        } else {
+                            data = Object.assign(data,pdata, p.formdata.data);
+                        }
+                            parcelles.push({type:'Feature',properties:data,geometry:p.gjson})
+                    })
+                })
+
+
+            });
+            // return res.json({"type":"FeatureCollection","features":parcelles})
+            return res.end(new Buffer(JSON.stringify({"type":"FeatureCollection","features":parcelles}), 'binary'));
+        });
 
 };
 
