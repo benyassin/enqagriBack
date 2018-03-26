@@ -102,3 +102,10 @@ exports.getForm = function(req,res, next){
         res.status(200).json(field)
     })
 }
+
+
+exports.submit = function(req,res){
+    let data = req.body;
+    console.log(data)
+    res.status(200).json(data)
+}

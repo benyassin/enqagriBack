@@ -76,6 +76,7 @@ module.exports = function(app){
     formRoutes.delete('/:form_id',requireAuth,FormController.deleteForm);
     formRoutes.post('/fields/:form_id',FieldsController.createFields);
     formRoutes.get('/:form_id/fields',FieldsController.getFields);
+    formRoutes.post('/:form_id/fields/submission',FieldsController.submit);
     formRoutes.get('/:form_id/extrapolation',FieldsController.getExtrapolationFields);
 
 
