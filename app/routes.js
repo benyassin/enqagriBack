@@ -9,9 +9,9 @@ var AuthenticationController = require('./controllers/authentication'),
     ReportingController = require('./controllers/reporting');
     SegmentController = require('./controllers/segment');
     SupportController = require('./controllers/support');
-    express = require('express'),
-    passportService = require('../config/passport'),
-    passport = require('passport'),
+    express = require('express');
+    passportService = require('../config/passport');
+    passport = require('passport');
     validate = require('express-validation');
     validation = require('./validation');
 
@@ -54,7 +54,7 @@ module.exports = function(app){
     userRoutes.put('/:user_id',requireAuth,UserController.updateUser);
     userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
     userRoutes.get('/controlleurs/:id_region',requireAuth,UserController.getControllers);
-    userRoutes.post('/affectation/',UserController.setAffectation);
+    userRoutes.post('/affectation/',requireAuth,UserController.setAffectation);
     userRoutes.delete('/notification/clear',requireAuth,UserController.clearNotification);
 
     // Bloc routes
@@ -103,7 +103,7 @@ module.exports = function(app){
     projetRoutes.get('/:projet_id?',ProjetController.getProjets);
     projetRoutes.delete('/:projet_id',ProjetController.deleteProjet);
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
-    projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets)
+    projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets);
     projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
     projetRoutes.get('/projet/notification',ProjetController.getnotification);
     projetRoutes.get('/:projet_id/check/',ProjetController.Check);
@@ -149,5 +149,10 @@ module.exports = function(app){
     app.use('/api', apiRoutes);
 
     app.use('/mobile',mobileRoutes);
+
+    app.get('*', function(req, res) {
+        res.redirect('/');
+    });
+
 
 }

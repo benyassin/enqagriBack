@@ -118,9 +118,9 @@ exports.getCollectes = function(req, res, next){
             }
             let listsupport = [];
             console.log(collecte);
-            if(collecte.projet.cid != null){
+            if(collecte.projet.cid != null && collecte.projet.cid !== undefined){
 
-
+                console.log('CID',collecte.projet.cid);
             collecte.collecte.forEach(c =>{
 
 
@@ -128,9 +128,12 @@ exports.getCollectes = function(req, res, next){
                     if(!listsupport.includes(element.id_support._id)){
                         listsupport.push({'collecte.data.id_support':element.id_support._id});
                     }
+
                 });
 
             });
+
+
 
             Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
                 if(err){
@@ -233,8 +236,16 @@ exports.exportData = function(req,res){
                 commune:collecte.commune,
                 agent:collecte.agent.userId
             };
-            if(collecte.exploitation.hasOwnProperty('formdata')){
-                identification.push(Object.assign(data))
+            if(collecte.exploitation.formdata !== undefined){
+                let idata = collecte.exploitation.formdata.data
+                Object.keys(idata).forEach(key =>{
+                    // truekeys(p.formdata.data)
+                    if(typeof idata[key] === 'object' && idata[key] !== null){
+                        idata[key] = truekeys(idata,key)
+                    }
+                });
+                idata.submit = undefined
+                identification.push(Object.assign(data,collecte.exploitation.formdata.data))
             }else{
                 identification.push(data)
             }
@@ -248,18 +259,18 @@ exports.exportData = function(req,res){
                         superficie:p.superficie,
                         data_creation:p.date_creation,
                     };
+                    if(typeof p.formdata !== 'object'){
+                        p.formdata = JSON.parse(p.formdata)
+                    }
                     Object.keys(p.formdata.data).forEach(key =>{
+                        // truekeys(p.formdata.data)
                         if(typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null){
-                                truekeys = [];
-                                console.log(p.formdata.data[key]);
-                                Object.keys(p.formdata.data[key]).forEach(k =>{
-                                    if(p.formdata.data[key][k] === true){
-                                        truekeys.push(k)
-                                    }
-                                });
-                                p.formdata.data[key] = JSON.stringify(truekeys)
+                            p.formdata.data[key] = truekeys(p.formdata.data,key)
                         }
+
                     });
+                        p.formdata.data.submit = undefined
+
                     if(p.support != -2){
                         parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
                     }else{
@@ -267,16 +278,23 @@ exports.exportData = function(req,res){
                     }
 
                 })
+
             })
 
-        });
 
+        });
+        console.log(identification);
         if(identification.length > 0){
         Object.keys(identification[0]).forEach(key =>{
+            if(key !== 'submit'){
             identificationSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+            }
         });
         Object.keys(parcelle[0]).forEach(key =>{
-            parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+            if(key !== 'submit'){
+                parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+            }
+
         });
         const report = excel.buildExport(
             [
@@ -303,7 +321,17 @@ exports.exportData = function(req,res){
         }
 
     });
+    function truekeys(data,key){
+        let t = [];
+        Object.keys(data[key]).forEach(k =>{
+            if(data[key][k] === true){
+                t.push(k)
+            }
+        });
 
+        console.log(t);
+        return JSON.stringify(t)
+    }
 };
 
 exports.exportGeo = function(req,res) {
@@ -399,6 +427,9 @@ exports.getCollecteEnTraitement = function(req,res,next){
             return res.status(500).json(err)
         }
         if(collectes.length > 0){
+            if(collectes[0].geo === false){
+                return res.status(200).json({collectes:collectes,order:[]})
+            }
             let order = Object.keys(collectes[0].collecte[0].data[0].support);
             // collectes.push({order:order});
             res.status(200).json({collectes:collectes,order:order})

@@ -18,7 +18,7 @@ mongoose.connect(databaseConfig.url,{
     reconnectTries: Number.MAX_VALUE,
     useMongoClient: true,});
 
-app.listen(process.env.PORT || 8080);
+app.listen(80);
 console.log("App listening on port 8080");
 
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false })); // Parses urlencoded bodies
@@ -28,7 +28,12 @@ app.use(cors());
 app.use(compression());
 
 app.use('/public', express.static(path.join(__dirname + '/ng')));
-app.use('/angular', express.static(path.join(__dirname + '/angular')));
+app.use('/', express.static(path.join(__dirname + '/angular')));
+
+app.use('/download', function(req, res){
+    let file = __dirname + '/apk/apk-v1.0.0.txt';
+    res.download(file);
+});
 
 
 

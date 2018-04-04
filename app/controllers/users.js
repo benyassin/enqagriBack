@@ -25,12 +25,11 @@ exports.getUser = function (req, res, next) {
     })
 };
 
-exports.setAffectation = function(req,res,next){
-    let data = req.body.data
-    let agents = []
-
-    User.update({'affectation.projet' :req.body.projet,'role':'agent'},{ $pull: {"affectation": {'projet':req.body.projet} } },function(err,results){
-        console.log(results)
+exports.setAffectation = function(req,res){
+    let data = req.body.data;
+    let agents = [];
+    User.update({'affectation.projet' :req.body.projet,'perimetre.province':req.user.perimetre.province,'role':'agent'},{ $pull: {"affectation": {'projet':req.body.projet} } },{multi: true},function(err,results){
+        console.log(results);
             data.forEach(commune => {
         if(commune.agents.length > 0){
             commune.id_agents.forEach(agent => {
@@ -41,6 +40,8 @@ exports.setAffectation = function(req,res,next){
         }
 
     });
+
+        console.log(agents)
     if(agents.length == 0 ){
         return res.status(200).json('saved')
     }
@@ -64,10 +65,11 @@ exports.setAffectation = function(req,res,next){
            }else{
                user.affectation[index].communes = newArray[element]
            }
-           user.save()
+           user.save();
         })   
-    })
-    res.status(200).json('saved')
+    });
+
+    res.status(200).json('saved');
     return req.body
     })
 
@@ -76,62 +78,36 @@ exports.setAffectation = function(req,res,next){
 
 
 exports.deleteUser = function (req, res) {
-    let data = req.body
-    User.remove({_id :req.params.user_id}, function (err, user) {
-            res.json(user)
-        });
+    User.findById(req.params.user_id,function(err,user){
+        if(err){
+            return res.status(500).json(err)
+        }
+        if(user.affectation > 0 ){
+           return res.status(500).json('Impossible de supprimer cet utilisateur il est affecté à une enquête')
+        }
+        else if(user.role == 'controleur'){
+            let query = {['validation.'+user.perimetre.region]:{$elemMatch: {agent: user._id.toString()} }};
+            console.log(query)
+            Projet.count(query).exec(function(err,count){
+                if(err){
+                    return res.status(500).json(err)
+                }
+                if(count > 0) {
+                    return res.status(500).json({error:'affectation',message: 'Impossible de supprimer cet utilisateur il est affecté à une enquête'})
+                }
+                User.remove({_id :req.params.user_id}, function (err, user) {
+                   return res.json(user)
+                });
+            });
+        }else{
+            User.remove({_id :req.params.user_id}, function (err, user) {
+                res.json(user)
+            });
+        }
 
+
+    })
 };
-
-// exports.createUser = function (req, res,next) {
-//         var nom = req.body.nom;
-//         var prenom = req.body.prenom;
-//         var email = req.body.email;
-//         var password = req.body.password;
-//         var role = req.body.role;
-//         var telephone = req.body.telephone;
-//         var createdBy = req.user._id;
-//         var perimetre = {region : req.body.region,province: req.body.province,commune: req.body.commune}
-//
-//     if(!email){
-//         return res.status(422).send({error: 'You must enter an email address'});
-//     }
-//
-//     if(!password){
-//         return res.status(422).send({error: 'You must enter a password'});
-//     }
-//     User.findOne({email: email}, function(err, existingUser) {
-//         if(err){
-//             return next(err);
-//         }
-//
-//         if(existingUser){
-//             return res.status(422).send({error: 'That email address is already in use'});
-//         }
-//
-//         var user = new User({
-//             nom: nom,
-//             prenom: prenom,
-//             email: email,
-//             password: password,
-//             role: role,
-//             telephone: telephone,
-//             createdBy: createdBy,
-//             perimetre : perimetre
-//         });
-//         user.save(function(err, user){
-//
-//             if(err){
-//                 return next(err);
-//             }
-//
-//             res.status(201).json({
-//                 user: user
-//             })
-//
-//         });
-// });
-// }
 
 exports.createUser = function(req, res ,next){
     data = req.body;
@@ -178,13 +154,13 @@ exports.createUser = function(req, res ,next){
                         return res.status(500).json(err)
                     }
                     if(count > 0) {
-                        return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
+                        return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à une enquête'})
                     }
                     handler(user,data)
                 });
 
             }else if(user.role == 'agent' && user.affectation.length !== 0){
-                return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à un projet'})
+                return res.status(500).json({error:'affectation',message: 'Impossible de modifier cet utilisateur il est affecté à une enquête'})
             }else{
                 handler(user,data)
 
