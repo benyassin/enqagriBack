@@ -99,14 +99,14 @@ module.exports = function(app){
     // Projet Routes
     apiRoutes.use('/projets',projetRoutes);
 
-    projetRoutes.post('/',ProjetController.createProjet);
-    projetRoutes.get('/:projet_id?',ProjetController.getProjets);
-    projetRoutes.delete('/:projet_id',ProjetController.deleteProjet);
+    projetRoutes.post('/',requireAuth,ProjetController.createProjet);
+    projetRoutes.get('/:projet_id?',requireAuth,ProjetController.getProjets);
+    projetRoutes.delete('/:projet_id',requireAuth,ProjetController.deleteProjet);
     projetRoutes.get('/projets/test',requireAuth,ProjetController.getProjetsByPerimetre);
     projetRoutes.get('/controller/projets',requireAuth,ProjetController.controllerProjets);
     projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
-    projetRoutes.get('/projet/notification',ProjetController.getnotification);
-    projetRoutes.get('/:projet_id/check/',ProjetController.Check);
+    projetRoutes.get('/projet/notification',requireAuth,ProjetController.getnotification);
+    projetRoutes.get('/:projet_id/check/',requireAuth,ProjetController.Check);
 
 
     //Collecte Routes
