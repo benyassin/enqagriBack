@@ -8,6 +8,7 @@ var cors = require('cors');
 var path    = require("path");
 
 
+
 var databaseConfig = require('./config/database');
 var router = require('./app/routes');
 
@@ -17,6 +18,8 @@ mongoose.connect(databaseConfig.url,{
     keepAlive: true,
     reconnectTries: Number.MAX_VALUE,
     useMongoClient: true,});
+
+
 
 app.listen(80);
 console.log("App listening on port 8080");

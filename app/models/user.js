@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
     bcrypt   = require('bcrypt-nodejs');
     Perimetre = require('./perimetre');
     Schema =  mongoose.Schema;
+    collecte = require('./collecte');
     autoIncrement = require('mongoose-auto-increment');
 
 

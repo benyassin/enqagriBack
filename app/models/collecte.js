@@ -4,6 +4,8 @@ let Reporting = require('./reporting');
 let _ = require('lodash');
 let Schema =  mongoose.Schema;
 let Perimetre = require('./perimetre');
+    autoIncrement = require('mongoose-auto-increment');
+
 
 
 let CollecteSchema = new Schema({
@@ -119,4 +121,9 @@ CollecteSchema.post("remove", function(doc,next){
         next()
     })
 })
-module.exports = mongoose.model('Collecte',CollecteSchema);;
+
+autoIncrement.initialize(mongoose);
+
+CollecteSchema.plugin(autoIncrement.plugin, { model: 'Collecte', field: 'id_collecte',startAt: 0,incrementBy: 1 });
+
+module.exports = mongoose.model('Collecte',CollecteSchema);

@@ -35,9 +35,9 @@ exports.storeCollecte = function(req,res,next){
         if(err){
             return res.status(500).json(err)
         }
-        res.status(200).json(collecte._id)
+        res.status(200).json({_id:collecte._id,'id_collecte':collecte.id_collecte})
     })
-}
+};
 
 // exports.aggregate = function(req,res,next){
 //     Collecte.aggregate([
@@ -134,7 +134,6 @@ exports.getCollectes = function(req, res, next){
             });
 
 
-
             Collecte.find({'projet':collecte.projet}).or(listsupport).exec(function(err,voisin){
                 if(err){
                     return res.status(500).json(err)
@@ -214,7 +213,7 @@ exports.exportData = function(req,res){
     let query = Object.assign({},req.query);
     let identificationSpec = {};
     let parcelleSpec = {};
-
+    let forms = [];
 
     Collecte.find(query)
         .populate('agent')
@@ -244,72 +243,77 @@ exports.exportData = function(req,res){
                         idata[key] = truekeys(idata,key)
                     }
                 });
-                idata.submit = undefined
+                idata.submit = undefined;
                 identification.push(Object.assign(data,collecte.exploitation.formdata.data))
             }else{
                 identification.push(data)
             }
 
-            collecte.collecte.forEach(form =>{
-                form.data.forEach(p =>{
+            for(let i = 0;i < collecte.collecte.length;i++){
+
+                let index = forms.map((el) => el.form).indexOf(collecte.collecte[i].form);
+                if(index === -1){
+                    forms.push({'name':collecte.collecte[i].formname,'form':collecte.collecte[i].form,'specification':[],data:[]});
+                    index = forms.length-1
+                }
+                collecte.collecte[i].data.forEach(p =>{
                     let pdata = {
                         collecte:collecte._id,
                         numero_collecte:collecte.numero,
                         numero:p.numero,
                         superficie:p.superficie,
-                        data_creation:p.date_creation,
+                        date_creation:p.date_creation,
                     };
                     if(typeof p.formdata !== 'object'){
                         p.formdata = JSON.parse(p.formdata)
                     }
-                    Object.keys(p.formdata.data).forEach(key =>{
-                        // truekeys(p.formdata.data)
+                    Object.keys(p.formdata.data).forEach(key => {
+                        if((forms[index].specification.map(el =>el.displayName).indexOf(key)) === -1 && key !== 'submit'){
+                            forms[index].specification[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+                        }
                         if(typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null){
                             p.formdata.data[key] = truekeys(p.formdata.data,key)
                         }
-
                     });
-                        p.formdata.data.submit = undefined
+                        p.formdata.data.submit = undefined;
 
-                    if(p.support != -2){
-                        parcelle.push(Object.assign(pdata,p.support,p.formdata.data))
+                    if(p.support !== -2){
+                            forms[index].data.push(Object.assign(pdata,p.support,p.formdata.data))
                     }else{
-                        parcelle.push(Object.assign(pdata,p.formdata.data))
+                            forms[forms.length-1].data.push(Object.assign(pdata,p.formdata.data))
                     }
 
                 })
 
-            })
+
+            }
 
 
         });
-        console.log(identification);
         if(identification.length > 0){
         Object.keys(identification[0]).forEach(key =>{
             if(key !== 'submit'){
             identificationSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
             }
         });
-        Object.keys(parcelle[0]).forEach(key =>{
-            if(key !== 'submit'){
-                parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
-            }
-
-        });
-        const report = excel.buildExport(
-            [
-                {
-                    name: 'Identification',
-                    specification: identificationSpec,
-                    data: identification
-                },
-                {
-                    name:'Parcelle',
-                    specification:parcelleSpec,
-                    data:parcelle
+        forms.forEach(f =>{
+            Object.keys(f.data[0]).forEach(key =>{
+                if(key !== 'submit' && f.specification[key] === undefined){
+                    f.specification[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
                 }
-            ]
-        );
+            });
+
+        })
+        // Object.keys(parcelle[0]).forEach(key =>{
+        //     if(key !== 'submit'){
+        //         parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+        //     }
+        //
+        // });
+
+            forms.unshift({'name':'Identification','specification':identificationSpec,'data':identification})
+
+            const report = excel.buildExport(forms);
 
             res.writeHead(200, {
                 'Content-Type':'application/vnd.openxmlformats',
@@ -328,8 +332,6 @@ exports.exportData = function(req,res){
                 t.push(k)
             }
         });
-
-        console.log(t);
         return JSON.stringify(t)
     }
 };
@@ -497,3 +499,5 @@ exports.delete = function(req,res){
         res.status(200).json(collecte)
     })
 }
+
+

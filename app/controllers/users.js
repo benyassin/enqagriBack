@@ -92,12 +92,15 @@ exports.deleteUser = function (req, res) {
                 if(err){
                     return res.status(500).json(err)
                 }
-                if(count > 0) {
+                else if(count > 0) {
                     return res.status(500).json({error:'affectation',message: 'Impossible de supprimer cet utilisateur il est affecté à une enquête'})
                 }
-                User.remove({_id :req.params.user_id}, function (err, user) {
-                   return res.json(user)
-                });
+                else{
+                    User.remove({_id :req.params.user_id}, function (err, user) {
+                        return res.json(user)
+                    });
+                }
+
             });
         }else{
             User.remove({_id :req.params.user_id}, function (err, user) {
@@ -112,10 +115,10 @@ exports.deleteUser = function (req, res) {
 exports.createUser = function(req, res ,next){
     data = req.body;
     data.id_createur = req.user._id;
-    data.plaintext = req.body.password
+    data.plaintext = req.body.password;
     if(req.body.role === 'superviseurR' || req.body.role === 'admin' || req.body.role === 'controleur'){
-        req.body.province = null
-        req.body.office = null
+        req.body.province = null;
+        req.body.office = null;
         req.body.dpa = null
     }
     data.perimetre = {
@@ -128,11 +131,11 @@ exports.createUser = function(req, res ,next){
    let query = {_id : data._id};
 
     User.findOne(query, function(err,user){
-        if(err) return res.status(500).send(err)
+        if(err) return res.status(500).send(err);
         if(!user){
-                console.log("user not found creating new one")
+                console.log("user not found creating new one");
                 let newUser = new User(data);
-                console.log(newUser)
+                console.log(newUser);
                 newUser.save(function(err){
                     if(err) {
                         err = parse(err);

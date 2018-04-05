@@ -54,7 +54,7 @@ exports.Upload = function(req,res){
 
         }else{
             data = fs.readFileSync(req.file.path,'utf8');
-            csv()
+            csv({delimiter:[",",";"]})
                 .fromString(data)
                 .on('end_parsed',(jsonArrObj)=>{
                     const keys = jsonArrObj[0];
