@@ -82,8 +82,8 @@ exports.deleteUser = function (req, res) {
         if(err){
             return res.status(500).json(err)
         }
-        if(user.affectation > 0 ){
-           return res.status(500).json('Impossible de supprimer cet utilisateur il est affecté à une enquête')
+        if(user.affectation.length > 0 ){
+           return res.status(500).json({error:'affectation',message:'Impossible de supprimer cet utilisateur il est affecté à une enquête'})
         }
         else if(user.role == 'controleur'){
             let query = {['validation.'+user.perimetre.region]:{$elemMatch: {agent: user._id.toString()} }};

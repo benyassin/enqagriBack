@@ -2,7 +2,7 @@ const Collecte = require('../models/collecte');
 const mongoose = require('mongoose');
 const qs = require('querystring');
 const excel = require('node-excel-export');
-const fs =require('fs');
+const fs = require('fs');
 
 const styles = {
     headerDark: {
@@ -229,14 +229,14 @@ exports.exportData = function(req,res){
         collectes.forEach(collecte =>{
             let data = {
                 id_collecte:collecte._id,
-                numero_collecte:collecte.numero,
+                numero_collecte:collecte.id_collecte+'-'+collecte.numero,
                 region:collecte.region,
                 province:collecte.province,
                 commune:collecte.commune,
                 agent:collecte.agent.userId
             };
             if(collecte.exploitation.formdata !== undefined){
-                let idata = collecte.exploitation.formdata.data
+                let idata = collecte.exploitation.formdata.data;
                 Object.keys(idata).forEach(key =>{
                     // truekeys(p.formdata.data)
                     if(typeof idata[key] === 'object' && idata[key] !== null){
@@ -253,13 +253,13 @@ exports.exportData = function(req,res){
 
                 let index = forms.map((el) => el.form).indexOf(collecte.collecte[i].form);
                 if(index === -1){
-                    forms.push({'name':collecte.collecte[i].formname,'form':collecte.collecte[i].form,'specification':[],data:[]});
+                    forms.push({'name':collecte.collecte[i].formname,'form':collecte.collecte[i].form,'specification':{},data:[]});
                     index = forms.length-1
                 }
                 collecte.collecte[i].data.forEach(p =>{
                     let pdata = {
                         collecte:collecte._id,
-                        numero_collecte:collecte.numero,
+                        numero_collecte:collecte.id_collecte+'-'+collecte.numero,
                         numero:p.numero,
                         superficie:p.superficie,
                         date_creation:p.date_creation,
@@ -268,7 +268,7 @@ exports.exportData = function(req,res){
                         p.formdata = JSON.parse(p.formdata)
                     }
                     Object.keys(p.formdata.data).forEach(key => {
-                        if((forms[index].specification.map(el =>el.displayName).indexOf(key)) === -1 && key !== 'submit'){
+                        if(forms[index].specification[key] === undefined && key !== 'submit'){
                             forms[index].specification[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
                         }
                         if(typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null){
@@ -297,13 +297,16 @@ exports.exportData = function(req,res){
             }
         });
         forms.forEach(f =>{
+            results = {};
             Object.keys(f.data[0]).forEach(key =>{
                 if(key !== 'submit' && f.specification[key] === undefined){
-                    f.specification[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
+                    results[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
                 }
             });
-
-        })
+            console.log(f.specification);
+            f.specification = Object.assign(results,f.specification)
+        });
+            console.log(forms[0].specification);
         // Object.keys(parcelle[0]).forEach(key =>{
         //     if(key !== 'submit'){
         //         parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
@@ -353,7 +356,7 @@ exports.exportGeo = function(req,res) {
             collectes.forEach(collecte => {
                 let data = {
                     id_collecte: collecte._id,
-                    numero_collecte: collecte.numero,
+                    numero_collecte: collecte.id_collecte+'-'+collecte.numero,
                     region: collecte.region,
                     province: collecte.province,
                     commune: collecte.commune,
@@ -368,7 +371,7 @@ exports.exportGeo = function(req,res) {
                     form.data.forEach(p => {
                         let pdata = {
                             collecte: collecte._id,
-                            numero_collecte: collecte.numero,
+                            numero_collecte: collecte.id_collecte+'-'+collecte.numero,
                             numero: p.numero,
                             superficie: p.superficie,
                             data_creation: p.date_creation,

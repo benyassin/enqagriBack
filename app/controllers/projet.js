@@ -61,6 +61,7 @@ exports.getProjets = function(req,res,next){
           .populate('forms','name geometry theme id_fields')
           .populate('perimetre.region','name id_region' )
           .populate('perimetre.province','name id_province id_region')
+        .populate('cid')
           .exec(function(err,projets){
         if(err){
             return res.status(500).send(err)

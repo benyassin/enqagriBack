@@ -94,11 +94,8 @@ exports.aggregate = function(req,res){
     if(parseInt(req.query.province) == 0){
         delete dq.province
     }
-    if(parseInt(req.query.niveau) != -1){
-        dq['validation.' + req.query.niveau] = 'new'
-    }
 
-    console.log(dq)
+
     let pipeline = function(parameters){
         return [
             {
@@ -118,7 +115,7 @@ exports.aggregate = function(req,res){
 
 
 
-
+    console.log(dq)
     let p5 = Collecte.aggregate(pipeline(dq)
     ).exec(function(err,data){
         if (err) {
@@ -126,9 +123,10 @@ exports.aggregate = function(req,res){
             console.log(err);
         }
     })
-    if(req.user.role == 'controleur'){
+    if(req.query.pmax !== -2){
         dq['validation.'+ req.query.pmax] ='valid';
     }
+    console.log(dq)
     let p4 = Collecte.aggregate(pipeline(dq)
     ).exec(function(err,data){
         if (err) {
@@ -138,6 +136,10 @@ exports.aggregate = function(req,res){
     })
 
     Promise.all([p0,p1,p2,p3,p4,p5,p6]).then(function(values) {
+        if(req.query.pmax==-2){
+            values[2]=values[1]
+            values[1]=0
+        }
         res.status(200).json({'total':values[0],'wait':values[1],'valid':values[2],'entraitment':values[3],'validePerDay':values[4],'totalPerDay':values[5],'refus':values[6]})
     },reason => {
         console.log(res.status(500).json(reason))

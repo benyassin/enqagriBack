@@ -21,7 +21,7 @@ mongoose.connect(databaseConfig.url,{
 
 
 
-app.listen(process.env.PORT || 8080);
+app.listen(80);
 console.log("App listening on port 8080");
 
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false })); // Parses urlencoded bodies
