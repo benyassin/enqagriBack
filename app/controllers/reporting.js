@@ -123,11 +123,28 @@ exports.aggregate = function(req,res){
             console.log(err);
         }
     })
+    let df = {
+        'projet': mongoose.Types.ObjectId(req.params.id_projet),
+        'region': parseInt(req.query.region),
+        'province': parseInt(req.query.province),
+        createdAt: {
+            $gte: new Date(d)
+        }
+    }
+    if(req.user.role == 'agent'){
+        df.agent = req.user._id
+    }
+    if(parseInt(req.query.region) == 0 ){
+        delete df.region
+    }
+    if(parseInt(req.query.province) == 0){
+        delete df.province
+    }
     if(req.query.pmax !== -2){
-        dq['validation.'+ req.query.pmax] ='valid';
+        df['validation.'+ req.query.pmax] ='valid';
     }
     console.log(dq)
-    let p4 = Collecte.aggregate(pipeline(dq)
+    let p4 = Collecte.aggregate(pipeline(df)
     ).exec(function(err,data){
         if (err) {
             console.log('Error Fetching model');
