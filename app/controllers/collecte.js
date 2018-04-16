@@ -392,6 +392,10 @@ exports.exportGeo = function(req,res) {
                         } else {
                             data = Object.assign(data,pdata, p.formdata.data);
                         }
+                            if(p.gjson.hasOwnProperty('geometry')){
+                                p.gjson = p.gjson.geometry
+                            }
+
                             parcelles.push({type:'Feature',properties:data,geometry:p.gjson})
                     })
                 })

@@ -3,7 +3,7 @@
 <head>
     <base href="/">    
   <meta charset="utf-8">
-  <title>Form.io Form Builder</title>
+  <title>BeGIS</title>
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="https://cdn.rawgit.com/odra/ng-json-explorer/master/dist/angular-json-explorer.min.css">
   <link rel="stylesheet" href="https://unpkg.com/bootswatch@3.3.7/yeti/bootstrap.min.css" />
@@ -121,6 +121,32 @@
           components: [],
           display: 'form'
         };
+
+        formioComponents.components.textfield.title = 'Champ de Text';
+        formioComponents.components.number.title = 'Numéro';
+        formioComponents.components.textarea.title = 'Zone de text';
+        formioComponents.components.checkbox.title = 'case à cocher';
+        formioComponents.components.selectboxes.title = 'Multi case à cocher';
+        formioComponents.components.select.title = 'Liste déroulante';
+        formioComponents.components.radio.title = 'Bouton radio';
+        formioComponents.components.button.title = 'Bouton';
+        formioComponents.components.phoneNumber.title = 'Télephone';
+        formioComponents.components.datetime.title = 'Date';
+        formioComponents.components.currency.title = 'Devise';
+        formioComponents.components.hidden.title = 'Invisible';
+        formioComponents.components.file.title = 'Fichier';
+        formioComponents.components.password.disabled = true;
+        formioComponents.components.editgrid.disabled = true;
+        formioComponents.components.survey.disabled = true;
+        formioComponents.components.custom.disabled = true;
+        formioComponents.components.form.disabled = true;
+        formioComponents.components.resource.disabled = true;
+        formioComponents.components.content.disabled = true;
+        formioComponents.components.htmlelement.disabled = true;
+        formioComponents.groups.layout.disabled = false;
+        formioComponents.groups.__component.title = 'Composants de base';
+        formioComponents.groups.advanced.title = 'Composants spéciale';
+        formioComponents.groups.layout.title = 'Composants de mise en page';
 
         $rootScope.paramValue = $location.absUrl().split('=')[1];
         $rootScope.elements

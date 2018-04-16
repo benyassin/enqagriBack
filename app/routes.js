@@ -83,18 +83,18 @@ module.exports = function(app){
     // Perimetre Routes
     apiRoutes.use('/perimetre',perimetreRoutes);
 
-    perimetreRoutes.get('/region', PerimetreController.getRegion);
-    perimetreRoutes.get('/province/:id_region?',PerimetreController.getProvinces);
-    perimetreRoutes.get('/commune/:id_province',PerimetreController.getCommune);
+    perimetreRoutes.get('/region',requireAuth,PerimetreController.getRegion);
+    perimetreRoutes.get('/province/:id_region?',requireAuth,PerimetreController.getProvinces);
+    perimetreRoutes.get('/commune/:id_province',requireAuth,PerimetreController.getCommune);
     perimetreRoutes.get('/communes',requireAuth,PerimetreController.getCommunebyUser);
-    perimetreRoutes.get('/DpaOffice',PerimetreController.DpaOffice);
-    perimetreRoutes.get('/collections',SupportController.getCollection);
-    perimetreRoutes.get('/support',SupportController.GetSupport);
-    perimetreRoutes.get('/supportkeys',SupportController.getSupportKeys);
+    perimetreRoutes.get('/DpaOffice',requireAuth,PerimetreController.DpaOffice);
+    perimetreRoutes.get('/collections',requireAuth,SupportController.getCollection);
+    perimetreRoutes.get('/support',requireAuth,SupportController.GetSupport);
+    perimetreRoutes.get('/supportkeys',requireAuth,SupportController.getSupportKeys);
 
-    perimetreRoutes.post('/collections',SupportController.createCollection);
-    perimetreRoutes.post('supportbyid',SupportController.GetSupportByid);
-    perimetreRoutes.delete('/collection/:cid',SupportController.deleteCollection);
+    perimetreRoutes.post('/collections',requireAuth,SupportController.createCollection);
+    perimetreRoutes.post('supportbyid',requireAuth,SupportController.GetSupportByid);
+    perimetreRoutes.delete('/collection/:cid',requireAuth,SupportController.deleteCollection);
 
     // Projet Routes
     apiRoutes.use('/projets',projetRoutes);
@@ -115,22 +115,22 @@ module.exports = function(app){
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
     collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte)
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
-    collecteRoutes.get('/aggregate/test',CollecteController.aggregate);
+    collecteRoutes.get('/aggregate/test',requireAuth,CollecteController.aggregate);
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
     collecteRoutes.post('/validate',CollecteController.validate);
-    collecteRoutes.get('/traitement/:id_projet',CollecteController.getCollecteEnTraitement);
-    collecteRoutes.get('/segment/:id_segment',SegmentController.getSegment);
-    collecteRoutes.get('/voisin/:id_support',CollecteController.getVoisin);
+    collecteRoutes.get('/traitement/:id_projet',requireAuth,CollecteController.getCollecteEnTraitement);
+    collecteRoutes.get('/segment/:id_segment',requireAuth,SegmentController.getSegment);
+    collecteRoutes.get('/voisin/:id_support',requireAuth,CollecteController.getVoisin);
     collecteRoutes.delete('/:id_collecte',requireAuth,CollecteController.delete);
     collecteRoutes.get('/export/:id_projet',requireAuth,CollecteController.exportData);
-    collecteRoutes.get('/exportgeo/:id_projet',CollecteController.exportGeo);
+    collecteRoutes.get('/exportgeo/:id_projet',requireAuth,CollecteController.exportGeo);
 
 
     //Reporting Routes
 
-    apiRoutes.use('/reporting',reportingRoutes);
-    reportingRoutes.get('/dashboard/',ReportingController.getReports);
-    reportingRoutes.get('/dashboards/',ReportingController.aggregatee);
+    apiRoutes.use('/reporting',requireAuth,reportingRoutes);
+    reportingRoutes.get('/dashboard/',requireAuth,ReportingController.getReports);
+    reportingRoutes.get('/dashboards/',requireAuth,ReportingController.aggregatee);
     reportingRoutes.get('/dashboard2/:id_projet',requireAuth,ReportingController.aggregate);
 
 
@@ -141,7 +141,7 @@ module.exports = function(app){
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
 
     mobileRoutes.use('/support',segmentmobileRoutes);
-    segmentmobileRoutes.get('/',SegmentController.getSegmentWithCommunes);
+    segmentmobileRoutes.get('/',requireAuth,SegmentController.getSegmentWithCommunes);
 
     mobileRoutes.use('/auth', mobileAuthRoutes);
     mobileAuthRoutes.post('/login',requireLogin,AuthenticationController.loginMobile);

@@ -112575,9 +112575,6 @@ module.exports = function(app) {
               '<p class="lead" ng-if="::formComponent.title" style="margin-top:10px;">{{::formComponent.title | formioTranslate}} {{\'Component\' | formioTranslate}}</p>' +
             '</div>' +
             '<div class="col-md-6">' +
-              '<div class="pull-right" ng-if="::formComponent.documentation" style="margin-top:10px; margin-right:20px;">' +
-                '<a ng-href="{{ ::formComponent.documentation }}" target="_blank"><i class="glyphicon glyphicon-new-window"></i> {{\'Help!\' | formioTranslate}}</a>' +
-              '</div>' +
             '</div>' +
           '</div>' +
           '<div class="row">' +
