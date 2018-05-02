@@ -2,8 +2,8 @@ const Collecte = require('../models/collecte');
 const mongoose = require('mongoose');
 const qs = require('querystring');
 const excel = require('node-excel-export');
-const fs = require('fs');
 
+const fs = require('fs');
 const styles = {
     headerDark: {
         fill: {
@@ -75,7 +75,7 @@ exports.updateCollecte = function(req,res){
     })
 };
 
-exports.aggregate = function(req,res,next){
+exports.aggregate = function(req,res){
     Collecte.aggregate([
         {$match: {}},
         {$unwind: "$collecte"},
@@ -91,13 +91,11 @@ exports.aggregate = function(req,res,next){
       })
 }
 
-exports.getCollectes = function(req, res, next){
+exports.getCollectes = function(req, res){
     if(!req.params.id_collecte){
     Collecte.find({},'projet agent createdAt')
     .populate({path:'projet',select:'name theme validation'})
     .populate('agent')
-    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
-    })
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -109,9 +107,7 @@ exports.getCollectes = function(req, res, next){
         .populate({path:'projet',select:'name theme validation cid'})
         .populate('agent')
         .populate('collecte.data.id_support')
-        .populate('test')
-        .populate({path:'agent', populate: { path: 'region province commune',select:'name'}
-        })
+        .populate('_region _province _commune','-geometry')
         .exec(function(err,collecte){
             if(err){
                 return res.status(500).json(err)
@@ -303,10 +299,8 @@ exports.exportData = function(req,res){
                     results[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
                 }
             });
-            console.log(f.specification);
             f.specification = Object.assign(results,f.specification)
         });
-            console.log(forms[0].specification);
         // Object.keys(parcelle[0]).forEach(key =>{
         //     if(key !== 'submit'){
         //         parcelleSpec[key] = {displayName: key,width: 60,headerStyle: styles.headerDark}
@@ -352,30 +346,43 @@ exports.exportGeo = function(req,res) {
             if (collectes.length === 0) {
                 return res.status(200).json({})
             }
-            let parcelles = []
+            let parcelles = [];
             collectes.forEach(collecte => {
-                let data = {
-                    id_collecte: collecte._id,
-                    numero_collecte: collecte.id_collecte+'-'+collecte.numero,
-                    region: collecte.region,
-                    province: collecte.province,
-                    commune: collecte.commune,
-                    agent: collecte.agent.userId
-                };
-                if (collecte.exploitation.hasOwnProperty('formdata')) {
-                    data = Object.assign(data)
-                }
+                // let data = {
+                //     id_collecte: collecte._id,
+                //     numero_collecte: collecte.id_collecte+'-'+collecte.numero,
+                //     region: collecte.region,
+                //     province: collecte.province,
+                //     commune: collecte.commune,
+                //     agent: collecte.agent.userId
+                // };
+
 
 
                 collecte.collecte.forEach(form => {
                     form.data.forEach(p => {
                         let pdata = {
-                            collecte: collecte._id,
+                            id_collecte: collecte._id,
                             numero_collecte: collecte.id_collecte+'-'+collecte.numero,
+                            region: collecte.region,
+                            province: collecte.province,
+                            commune: collecte.commune,
+                            agent: collecte.agent.userId,
                             numero: p.numero,
                             superficie: p.superficie,
                             data_creation: p.date_creation,
                         };
+                        if(collecte.exploitation.formdata !== undefined){
+                            let idata = collecte.exploitation.formdata.data;
+                            Object.keys(idata).forEach(key =>{
+                                // truekeys(p.formdata.data)
+                                if(typeof idata[key] === 'object' && idata[key] !== null){
+                                    idata[key] = _truekeys(idata,key)
+                                }
+                            });
+                            idata.submit = undefined;
+                            Object.assign(pdata,collecte.exploitation.formdata.data)
+                        }
                         Object.keys(p.formdata.data).forEach(key => {
                             if (typeof p.formdata.data[key] === 'object' && p.formdata.data[key] !== null) {
                                 truekeys = [];
@@ -387,24 +394,35 @@ exports.exportGeo = function(req,res) {
                                 p.formdata.data[key] = JSON.stringify(truekeys)
                             }
                         });
-                        if (p.support != -2) {
-                            data = Object.assign(data,pdata, p.support, p.formdata.data);
-                        } else {
-                            data = Object.assign(data,pdata, p.formdata.data);
+                        if(p.gjson.hasOwnProperty('geometry')){
+                            p.gjson = p.gjson.geometry
                         }
-                            if(p.gjson.hasOwnProperty('geometry')){
-                                p.gjson = p.gjson.geometry
-                            }
 
-                            parcelles.push({type:'Feature',properties:data,geometry:p.gjson})
-                    })
+                        if (p.support !== -2) {
+                            parcelles.push({type:'Feature',properties:Object.assign(pdata,p.support,p.formdata.data),geometry:p.gjson});
+                        }else {
+                            parcelles.push({type:'Feature',properties:Object.assign(pdata,p.formdata.data),geometry:p.gjson});
+                        }
+
+                        })
                 })
 
 
             });
+            function _truekeys(data,key){
+                let t = [];
+                Object.keys(data[key]).forEach(k =>{
+                    if(data[key][k] === true){
+                        t.push(k)
+                    }
+                });
+                return JSON.stringify(t)
+            }
             // return res.json({"type":"FeatureCollection","features":parcelles})
             return res.end(new Buffer(JSON.stringify({"type":"FeatureCollection","features":parcelles}), 'binary'));
         });
+
+
 
 };
 

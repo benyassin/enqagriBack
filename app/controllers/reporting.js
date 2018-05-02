@@ -49,11 +49,9 @@ exports.aggregate = function(req,res){
     }
     let d = new Date();
     d.setDate(d.getDate()-6);
-    let p5q = Object.assign(query,{createdAt:{
-        $gte: new Date(d)}});
 
 
-  ''  // if(req.user.role == 'admin'){
+        // if(req.user.role == 'admin'){
     //     query.agent = req.user._id
     // }
     let p0 = Collecte.count(query).exec();
@@ -154,7 +152,7 @@ exports.aggregate = function(req,res){
 
     Promise.all([p0,p1,p2,p3,p4,p5,p6]).then(function(values) {
         if(req.query.pmax==-2){
-            values[2]=values[1]
+            values[2]=values[1];
             values[1]=0
         }
         res.status(200).json({'total':values[0],'wait':values[1],'valid':values[2],'entraitment':values[3],'validePerDay':values[4],'totalPerDay':values[5],'refus':values[6]})

@@ -71,56 +71,71 @@ let CollecteSchema = new Schema({
         }]
     }],
 },{
-    timestamps: true,}
+    timestamps: true,
+    toJSON: { virtuals: true }
+    }
 );
 
 
-CollecteSchema.virtual('test',{
+CollecteSchema.virtual('_region',{
+    ref: 'Region',
+    localField: 'region',
+    foreignField: 'id_region',
+    justOne: true
+});
+
+CollecteSchema.virtual('_province',{
+    ref:'Province',
+    localField: 'province',
+    foreignField: 'id_province',
+    justOne: true
+});
+CollecteSchema.virtual('_commune',{
     ref:'Commune',
     localField: 'commune',
     foreignField: 'id_commune',
     justOne: true
 });
 
-CollecteSchema.post("save", function(doc,next){
-    self = this;
-    parcelle = this.collecte.length;
-    count = this.collecte.reduce(function(sums,entry){
-        sums[entry.type] = (sums[entry.type] || 0) + 1;
-        return sums;
-     },{});
-    var now = new Date();
-    var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: 1,polygone:count.polygone || 0,polyline:count.polyline || 0,point:count.point || 0,superficie:self.superficie || 0}},{upsert:true},
-        function(err,data){
-        if(err){
-            console.log(err)
-            next()
-        }
-        console.log(data)
-        next()
-    })
-})
-
-CollecteSchema.post("remove", function(doc,next){
-    self = this
-    parcelle = this.collecte.length
-    count = this.collecte.reduce(function(sums,entry){
-        sums[entry.type] = (sums[entry.type] || 0) + 1;
-        return sums;
-     },{});
-    let now = new Date();
-    let startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: -1,polygone:-count.polygone || 0,polyline:-count.polyline || 0,point:-count.point || 0,parcelle:-parcelle}},{upsert:true},
-        function(err,data){
-        if(err){
-            console.log(err)
-            next()
-        }
-        console.log(data)
-        next()
-    })
-})
+// CollecteSchema.post("save", function(doc,next){
+//     self = this;
+//     parcelle = this.collecte.length;
+//     count = this.collecte.reduce(function(sums,entry){
+//         sums[entry.type] = (sums[entry.type] || 0) + 1;
+//         return sums;
+//      },{});
+//     var now = new Date();
+//     var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+//     Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: 1,polygone:count.polygone || 0,polyline:count.polyline || 0,point:count.point || 0,superficie:self.superficie || 0}},{upsert:true},
+//         function(err,data){
+//         if(err){
+//             console.log(err)
+//             next()
+//         }
+//         console.log(data)
+//         next()
+//     })
+// })
+//
+// CollecteSchema.post("remove", function(doc,next){
+//     self = this
+//     parcelle = this.collecte.length
+//     count = this.collecte.reduce(function(sums,entry){
+//         sums[entry.type] = (sums[entry.type] || 0) + 1;
+//         return sums;
+//      },{});
+//     let now = new Date();
+//     let startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+//     Reporting.findOneAndUpdate({createdAt:{$gte: startOfToday}},{$inc:{exploitation: -1,polygone:-count.polygone || 0,polyline:-count.polyline || 0,point:-count.point || 0,parcelle:-parcelle}},{upsert:true},
+//         function(err,data){
+//         if(err){
+//             console.log(err);
+//             next()
+//         }
+//         console.log(data);
+//         next()
+//     })
+// })
 
 autoIncrement.initialize(mongoose);
 
