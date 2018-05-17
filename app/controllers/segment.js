@@ -50,3 +50,4 @@ exports.getSegment = function(req,res,next){
         })
 
 }
+

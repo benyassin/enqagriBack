@@ -3,6 +3,8 @@ let GeoJSON = require('mongoose-geojson-schema');
 let Reporting = require('./reporting');
 let _ = require('lodash');
 let Schema =  mongoose.Schema;
+let mongoosePaginate = require('mongoose-paginate');
+
 let Perimetre = require('./perimetre');
     autoIncrement = require('mongoose-auto-increment');
 
@@ -11,7 +13,8 @@ let Perimetre = require('./perimetre');
 let CollecteSchema = new Schema({
     projet : {
         type : Schema.Types.ObjectId,
-        ref: 'Projet'
+        ref: 'Projet',
+        index: true
     },
     agent:{
         type: Schema.Types.ObjectId,
@@ -75,7 +78,11 @@ let CollecteSchema = new Schema({
     toJSON: { virtuals: true }
     }
 );
-
+CollecteSchema.index({_id:1,projet:1});
+CollecteSchema.plugin(mongoosePaginate);
+CollecteSchema.virtual('full_id').get(function () {
+    return this.numero + '-' + this.id_collecte;
+});
 
 CollecteSchema.virtual('_region',{
     ref: 'Region',

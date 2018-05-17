@@ -33,6 +33,7 @@ module.exports = function(app){
     let mobileRoutes = express.Router();
         projetmobileRoutes = express.Router();
         segmentmobileRoutes = express.Router();
+        collectemobileRoutes = express.Router();
         mobileAuthRoutes = express.Router();
     // Auth Routes
     apiRoutes.use('/auth', authRoutes);
@@ -113,17 +114,20 @@ module.exports = function(app){
 
     apiRoutes.use('/collectes', collecteRoutes);
     collecteRoutes.get('/:id_collecte?',requireAuth,CollecteController.getCollectes);
-    collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte)
+    collecteRoutes.post('/update',requireAuth,CollecteController.updateCollecte);
     collecteRoutes.post('/',requireAuth,CollecteController.storeCollecte);
     collecteRoutes.get('/aggregate/test',requireAuth,CollecteController.aggregate);
     collecteRoutes.get('/projet/:id_projet',requireAuth,CollecteController.getCollecteByProjet);
     collecteRoutes.post('/validate',CollecteController.validate);
     collecteRoutes.get('/traitement/:id_projet',requireAuth,CollecteController.getCollecteEnTraitement);
     collecteRoutes.get('/segment/:id_segment',requireAuth,SegmentController.getSegment);
+    collecteRoutes.get('/segcomm/:id_commune',requireAuth,SupportController.getSupportByCommune);
     collecteRoutes.get('/voisin/:id_support',requireAuth,CollecteController.getVoisin);
     collecteRoutes.delete('/:id_collecte',requireAuth,CollecteController.delete);
     collecteRoutes.get('/export/:id_projet',requireAuth,CollecteController.exportData);
     collecteRoutes.get('/exportgeo/:id_projet',requireAuth,CollecteController.exportGeo);
+    collecteRoutes.get('/map/:id_projet',requireAuth,CollecteController.getMapData);
+    // collecteRoutes.get('/serverside/test/:id_projet',CollecteController.Collectes2);
 
 
     //Reporting Routes
@@ -139,6 +143,9 @@ module.exports = function(app){
 
     mobileRoutes.use('/projets',projetmobileRoutes);
     projetmobileRoutes.get('/',requireAuth,ProjetController.getProjetsByRoleMobile);
+
+    mobileRoutes.use('/collectes',collectemobileRoutes);
+    collectemobileRoutes.get('/',requireAuth,CollecteController.getAgentCollectes);
 
     mobileRoutes.use('/support',segmentmobileRoutes);
     segmentmobileRoutes.get('/',requireAuth,SegmentController.getSegmentWithCommunes);

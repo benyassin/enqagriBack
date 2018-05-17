@@ -75,12 +75,12 @@
       <div class="row">
         <div class="col-sm-12">
 
-          <h3 class="text-center text-muted"><a href="https://github.com/formio/ngFormBuilder" target="_blank">Form Id</a> {{paramValue}} <select class="form-control form-type-select" ng-model="form.display" ng-options="display.name as display.title for display in displays"></select></h3>
+          <h3 class="text-center text-muted"><a href="" target="_blank">Form Id</a> {{paramValue}} <select class="form-control form-type-select" ng-model="form.display" ng-options="display.name as display.title for display in displays"></select></h3>
           <button  ng-click="submit()" type="button" class="btn btn-primary">Enregister</button>
-		            <button  ng-click="addElement('dssareac','Superficie calculée en Ha :')" type="button" class="btn btn-primary">Superficie</button>
-		            <button  ng-click="addElement('dssnumberdraw','Numéro :')" type="button" class="btn btn-primary">Numéro</button>
-		            <button  ng-click="addElement('id_echantillon','changer ce titre(support niveau 1)')" type="button" class="btn btn-primary">Support Niveau 1</button>
-		            <button  ng-click="addElement('id_echantillon2','changer ce titre(support niveau 2)')" type="button" class="btn btn-primary">Support Niveau 2</button>
+		            <button  ng-click="addElement('dssareac','Superficie calculée en Ha :','number','')" type="button" class="btn btn-primary">Superficie</button>
+		            <button  ng-click="addElement('dssnumberdraw','Numéro :','number','')" type="button" class="btn btn-primary">Numéro</button>
+		            <button  ng-click="addElement('id_echantillon','support niveau 1','textfield','')" type="button" class="btn btn-primary">Support Niveau 1</button>
+		            <button  ng-click="addElement('id_echantillon2','support niveau 2','textfield','')" type="button" class="btn btn-primary">Support Niveau 2</button>
 
           <div class="well" style="background-color: #fdfdfd;">
             <form-builder form="form"></form-builder>
@@ -186,17 +186,17 @@
             console.log('erreur pendant la creation des fields', err)
           }
         };
-       $rootScope.addElement = function (apikey,label) {
+       $rootScope.addElement = function (apikey,label,type,init) {
 			var component =         {
             "input": false,
             "tableView": true,
-            "inputType": "number",
+            "inputType": type,
             "label": label,
             "key": apikey,
             "placeholder": "",
             "prefix": "",
             "suffix": "",
-            "defaultValue": "0",
+            "defaultValue": init,
             "protected": false,
             "persistent": false,
             "hidden": false,
@@ -210,7 +210,7 @@
                 "multiple": "",
                 "custom": ""
             },
-            "type": "number",
+            "type": type,
             "tags": [],
             "conditional": {
                 "show": "",

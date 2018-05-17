@@ -2,6 +2,7 @@ let fs = require('fs');
 let Support = require('../models/support');
 let Collection = require('../models/collection');
 let Projet = require('../models/projet');
+let perimetre = require('../models/perimetre')
 let mongoose = require('mongoose');
 const csv = require("csvtojson");
 
@@ -197,4 +198,25 @@ exports.deleteCollection = function(req,res){
             })
         })
     });
+}
+
+exports.getSupportByCommune = function(req,res){
+    console.log(req.params);
+    let id_commune = req.params.id_commune;
+
+    let support = Support.find({'properties.id_commune':parseInt(id_commune)})
+        .select('properties.id_echantillon geometry type')
+        .lean()
+        .exec();
+
+    let commune = Perimetre.Commune.findOne({'id_commune':id_commune})
+        .lean()
+        .select('geometry')
+        .exec();
+
+    Promise.all([support,commune]).then((results) => {
+        res.status(200).json({commune:results[1].geometry,support:results[0]})
+    },(error) =>{
+        res.status(500).json(error)
+    })
 }

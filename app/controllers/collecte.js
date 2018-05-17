@@ -103,20 +103,23 @@ exports.getCollectes = function(req, res){
         res.status(200).json(collectes)
     })
     }else{
-        Collecte.findOne({'_id':req.params.id_collecte})
+        let remove;
+        if(req.query.geometry === 'false'){
+            remove = '-collecte.data.gjson'
+        }
+        Collecte.findOne({'_id':req.params.id_collecte},remove)
         .populate({path:'projet',select:'name theme validation cid'})
         .populate('agent')
         .populate('collecte.data.id_support')
-        .populate('_region _province _commune','-geometry')
+        .populate({path:'_region _province _commune',select:'-geometry'})
         .exec(function(err,collecte){
             if(err){
                 return res.status(500).json(err)
             }
             let listsupport = [];
             console.log(collecte);
-            if(collecte.projet.cid != null && collecte.projet.cid !== undefined){
+            if(collecte.projet.cid != null && collecte.projet.cid !== undefined && req.query.geometry !== 'false'){
 
-                console.log('CID',collecte.projet.cid);
             collecte.collecte.forEach(c =>{
 
 
@@ -135,12 +138,12 @@ exports.getCollectes = function(req, res){
                     return res.status(500).json(err)
                 }
                 let result = [];
+                console.log(voisin)
                 voisin.forEach(element =>{
                     if(element._id.toString() !== collecte._id.toString()) {
-
                         element.collecte.forEach(c => {
                             c.data.forEach(p => {
-                                result.push(p.gjson)
+                                result.push({'gjson':p.gjson,'id_collecte':element.id_collecte,'numero':p.numero})
                             })
                         })
                     }
@@ -159,7 +162,8 @@ exports.getCollectes = function(req, res){
 
 exports.getCollecteByProjet = function (req,res, next){
     id_projet = req.params.id_projet;
-    qs.parse(req.query)
+    qs.parse(req.query);
+    let remove = '-collecte.data.gjson';
     let query = {
         'projet' : req.params.id_projet,
     };
@@ -168,9 +172,10 @@ exports.getCollecteByProjet = function (req,res, next){
     }
     if(req.query.province != 0){
         query.province = req.query.province
+        remove = ''
     }
     if(req.query.commune != 0){
-        query.commune = req.query.commune
+        query.commune = req.query.commune;
     }
     if(req.query.niveau != -1 && req.query.status != 'all'){
     query['validation.' + parseInt(req.query.niveau)] = req.query.status
@@ -179,10 +184,12 @@ exports.getCollecteByProjet = function (req,res, next){
         query.agent = req.user._id
     }
 
-    console.log(query)
-    Collecte.find(query)
+    console.log(query);
+    Collecte.find(query,remove)
     .populate('agent')
+    .populate('collecte.data.id_support')
     .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
+    .lean()
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -202,6 +209,14 @@ exports.getCollecteByProjet = function (req,res, next){
     })
 }
 
+exports.getAgentCollectes = function(req,res){
+    Collecte.find({agent:req.user._id}).lean().exec(function(err,collectes){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(collectes)
+    })
+};
 exports.exportData = function(req,res){
     let keys = Object.keys(req.query);
     if(keys.includes('status')){
@@ -511,7 +526,73 @@ exports.getVoisin = function(req,res){
         })
         res.status(200).json(result)
     })
-}
+};
+
+exports.getMapData = function(req,res){
+    console.log(req.query)
+};
+
+exports.Collectes = function(req,res){
+    let skip = 0;
+    if(parseInt(req.query._page) > 1){
+        console.log('test');
+        skip = (req.query._page-1)*req.query._limit
+    }
+    console.log(skip);
+
+    Collecte.find({projet:req.params.id_projet},'projet agent createdAt numero id_collecte',{ skip: skip, limit: parseInt(req.query._limit) })
+        .populate({path:'projet',select:'name theme validation'})
+        .populate('agent','nom prenom')
+        .exec(function(err,collectes){
+            if(err){
+                return res.status(500).json(err)
+            }
+            res.set("Access-Control-Expose-Headers", "x-total-count");
+            res.set("X-Total-Count",5000).status(200).json(collectes);})
+};
+exports.Collectes2 = function(req,res) {
+
+    let query = {projet:req.params.id_projet};
+    let options = {
+        select:   'projet agent createdAt numero id_collecte',
+        sort:     { date: -1 },
+        populate: [
+            {path:'projet',select:'name theme validation'},
+            {path:'agent',select:'nom prenom'}
+            ],
+        lean:     false,
+        page:   parseInt(req.query._page),
+        limit:    parseInt(req.query._limit)
+    };
+    let keys = Object.keys(req.query);
+
+    for(let i=0;i<keys.length;i++){
+        if(keys[i].indexOf('_like') > -1){
+            let key=keys[i].split('_');
+            let count = req.query[keys[i]].indexOf('-');
+            splited = req.query[keys[i]].split('-');
+
+            if(splited.length > 2) {
+                    console.log('over 1');
+                    console.log(count);
+                    query.id_collecte = splited[0];
+                    query.numero = splited[1]+'-'+splited[2]
+                }else if (splited.length === 2){
+                    // console.log('equal 1');
+                // console.log(count);
+                query.$or = [{'numero':splited[0]+'-'+splited[1]},{'id_collecte':splited[0]},{'numero':splited[1]}]
+                }
+        }
+    }
+    console.log(query);
+
+
+    Collecte.paginate(query,options, function(err,collectes){
+            if(err){
+                return res.status(500).json(err)
+            }
+            res.status(200).json(collectes);})
+};
 
 exports.delete = function(req,res){
     let id = req.params.id_collecte;
@@ -523,6 +604,9 @@ exports.delete = function(req,res){
         }
         res.status(200).json(collecte)
     })
-}
+};
+
+
+
 
 
