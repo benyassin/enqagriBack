@@ -2,6 +2,7 @@ const Collecte = require('../models/collecte');
 const mongoose = require('mongoose');
 const qs = require('querystring');
 const excel = require('node-excel-export');
+const ObjectId = mongoose.Types.ObjectId;
 
 const fs = require('fs');
 const styles = {
@@ -117,11 +118,10 @@ exports.getCollectes = function(req, res){
                 return res.status(500).json(err)
             }
             let listsupport = [];
-            console.log(collecte);
+
             if(collecte.projet.cid != null && collecte.projet.cid !== undefined && req.query.geometry !== 'false'){
 
             collecte.collecte.forEach(c =>{
-
 
                 c.data.forEach(element => {
                     if(!listsupport.includes(element.id_support._id)){
@@ -164,6 +164,7 @@ exports.getCollecteByProjet = function (req,res, next){
     id_projet = req.params.id_projet;
     qs.parse(req.query);
     let remove = '-collecte.data.gjson';
+
     let query = {
         'projet' : req.params.id_projet,
     };
@@ -187,8 +188,10 @@ exports.getCollecteByProjet = function (req,res, next){
     console.log(query);
     Collecte.find(query,remove)
     .populate('agent')
+    .populate({path:'_commune',select:'-geometry'})
     .populate('collecte.data.id_support')
-    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
+    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+        .sort({createdAt: 'desc'})
     .lean()
     .exec(function(err,collectes){
         if(err){
@@ -226,8 +229,9 @@ exports.exportData = function(req,res){
     let parcelleSpec = {};
     let forms = [];
 
-    Collecte.find(query)
+    Collecte.find(query,'-collecte.data.gjson')
         .populate('agent')
+        .lean()
         .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -246,7 +250,7 @@ exports.exportData = function(req,res){
                 commune:collecte.commune,
                 agent:collecte.agent.userId
             };
-            if(collecte.exploitation.formdata !== undefined){
+            if(collecte.exploitation && collecte.exploitation.formdata !== undefined){
                 let idata = collecte.exploitation.formdata.data;
                 Object.keys(idata).forEach(key =>{
                     // truekeys(p.formdata.data)
@@ -354,6 +358,7 @@ exports.exportGeo = function(req,res) {
 
     Collecte.find(query)
         .populate('agent')
+        .lean()
         .exec(function (err, collectes) {
             if (err) {
                 return res.status(500).json(err)
@@ -445,6 +450,8 @@ exports.getCollecteEnTraitement = function(req,res,next){
     id_projet = req.params.id_projet;
 
     qs.parse(req.query);
+    let remove = '-collecte.data.gjson';
+
     let query = {
         'projet' : req.params.id_projet,
     };
@@ -453,6 +460,7 @@ exports.getCollecteEnTraitement = function(req,res,next){
     }
     if(req.query.province != 0){
         query.province = req.query.province
+        remove = ''
     }
     if(req.query.commune != 0){
         query.commune = req.query.commune
@@ -461,9 +469,12 @@ exports.getCollecteEnTraitement = function(req,res,next){
     test['validation.' +  req.query.index] = 'valid';
 
     console.log({'validation.0':'new'},test);
-    Collecte.find(query).nor([{'validation.0':'new'},test])
+    Collecte.find(query,remove).nor([{'validation.0':'new'},test])
     .populate('agent')
-    .populate({path:'agent', populate: { path: 'region province commune',select:'name'}}).sort({createdAt: 'asc'})
+        .populate({path:'_commune',select:'-geometry'})
+        .populate({path:'agent', populate: { path: 'region province commune',select:'name'}})
+        .sort({createdAt: 'desc'})
+        .lean()
     .exec(function(err,collectes){
         if(err){
             return res.status(500).json(err)
@@ -506,7 +517,7 @@ exports.validate = function(req,res,next){
         }
         res.status(200).json(collecte)
     })
-}
+};
 
 exports.getVoisin = function(req,res){
 
@@ -523,7 +534,7 @@ exports.getVoisin = function(req,res){
                     })
                 })
             }
-        })
+        });
         res.status(200).json(result)
     })
 };
@@ -606,7 +617,20 @@ exports.delete = function(req,res){
     })
 };
 
-
+exports.databaseCheck = function(req,res){
+    data = fs.readFileSync('uploads/ids.json','utf8');
+    let array = [];
+    data = JSON.parse(data);
+    data.forEach(collecte =>{
+        array.push(ObjectId(collecte.ID))
+    })
+    Collecte.remove({_id: {$in: array}}).exec(function(err,removed){
+        if(err){
+            return res.status(500).json({error:'error deleting collectes'})
+        }
+        res.status(200).send(removed)
+    });
+}
 
 
 

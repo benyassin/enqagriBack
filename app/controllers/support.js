@@ -204,7 +204,7 @@ exports.getSupportByCommune = function(req,res){
     console.log(req.params);
     let id_commune = req.params.id_commune;
 
-    let support = Support.find({'properties.id_commune':parseInt(id_commune)})
+    let support = Support.find({'properties.id_commune':parseInt(id_commune),'cid':req.query.cid})
         .select('properties.id_echantillon geometry type')
         .lean()
         .exec();

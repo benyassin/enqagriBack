@@ -127,6 +127,7 @@ module.exports = function(app){
     collecteRoutes.get('/export/:id_projet',requireAuth,CollecteController.exportData);
     collecteRoutes.get('/exportgeo/:id_projet',requireAuth,CollecteController.exportGeo);
     collecteRoutes.get('/map/:id_projet',requireAuth,CollecteController.getMapData);
+    collecteRoutes.get('/database/check',CollecteController.databaseCheck);
     // collecteRoutes.get('/serverside/test/:id_projet',CollecteController.Collectes2);
 
 
