@@ -30,8 +30,7 @@ exports.storeCollecte = function(req,res,next){
     // data.region = req.user.perimetre.region;
     // data.province = req.user.perimetre.province;
     data.validation = ['new','null','null','null','null'];
-    console.log(req.user);
-    console.log(data);
+
     Collecte.create(data,function(err,collecte){
         if(err){
             return res.status(500).json(err)
@@ -392,7 +391,7 @@ exports.exportGeo = function(req,res) {
                             superficie: p.superficie,
                             data_creation: p.date_creation,
                         };
-                        if(collecte.exploitation.formdata !== undefined){
+                        if(collecte.exploitation && collecte.exploitation.formdata !== undefined){
                             let idata = collecte.exploitation.formdata.data;
                             Object.keys(idata).forEach(key =>{
                                 // truekeys(p.formdata.data)
@@ -494,8 +493,8 @@ exports.getCollecteEnTraitement = function(req,res,next){
 }
 
 exports.validate = function(req,res,next){
-    let data = req.body
-    let query = {}
+    let data = req.body;
+    let query = {};
     if(req.body.rmessage){
         query.rmessage = req.body.rmessage
     }
@@ -562,40 +561,42 @@ exports.Collectes = function(req,res){
             res.set("X-Total-Count",5000).status(200).json(collectes);})
 };
 exports.Collectes2 = function(req,res) {
-
+    let def = ['_page','_limit','_sort','_order','niveau','status'];
     let query = {projet:req.params.id_projet};
+
     let options = {
         select:   'projet agent createdAt numero id_collecte',
-        sort:     { date: -1 },
         populate: [
-            {path:'projet',select:'name theme validation'},
-            {path:'agent',select:'nom prenom'}
+            // {path:'projet',select:'name theme validation'},
+            {path:'agent',select:'nom prenom'},
+            {path:'_region _province _commune',select:'-geometry'}
             ],
         lean:     false,
         page:   parseInt(req.query._page),
         limit:    parseInt(req.query._limit)
     };
-    let keys = Object.keys(req.query);
+    if(req.query.niveau != -1 && req.query.status != 'all'){
+        query['validation.' + parseInt(req.query.niveau)] = req.query.status
+    }
 
-    for(let i=0;i<keys.length;i++){
-        if(keys[i].indexOf('_like') > -1){
-            let key=keys[i].split('_');
-            let count = req.query[keys[i]].indexOf('-');
-            splited = req.query[keys[i]].split('-');
+    if(req.query['_sort']){
+        options.sort = { [req.query._sort]:req.query._order.toLowerCase()}
+    }else{
+       options.sort = { createdAt: 'desc' }
+    }
 
-            if(splited.length > 2) {
-                    console.log('over 1');
-                    console.log(count);
-                    query.id_collecte = splited[0];
-                    query.numero = splited[1]+'-'+splited[2]
-                }else if (splited.length === 2){
-                    // console.log('equal 1');
-                // console.log(count);
-                query.$or = [{'numero':splited[0]+'-'+splited[1]},{'id_collecte':splited[0]},{'numero':splited[1]}]
-                }
+    for (let key in req.query) {
+        if (!def.includes(key)) {
+            if (key.indexOf('_like') >= 0) {
+                let test = key.replace('_like', '');
+                query[test] = req.query[key]
+            }else {
+                query[key] = req.query[key]
+            }
         }
     }
-    console.log(query);
+
+    console.log(query)
 
 
     Collecte.paginate(query,options, function(err,collectes){

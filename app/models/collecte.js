@@ -79,6 +79,7 @@ let CollecteSchema = new Schema({
     }
 );
 CollecteSchema.index({_id:1,projet:1});
+CollecteSchema.index({createdAt:1});
 CollecteSchema.plugin(mongoosePaginate);
 CollecteSchema.virtual('full_id').get(function () {
     return this.numero + '-' + this.id_collecte;

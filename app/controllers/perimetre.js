@@ -30,7 +30,7 @@ exports.getCommunebyUser = function(req, res, next ){
     
     let query = {"id_province": req.user.perimetre.province};
 
-    Perimetre.Commune.find(query,'id_commune name id_region').exec(function(err,communes){
+    Perimetre.Commune.find(query,'id_commune name id_region',{sort: {name: 1}}).exec(function(err,communes){
         if(err){
             return res.status(400).json(err);
         }
@@ -41,7 +41,7 @@ exports.getCommunebyUser = function(req, res, next ){
 exports.getCommune = function(req, res, next ){
     let query = {"id_province": req.params.id_province};
 
-    Perimetre.Commune.find(query,'id_commune name id_region id_province').exec(function(err,communes){
+    Perimetre.Commune.find(query,'id_commune name id_region id_province',{sort: {name: 1}}).exec(function(err,communes){
         if(err){
             return res.status(400).json(err);
         }

@@ -4,8 +4,12 @@
     <list default="true" id="2f2484c1-cfdc-42ca-9fbf-55cecc54090e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app/controllers/collecte.js" afterPath="$PROJECT_DIR$/app/controllers/collecte.js" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/support.js" afterPath="$PROJECT_DIR$/app/controllers/support.js" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/perimetre.js" afterPath="$PROJECT_DIR$/app/controllers/perimetre.js" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/projet.js" afterPath="$PROJECT_DIR$/app/controllers/projet.js" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/users.js" afterPath="$PROJECT_DIR$/app/controllers/users.js" />
+      <change beforePath="$PROJECT_DIR$/app/models/collecte.js" afterPath="$PROJECT_DIR$/app/models/collecte.js" />
       <change beforePath="$PROJECT_DIR$/app/routes.js" afterPath="$PROJECT_DIR$/app/routes.js" />
+      <change beforePath="$PROJECT_DIR$/config/database.js" afterPath="$PROJECT_DIR$/config/database.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,41 +24,21 @@
   <component name="ChangesViewManager" show_ignored="true" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/collecte.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="252" column="40" lean-forward="false" selection-start-line="252" selection-start-column="40" selection-end-line="252" selection-end-column="40" />
+            <state relative-caret-position="281">
+              <caret line="581" column="25" lean-forward="false" selection-start-line="581" selection-start-column="25" selection-end-line="581" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ids.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uploads/ids.json">
+      <file leaf-file-name="users.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/controllers/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="16" column="3" lean-forward="false" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="segment.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/segment.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="38" column="47" lean-forward="false" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/database.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+            <state relative-caret-position="381">
+              <caret line="224" column="23" lean-forward="false" selection-start-line="224" selection-start-column="23" selection-end-line="224" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -63,28 +47,18 @@
       <file leaf-file-name="main.bundle.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/angular/main.bundle.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
+            <state relative-caret-position="154">
+              <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="support.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
+      <file leaf-file-name="perimetre.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/perimetre.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-726">
-              <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/collecte.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="42" column="7" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="7" />
+            <state relative-caret-position="242">
+              <caret line="11" column="62" lean-forward="false" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -93,18 +67,28 @@
       <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="119" column="32" lean-forward="false" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="32" />
+            <state relative-caret-position="358">
+              <caret line="56" column="37" lean-forward="false" selection-start-line="56" selection-start-column="28" selection-end-line="56" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="file-1522860407454.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uploads/file-1522860407454.csv">
+      <file leaf-file-name="bloc.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/bloc.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="1" column="1" lean-forward="false" selection-start-line="1" selection-start-column="1" selection-end-line="10" selection-end-column="31" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/database.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="66">
+              <caret line="3" column="66" lean-forward="true" selection-start-line="3" selection-start-column="66" selection-end-line="3" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -113,8 +97,28 @@
       <file leaf-file-name="projet.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/projet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="155" column="20" lean-forward="false" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
+            <state relative-caret-position="315">
+              <caret line="194" column="86" lean-forward="false" selection-start-line="194" selection-start-column="78" selection-end-line="194" selection-end-column="86" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="support.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/support.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="collecte.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/collecte.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-390">
+              <caret line="72" column="27" lean-forward="false" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -132,36 +136,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>RegionSchema</find>
-      <find>geo</find>
-      <find>truekeys</find>
-      <find>getcollect</find>
-      <find>collectes</find>
-      <find>formi</find>
-      <find>collectes2</find>
-      <find>order</find>
-      <find>\</find>
-      <find>getAgentCollectes</find>
-      <find>getcollecte</find>
-      <find>result</find>
-      <find>-geometry</find>
-      <find>id_collecte</find>
-      <find>export</find>
-      <find>segment</find>
-      <find>commune</find>
-      <find>getsegments</find>
-      <find>getse</find>
-      <find>exports</find>
-      <find>_commune</find>
-      <find>voisin</find>
-      <find>exp</find>
-      <find>-collecte.data.gjson</find>
       <find>cid</find>
       <find>parse</find>
       <find>ObjectId</find>
-      <find>getcollectes</find>
+      <find>sort:{</find>
+      <find>sort:{name</find>
       <find>fs</find>
+      <find>test</find>
       <find>_region</find>
+      <find>sort: {name</find>
+      <find>/province/</find>
+      <find>createdAt</find>
+      <find>index</find>
+      <find>desc</find>
+      <find>projets</find>
+      <find>mobi</find>
+      <find>mobile</find>
+      <find>/Agent/list</find>
+      <find>Agent/list</find>
+      <find>sort:</find>
+      <find>{sort: {name: 1}}</find>
+      <find>serverside</find>
+      <find>collecte</find>
+      <find>_commune</find>
+      <find>sort</find>
+      <find>role</find>
+      <find>if(req.user.role == 'agent'){</find>
+      <find>getcollectes</find>
+      <find>collectes</find>
+      <find>users</find>
+      <find>collectes2</find>
     </findStrings>
     <replaceStrings>
       <replace>id_echantillon</replace>
@@ -185,7 +189,6 @@
         <option value="$PROJECT_DIR$/config/auth.js" />
         <option value="$PROJECT_DIR$/app/controllers/bloc.js" />
         <option value="$PROJECT_DIR$/app/models/commune.js" />
-        <option value="$PROJECT_DIR$/app/controllers/perimetre.js" />
         <option value="$PROJECT_DIR$/app/models/fields.js" />
         <option value="$PROJECT_DIR$/app/controllers/form.js" />
         <option value="$PROJECT_DIR$/app/models/reporting.js" />
@@ -200,25 +203,26 @@
         <option value="$PROJECT_DIR$/app/controllers/fields.js" />
         <option value="$PROJECT_DIR$/app/models/user.js" />
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/app/controllers/projet.js" />
-        <option value="$PROJECT_DIR$/app/controllers/users.js" />
         <option value="$PROJECT_DIR$/ng/dist/ngFormBuilder-full.js" />
         <option value="$PROJECT_DIR$/ng/demo.html" />
         <option value="$PROJECT_DIR$/a.html" />
         <option value="$PROJECT_DIR$/angular/index.html" />
         <option value="$PROJECT_DIR$/config/passport.js" />
         <option value="$PROJECT_DIR$/app/controllers/reporting.js" />
-        <option value="$PROJECT_DIR$/app/models/collecte.js" />
         <option value="$PROJECT_DIR$/ng/index.html" />
         <option value="$PROJECT_DIR$/app/models/support.js" />
         <option value="$PROJECT_DIR$/../../../Documents/application/DSS_FINAL/config.xml" />
         <option value="$PROJECT_DIR$/app/controllers/segment.js" />
         <option value="$PROJECT_DIR$/app/controllers/support.js" />
-        <option value="$PROJECT_DIR$/app/routes.js" />
         <option value="$PROJECT_DIR$/uploads/ids.json" />
         <option value="$PROJECT_DIR$/angular/main.bundle.js" />
+        <option value="$PROJECT_DIR$/app/controllers/perimetre.js" />
+        <option value="$PROJECT_DIR$/app/models/collecte.js" />
+        <option value="$PROJECT_DIR$/app/controllers/projet.js" />
         <option value="$PROJECT_DIR$/config/database.js" />
         <option value="$PROJECT_DIR$/app/controllers/collecte.js" />
+        <option value="$PROJECT_DIR$/app/routes.js" />
+        <option value="$PROJECT_DIR$/app/controllers/users.js" />
       </list>
     </option>
   </component>
@@ -232,10 +236,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="129" />
-    <option name="y" value="26" />
-    <option name="width" value="1634" />
-    <option name="height" value="948" />
+    <option name="x" value="233" />
+    <option name="y" value="114" />
+    <option name="width" value="1635" />
+    <option name="height" value="966" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -272,19 +276,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="angular" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
@@ -300,23 +299,12 @@
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
               <item name="ng" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="uploads" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -329,8 +317,8 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dss" />
-    <property name="SearchEverywhereHistoryKey" value="support&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/support.js&#10;user&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/user.js&#10;projet&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/projet.js&#10;collec&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/collection.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SearchEverywhereHistoryKey" value="pro&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backup/backend/app/controllers/projet.js&#10;coll&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backup/backend/app/controllers/collecte.js&#10;per&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backup/backend/app/controllers/perimetre.js&#10;projet.&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backup/backend/app/controllers/projet.js&#10;controller&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backup/backend/app/controllers&#10;support&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/support.js&#10;user&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/user.js&#10;projet&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/controllers/projet.js&#10;collec&#9;FILE&#9;file:///home/kelwynn/WebstormProjects/backend/app/models/collection.js" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
@@ -515,12 +503,15 @@
       <workItem from="1525944252058" duration="6028000" />
       <workItem from="1526026500201" duration="2361000" />
       <workItem from="1526114370044" duration="16812000" />
-      <workItem from="1526635014652" duration="17383000" />
+      <workItem from="1526635014652" duration="26095000" />
+      <workItem from="1527159655128" duration="78000" />
+      <workItem from="1527159857383" duration="13172000" />
+      <workItem from="1527498735973" duration="23544000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="596503000" />
+    <option name="totallyTimeSpent" value="642009000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -532,17 +523,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="129" y="26" width="1634" height="948" extended-state="0" />
+    <frame x="233" y="114" width="1635" height="966" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14773433" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26550868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32984293" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3497382" sideWeight="0.39118606" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3497382" sideWeight="0.60881394" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32879582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972796" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14962325" sideWeight="0.49328318" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24611709" sideWeight="0.49328318" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38743454" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -613,19 +604,11 @@
           <option name="timeStamp" value="59" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="60" />
+      <option name="time" value="62" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/controllers/func.js" />
-    <entry file="file://$PROJECT_DIR$/app/models/projet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1476">
-          <caret line="82" column="55" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/form.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="846">
@@ -740,13 +723,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1848">
-          <caret line="88" column="101" lean-forward="false" selection-start-line="88" selection-start-column="93" selection-end-line="88" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/angular/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -772,13 +748,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-26">
           <caret line="12" column="37" lean-forward="false" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/collection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -822,7 +791,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -830,7 +798,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10516">
           <caret line="413" column="34" lean-forward="false" selection-start-line="413" selection-start-column="34" selection-end-line="413" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -846,7 +813,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -854,23 +820,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1210">
           <caret line="55" column="9" lean-forward="false" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/perimetre.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/support.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -878,23 +827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3344">
           <caret line="152" column="63" lean-forward="false" selection-start-line="152" selection-start-column="39" selection-end-line="152" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/collecte.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="42" column="7" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/projet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="155" column="20" lean-forward="false" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -902,15 +834,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
           <caret line="1" column="1" lean-forward="false" selection-start-line="1" selection-start-column="1" selection-end-line="10" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/segment.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="836">
           <caret line="38" column="47" lean-forward="false" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -922,42 +852,105 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes.js">
+    <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="119" column="32" lean-forward="false" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="32" />
+        <state relative-caret-position="-726">
+          <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/perimetre.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/collection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/support.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/perimetre.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="62" lean-forward="false" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/bloc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/collecte.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-390">
+          <caret line="72" column="27" lean-forward="false" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/projet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="194" column="86" lean-forward="false" selection-start-line="194" selection-start-column="78" selection-end-line="194" selection-end-column="86" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/angular/main.bundle.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/support.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-726">
-          <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="6" />
+        <state relative-caret-position="154">
+          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/database.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="66">
+          <caret line="3" column="66" lean-forward="true" selection-start-line="3" selection-start-column="66" selection-end-line="3" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="56" column="37" lean-forward="false" selection-start-line="56" selection-start-column="28" selection-end-line="56" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/collecte.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="252" column="40" lean-forward="false" selection-start-line="252" selection-start-column="40" selection-end-line="252" selection-end-column="40" />
+        <state relative-caret-position="281">
+          <caret line="581" column="25" lean-forward="false" selection-start-line="581" selection-start-column="25" selection-end-line="581" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/users.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="224" column="23" lean-forward="false" selection-start-line="224" selection-start-column="23" selection-end-line="224" selection-end-column="23" />
           <folding />
         </state>
       </provider>

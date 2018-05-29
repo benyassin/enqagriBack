@@ -54,6 +54,7 @@ module.exports = function(app){
     userRoutes.delete('/:user_id',requireAuth,UserController.deleteUser);
     userRoutes.put('/:user_id',requireAuth,UserController.updateUser);
     userRoutes.get('/agents/', requireAuth,UserController.getAgentByProvince);
+    userRoutes.get('/agents/perimetre', requireAuth,UserController.getAgentsByPerimetre);
     userRoutes.get('/controlleurs/:id_region',requireAuth,UserController.getControllers);
     userRoutes.post('/affectation/',requireAuth,UserController.setAffectation);
     userRoutes.delete('/notification/clear',requireAuth,UserController.clearNotification);
@@ -128,7 +129,7 @@ module.exports = function(app){
     collecteRoutes.get('/exportgeo/:id_projet',requireAuth,CollecteController.exportGeo);
     collecteRoutes.get('/map/:id_projet',requireAuth,CollecteController.getMapData);
     collecteRoutes.get('/database/check',CollecteController.databaseCheck);
-    // collecteRoutes.get('/serverside/test/:id_projet',CollecteController.Collectes2);
+    collecteRoutes.get('/serverside/test/:id_projet',CollecteController.Collectes2);
 
 
     //Reporting Routes

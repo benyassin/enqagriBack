@@ -59,8 +59,8 @@ exports.getProjets = function(req,res,next){
     }
     Projet.find(query)
           .populate('forms','name geometry theme id_fields')
-          .populate('perimetre.region','name id_region' )
-          .populate('perimetre.province','name id_province id_region')
+          .populate({path:'perimetre.region',select:'name id_region',options: { sort: { 'name': 1 }}})
+          .populate({path:'perimetre.province',select:'name id_province id_region',options: { sort: { 'name': 1 }}})
         .populate('cid')
           .exec(function(err,projets){
         if(err){
@@ -74,10 +74,13 @@ exports.getProjetsByPerimetre = function (req, res, next){
     if(req.user.role === 'admin'){
         Projet.find({}).populate({
             path:'perimetre.region',
-            select:'-geometry'})
+            select:'-geometry',
+            options: { sort: { 'name': 1 }}
+        })
         .populate({
           path:'perimetre.province',
           select:'-geometry',
+          options: { sort: { 'name': 1 }}
          })
             .populate({path:'forms'})
             .exec(function(err,projets){
@@ -128,14 +131,14 @@ exports.getProjetsByPerimetre = function (req, res, next){
 }
 
 
-exports.getProjetsMobile = function(req,res,next){
+exports.getProjetsMobile = function(req,res){
     let query = [];
 
     if(req.params.projet_id){
         query = {'_id': req.params.projet_id}
     }
     Projet.find(query)
-        .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
+            .populate({path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}})
           .populate({path:'perimetre.region',select:'name id_region'})
           .populate({path:'perimetre.province',select:'name id_province id_region'})
           .exec(function(err,projets){
@@ -149,14 +152,20 @@ exports.getProjetsMobile = function(req,res,next){
 exports.getProjetsByRoleMobile = function(req,res){
         User.findById(req.user._id)
 
-            .populate({path:'affectation.projet',populate:{path:'cid'}})
-            .populate({path:'affectation.projet',select:'-perimetre -extrapolation -validation',populate:{path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}}})
+        .populate({path:'affectation.projet',populate:{path:'cid'}})
+        .populate({path:'affectation.projet',select:'-perimetre -extrapolation -validation',populate:{path:'forms',select:'name geometry theme id_fields',populate:{path:'fields'}}})
         .populate({path:'communes',select:'-geometry'})
         .exec(function(err,results){
             if(err){
                 return res.status(500).json(err)
             }
-            res.status(200).json(results.affectation)
+            let affectation = [];
+            results.affectation.forEach(f =>{
+                if(f.projet && f.projet !== null){
+                    affectation.push(f)
+                }
+            });
+            res.status(200).json(affectation)
 })
 }
 
@@ -168,7 +177,16 @@ exports.getProjetsByRoleWeb = function(req,res){
     .populate({path:'affectation.projet',populate:{path:'perimetre.province',select:'name id_region id_province'}})
 
     .exec(function(err,results){
-        res.status(200).json(results.affectation)
+        if(err){
+            res.status(500).json(err)
+        }
+        let affectation = [];
+        results.affectation.forEach(f =>{
+            if(f.projet && f.projet !== null){
+                affectation.push(f)
+            }
+        });
+        res.status(200).json(affectation)
 })
 }
  
@@ -178,8 +196,8 @@ exports.controllerProjets = function(req, res){
     console.log(test)
     Projet.find(test)
         .populate('forms','name geometry theme id_fields')
-        .populate({path:'perimetre.region',select:'name id_region'})
-        .populate({path:'perimetre.province',select:'name id_province id_region'})
+        .populate({path:'perimetre.region',select:'name id_region',options: { sort: { 'name': 1 }}})
+        .populate({path:'perimetre.province',select:'name id_province id_region',options: { sort: { 'name': 1 }}})
         .exec(function (err,projets){
             if(err){
                 return res.json(err)

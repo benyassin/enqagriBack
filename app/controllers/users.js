@@ -218,6 +218,19 @@ exports.getAgentByProvince = function(req,res, next) {
         }
         res.status(200).json(users)
     })
+};
+
+exports.getAgentsByPerimetre = function(req,res){
+    User.find({role:"agent"},'nom prenom perimetre affectation.projet')
+        .sort({nom:'asc'})
+        .lean().exec(function(err,users){
+        if(err){
+            return res.status(500).json(err)
+        }
+        res.status(200).json(users)
+    })
+
+
 
 };
 
