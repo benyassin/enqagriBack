@@ -35,8 +35,8 @@ exports.Upload = function(req,res){
 
         if(req.file.path.split('.').pop() === 'geojson'){
             data = JSON.parse(fs.readFileSync(req.file.path,'utf8'));
-            const keys = data.features[0];
-
+            console.log(data)
+            const keys = data.features[0].properties;
             mkeys = [];
             attributes.forEach(attr =>{
                 if(typeof keys[attr] === 'undefined') {
@@ -89,7 +89,6 @@ exports.Upload = function(req,res){
 
             Support.collection.insert(v,cb);
             function cb(err,docs){
-
                 if(err){
                     res.json(err)
                 }else{

@@ -23,20 +23,31 @@ const styles = {
     },
 };
 
-exports.storeCollecte = function(req,res,next){
+exports.storeCollecte = function(req,res){
     let user = req.user._id;
-    data = req.body;
-    data.agent = user;
-    // data.region = req.user.perimetre.region;
-    // data.province = req.user.perimetre.province;
-    data.validation = ['new','null','null','null','null'];
-
-    Collecte.create(data,function(err,collecte){
+    let data = req.body;
+    if(data.projet === undefined || data.collecte === undefined){
+        return res.status(500).json({error:true,message:'Erreur de synchonisation'})
+    }
+    Collecte.findOne({numero:data.numero,agent:user}).exec((err,collecte)=>{
         if(err){
-            return res.status(500).json(err)
+          return res.status(500).json("err")
         }
-        res.status(200).json({_id:collecte._id,'id_collecte':collecte.id_collecte})
+        if(collecte === null){
+            data.agent = user;
+            data.validation = ['new','null','null','null','null'];
+            Collecte.create(data,function(err,collecte){
+                if(err){
+                    return res.status(500).json(err)
+                }
+                res.status(200).json({_id:collecte._id,'id_collecte':collecte.id_collecte})
+            })
+        }else{
+            return res.status(500).json({error:true,message:'Already Exist'})
+        }
     })
+
+
 };
 
 // exports.aggregate = function(req,res,next){
@@ -561,22 +572,36 @@ exports.Collectes = function(req,res){
             res.set("X-Total-Count",5000).status(200).json(collectes);})
 };
 exports.Collectes2 = function(req,res) {
-    let def = ['_page','_limit','_sort','_order','niveau','status'];
+    let def = ['_page','_limit','_sort','_order','niveau','status','Date'];
     let query = {projet:req.params.id_projet};
-
+    if(!req.query._page){
+        req.query._page = 1;
+        req.query._limit = 3000
+    }
     let options = {
-        select:   'projet agent createdAt numero id_collecte',
+        select:   'projet agent createdAt numero id_collecte commune region province',
         populate: [
             // {path:'projet',select:'name theme validation'},
             {path:'agent',select:'nom prenom'},
-            {path:'_region _province _commune',select:'-geometry'}
+            {path:'_commune',select:'-geometry'}
             ],
         lean:     false,
         page:   parseInt(req.query._page),
         limit:    parseInt(req.query._limit)
     };
-    if(req.query.niveau != -1 && req.query.status != 'all'){
+    if(req.user.role === 'agent'){
+        req.query.niveau = 0
+    }
+    if(req.query.status === 'reject' ){
+        query['$nor'] = [{"validation.0":"new"},{"validation.1":"valid"}]
+    }
+    if(req.query.niveau !== -1 && req.query.status !== 'all' && req.query.status !== 'reject'){
         query['validation.' + parseInt(req.query.niveau)] = req.query.status
+    }
+
+    if(req.query.Date){
+        let date = req.query.Date.split(/(\s+)/);
+        query.createdAt = {'$gte': new Date(date[0].concat("T00:00:00")),'$lte': new Date(date[4].concat("T23:00:00"))}
     }
 
     if(req.query['_sort']){
@@ -584,6 +609,12 @@ exports.Collectes2 = function(req,res) {
     }else{
        options.sort = { createdAt: 'desc' }
     }
+
+    if(req.query.commune){
+        options.select = options.select.concat(' exploitation collecte')
+    }
+
+
 
     for (let key in req.query) {
         if (!def.includes(key)) {
@@ -599,12 +630,19 @@ exports.Collectes2 = function(req,res) {
     console.log(query)
 
 
-    Collecte.paginate(query,options, function(err,collectes){
+    Collecte.paginate(query,options,function(err,collectes){
             if(err){
                 return res.status(500).json(err)
             }
             res.status(200).json(collectes);})
 };
+
+function EpochToDate(epoch) {
+    if (epoch < 10000000000)
+        epoch *= 1000; // convert to milliseconds (Epoch is usually expressed in seconds, but Javascript uses Milliseconds)
+    var epoch = epoch + (new Date().getTimezoneOffset() * -1); //for timeZone
+    return new Date(epoch);
+}
 
 exports.delete = function(req,res){
     let id = req.params.id_collecte;
