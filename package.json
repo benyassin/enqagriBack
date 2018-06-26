@@ -1,5 +1,5 @@
 {
-  "name": "expresswithroles",
+  "name": "backend-geocoding",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -30,6 +30,8 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
-    "underscore": "^1.8.3"
+    "request": "^2.87.0",
+    "underscore": "^1.8.3",
+    "xlsx": "^0.13.0"
   }
 }

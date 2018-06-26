@@ -221,7 +221,7 @@ exports.getAgentByProvince = function(req,res, next) {
 };
 
 exports.getAgentsByPerimetre = function(req,res){
-    User.find({role:"agent"},'nom prenom perimetre affectation.projet')
+    User.find({role:"agent",'affectation.projet':mongoose.Types.ObjectId(req.params.id_projet)},'nom prenom perimetre affectation.projet')
         .sort({nom:'asc'})
         .lean().exec(function(err,users){
         if(err){

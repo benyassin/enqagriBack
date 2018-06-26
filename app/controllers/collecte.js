@@ -1,24 +1,20 @@
 const Collecte = require('../models/collecte');
 const mongoose = require('mongoose');
 const qs = require('querystring');
-const excel = require('node-excel-export');
+const excel = require('../helpers/node-excel-export');
 const ObjectId = mongoose.Types.ObjectId;
+const request = require('request');
+const _ = require('underscore');
 
-const fs = require('fs');
+const remoteURL = "http://174.138.3.115/";
+
+// const fs = require('fs');
 const styles = {
     headerDark: {
         fill: {
-            fgColor: {
-                rgb: 'FF000000'
-            }
+
         },
         font: {
-            color: {
-                rgb: 'FFFFFFFF'
-            },
-            sz: 14,
-            bold: true,
-            underline: true
         }
     },
 };
@@ -29,18 +25,21 @@ exports.storeCollecte = function(req,res){
     if(data.projet === undefined || data.collecte === undefined){
         return res.status(500).json({error:true,message:'Erreur de synchonisation'})
     }
-    Collecte.findOne({numero:data.numero,agent:user}).exec((err,collecte)=>{
+    Collecte.findOne({numero:data.numero,agent:user,'collecte.0.data.0.date_creation':data.collecte[0].data[0].date_creation}).exec((err,collecte)=>{
         if(err){
           return res.status(500).json("err")
         }
         if(collecte === null){
             data.agent = user;
             data.validation = ['new','null','null','null','null'];
+            for(let i = 0;i < data.collecte.length;i++){
+                data.collecte[i].data = _.uniq(data.collecte[i].data,function(p){ return p.numero; })
+            }
             Collecte.create(data,function(err,collecte){
                 if(err){
                     return res.status(500).json(err)
                 }
-                res.status(200).json({_id:collecte._id,'id_collecte':collecte.id_collecte})
+                res.status(200).json({error:false,_id:collecte._id,'id_collecte':collecte.id_collecte})
             })
         }else{
             return res.status(500).json({error:true,message:'Already Exist'})
@@ -232,13 +231,24 @@ exports.getAgentCollectes = function(req,res){
 };
 exports.exportData = function(req,res){
     let keys = Object.keys(req.query);
-    if(keys.includes('status')){
+    console.log(req.query);
+    let niveau = 0;
+    if(keys.includes('niveau')){
+        niveau = req.query.niveau
     }
+    let status = req.query.status;
     let query = Object.assign({},req.query);
-    let identificationSpec = {};
-    let parcelleSpec = {};
-    let forms = [];
+    if(status === 'reject' ){
+        query['$nor'] = [{"validation.0":"new"},{["validation."+niveau]:"valid"}]
+    }
+    if(niveau !== -1 && status !== 'all' && status !== 'reject'){
+        query['validation.' + parseInt(niveau)] = status
+    }
 
+    let identificationSpec = {};
+    let forms = [];
+    delete query.status;
+    delete query.niveau;
     Collecte.find(query,'-collecte.data.gjson')
         .populate('agent')
         .lean()
@@ -364,8 +374,21 @@ exports.exportData = function(req,res){
 
 exports.exportGeo = function(req,res) {
     let keys = Object.keys(req.query);
-    let query = Object.assign({}, req.query);
-
+    let niveau = 0;
+    if(keys.includes('niveau')){
+        niveau = req.query.niveau
+    }
+    let status = req.query.status;
+    let query = Object.assign({},req.query);
+    if(status === 'reject' ){
+        query['$nor'] = [{"validation.0":"new"},{["validation."+niveau]:"valid"}]
+    }
+    if(niveau !== -1 && status !== 'all' && status !== 'reject'){
+        query['validation.' + parseInt(niveau)] = status
+    }
+    delete query.status;
+    delete query.niveau;
+    console.log(query)
     Collecte.find(query)
         .populate('agent')
         .lean()
@@ -572,7 +595,7 @@ exports.Collectes = function(req,res){
             res.set("X-Total-Count",5000).status(200).json(collectes);})
 };
 exports.Collectes2 = function(req,res) {
-    let def = ['_page','_limit','_sort','_order','niveau','status','Date'];
+    let def = ['_page','_limit','_sort','_order','niveau','status','date'];
     let query = {projet:req.params.id_projet};
     if(!req.query._page){
         req.query._page = 1;
@@ -590,17 +613,19 @@ exports.Collectes2 = function(req,res) {
         limit:    parseInt(req.query._limit)
     };
     if(req.user.role === 'agent'){
-        req.query.niveau = 0
+        // req.query.niveau = 0
+        query['agent'] = req.user._id
     }
     if(req.query.status === 'reject' ){
-        query['$nor'] = [{"validation.0":"new"},{"validation.1":"valid"}]
+            query['$nor'] = [{"validation.0":"new"},{["validation."+req.query.niveau]:"valid"}]
     }
     if(req.query.niveau !== -1 && req.query.status !== 'all' && req.query.status !== 'reject'){
         query['validation.' + parseInt(req.query.niveau)] = req.query.status
     }
 
-    if(req.query.Date){
-        let date = req.query.Date.split(/(\s+)/);
+    if(req.query.date){
+        let date = req.query.date.split(/(\s+)/);
+        console.log(date)
         query.createdAt = {'$gte': new Date(date[0].concat("T00:00:00")),'$lte': new Date(date[4].concat("T23:00:00"))}
     }
 
@@ -611,7 +636,7 @@ exports.Collectes2 = function(req,res) {
     }
 
     if(req.query.commune){
-        options.select = options.select.concat(' exploitation collecte')
+        options.select = options.select.concat('exploitation collecte')
     }
 
 
@@ -657,19 +682,67 @@ exports.delete = function(req,res){
 };
 
 exports.databaseCheck = function(req,res){
-    data = fs.readFileSync('uploads/ids.json','utf8');
-    let array = [];
-    data = JSON.parse(data);
-    data.forEach(collecte =>{
-        array.push(ObjectId(collecte.ID))
-    })
-    Collecte.remove({_id: {$in: array}}).exec(function(err,removed){
-        if(err){
-            return res.status(500).json({error:'error deleting collectes'})
-        }
-        res.status(200).send(removed)
+    request.get(remoteURL+'double.json',function (error,response,body) {
+        console.log(body)
+        let data=JSON.parse(body);
+        let array = [];
+        data.forEach(collecte =>{
+            array.push(ObjectId(collecte.ID))
+        });
+        Collecte.remove({_id: {$in: array}}).exec(function(err,removed){
+            if(err){
+                return res.status(500).json({error:'error deleting collectes'})
+            }
+            res.status(200).send(removed)
+        });
     });
 }
 
+exports.databaseInstanceCheck = function(req,res){
+    request.get(remoteURL+'instance.json',function (error,response,body) {
+        data = JSON.parse(body);
+        for (let i = 0; i < data.length; i++) {
+            Collecte.findById(data[i].ID).exec(function (err, result) {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json(err)
+                }
+                if (result === null) return;
+                for (let x = 0; x < result.collecte.length; x++) {
+                    result.collecte[x].data = _.uniq(result.collecte[x].data,function(p){ return p.numero; })
+                }
+                result.save(function (err) {
+                    if (err){
+                        console.log(err)
+                        return res.status(500).json(err);
+                    }
+                })
 
+            })
+        }
+
+        res.status(200).json({JOB:'done'})
+    })
+}
+
+function checkiInstance(collecte){
+    let data = collecte;
+    for(let i = 0;i < 30;i++){
+       let result = getAllIndexes(data,i);
+        if(result.length > 1){
+            for(x = 1;x < result.length;x++){
+                data.splice(result[x],1)
+            }
+        }
+    }
+    return data
+}
+
+function getAllIndexes(arr, number) {
+    let indexes = [], i;
+    for(i = 0; i < arr.length; i++)
+        if (arr[i].numero === number)
+            indexes.push(i);
+    return indexes;
+}
 

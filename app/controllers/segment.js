@@ -28,7 +28,7 @@ exports.getSegmentWithCommunes = function(req,res,next){
             if(err){
                 console.log(err)
             }
-            res.status(200).json({commune:commune,support:{}})
+            res.status(200).json({commune:commune,support:[]})
         })
 
         }else{
