@@ -109,6 +109,7 @@ module.exports = function(app){
     projetRoutes.get('/Agent/list',requireAuth,ProjetController.getProjetsByRoleWeb);
     projetRoutes.get('/projet/notification',requireAuth,ProjetController.getnotification);
     projetRoutes.get('/:projet_id/check/',requireAuth,ProjetController.Check);
+    projetRoutes.get('/:projet_id/toggle',requireAuth,ProjetController.toggle)
 
 
     //Collecte Routes

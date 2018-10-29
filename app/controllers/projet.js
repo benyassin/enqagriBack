@@ -69,6 +69,7 @@ exports.getProjets = function(req,res,next){
         res.status(200).json(projets)
     })
 }
+
 exports.getProjetsByPerimetre = function (req, res, next){
     perimetre = req.user.perimetre;
     if(req.user.role === 'admin'){
@@ -159,13 +160,16 @@ exports.getProjetsByRoleMobile = function(req,res){
             if(err){
                 return res.status(500).json(err)
             }
+
             let affectation = [];
             results.affectation.forEach(f =>{
-                if(f.projet && f.projet !== null){
+                if(f.projet && f.projet !== null && f.projet.archived == true){
                     affectation.push(f)
                 }
             });
             res.status(200).json(affectation)
+
+          //  res.status(200).json(affectation)
 })
 }
 
@@ -243,7 +247,15 @@ exports.deleteProjet = function (req, res) {
             res.json(projet)
         });
     }
-
 }
 
+exports.toggle = function (req, res){
+    Projet.findById(req.params.projet_id).then((collecte) => {
+        collecte.archived = !collecte.archived
+        collecte.save()
+        res.status(200).json({archived:collecte.archived})
+    }).catch((e) =>{
+        res.status(500).json({error:e.message,archived:false})
+    })
+}
 
