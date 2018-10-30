@@ -163,7 +163,7 @@ exports.getProjetsByRoleMobile = function(req,res){
 
             let affectation = [];
             results.affectation.forEach(f =>{
-                if(f.projet && f.projet !== null && f.projet.archived == true){
+                if(f.projet && f.projet !== null && f.projet.is_active == true){
                     affectation.push(f)
                 }
             });
@@ -250,6 +250,16 @@ exports.deleteProjet = function (req, res) {
 }
 
 exports.toggle = function (req, res){
+    Projet.findById(req.params.projet_id).then((collecte) => {
+        collecte.is_active = !collecte.is_active
+        collecte.save()
+        res.status(200).json({is_active:collecte.is_active})
+    }).catch((e) =>{
+        res.status(500).json({error:e.message,is_active:false})
+    })
+}
+
+exports.toggleAchived = function (req, res){
     Projet.findById(req.params.projet_id).then((collecte) => {
         collecte.archived = !collecte.archived
         collecte.save()

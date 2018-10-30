@@ -41,6 +41,10 @@ var ProjetSchema = new Schema({
         type:Boolean,
         default: false,
     },
+    is_active: {
+        type:Boolean,
+        default: false,
+    },
     validation:Object,
     extrapolation:[{
         field:Object,

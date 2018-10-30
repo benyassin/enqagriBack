@@ -110,6 +110,7 @@ module.exports = function(app){
     projetRoutes.get('/projet/notification',requireAuth,ProjetController.getnotification);
     projetRoutes.get('/:projet_id/check/',requireAuth,ProjetController.Check);
     projetRoutes.get('/:projet_id/toggle',requireAuth,ProjetController.toggle)
+    projetRoutes.get('/:projet_id/toggle/archive',requireAuth,ProjetController.toggleAchived)
 
 
     //Collecte Routes
